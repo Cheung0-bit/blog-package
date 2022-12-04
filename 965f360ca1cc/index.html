@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="开闭原则(The Open&#x2F;Closed Principle,OCP) 该原则规定“软件中的对象（类、模板、函数等等）应该对于扩展是开放的，但是对于修改是封闭的”，这意味着一实体是允许在不改变它的源代码的前提下变更它的行为。  对扩展开放，对修改关闭。在程序需要进行拓展的时候，不能去修改原有的代码，实现一个热插拔的效果。是程序扩展性好，易于维护和升级。 要达到这样的效果，我们需要使用接口和出抽象类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OOP七大法则">
+<meta property="og:url" content="https://blog.zhang0.cool/965f360ca1cc/index.html">
+<meta property="og:site_name" content="小小小张的博客">
+<meta property="og:description" content="开闭原则(The Open&#x2F;Closed Principle,OCP) 该原则规定“软件中的对象（类、模板、函数等等）应该对于扩展是开放的，但是对于修改是封闭的”，这意味着一实体是允许在不改变它的源代码的前提下变更它的行为。  对扩展开放，对修改关闭。在程序需要进行拓展的时候，不能去修改原有的代码，实现一个热插拔的效果。是程序扩展性好，易于维护和升级。 要达到这样的效果，我们需要使用接口和出抽象类">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220412093045885.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220412113056871.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220412115523775.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/1248046802.jpg">
+<meta property="og:image" content="d:/%E5%9B%BE%E7%89%87/%E7%B4%A0%E6%9D%90/image-20220412115831936.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220412121919355.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220412122737339.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220412123044674.png">
+<meta property="article:published_time" content="2022-04-12T12:50:09.000Z">
+<meta property="article:modified_time" content="2022-11-25T06:47:18.165Z">
+<meta property="article:author" content="张林">
+<meta property="article:tag" content="设计模式">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220412093045885.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>OOP七大法则</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="小小小张的博客" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Articles</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/7a8ad14d8fa9/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/57688faed3c5/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/965f360ca1cc/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/965f360ca1cc/&text=OOP七大法则"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/965f360ca1cc/&title=OOP七大法则"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/965f360ca1cc/&is_video=false&description=OOP七大法则"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=OOP七大法则&body=Check out this article: https://blog.zhang0.cool/965f360ca1cc/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/965f360ca1cc/&title=OOP七大法则"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/965f360ca1cc/&title=OOP七大法则"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/965f360ca1cc/&title=OOP七大法则"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/965f360ca1cc/&title=OOP七大法则"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/965f360ca1cc/&name=OOP七大法则&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/965f360ca1cc/&t=OOP七大法则"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E9%97%AD%E5%8E%9F%E5%88%99-The-Open-Closed-Principle-OCP"><span class="toc-number">1.</span> <span class="toc-text">开闭原则(The Open&#x2F;Closed Principle,OCP)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8C%E6%B0%8F%E6%9B%BF%E6%8D%A2%E5%8E%9F%E5%88%99-Liskov-Substitution-Principle-LSP"><span class="toc-number">2.</span> <span class="toc-text">里氏替换原则(Liskov Substitution Principle LSP)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%8E%9F%E5%88%99%EF%BC%88Dependence-Inversion-Principle%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">依赖倒置原则（Dependence Inversion Principle）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E4%B8%80%E8%81%8C%E8%B4%A3%E5%8E%9F%E5%88%99%EF%BC%88Single-responsibility-principle%EF%BC%8CSRP%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">单一职责原则（Single responsibility principle，SRP）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%AA%E7%B1%B3%E7%89%B9%E6%B3%95%E5%88%99%EF%BC%88Law-of-Demeter%EF%BC%8CLOD%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">迪米特法则（Law of Demeter，LOD）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%E6%B3%95%E5%88%99%EF%BC%88Interface-Segregation-Principle%EF%BC%8CISP%EF%BC%89"><span class="toc-number">6.</span> <span class="toc-text">接口隔离法则（Interface Segregation Principle，ISP）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%88%E6%88%90%E5%A4%8D%E7%94%A8%E5%8E%9F%E5%88%99%EF%BC%88Composite-Reuse-Principle-CRP%EF%BC%89"><span class="toc-number">7.</span> <span class="toc-text">合成复用原则（Composite Reuse Principle, CRP）</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        OOP七大法则
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">张林</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-04-12T12:50:09.000Z" itemprop="datePublished">2022-04-12</time>
+        
+        (Updated: <time datetime="2022-11-25T06:47:18.165Z" itemprop="dateModified">2022-11-25</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="开闭原则-The-Open-Closed-Principle-OCP"><a href="#开闭原则-The-Open-Closed-Principle-OCP" class="headerlink" title="开闭原则(The Open/Closed Principle,OCP)"></a>开闭原则(The Open/Closed Principle,OCP)</h2><blockquote>
+<p>该原则规定“软件中的对象（类、模板、函数等等）应该对于扩展是开放的，但是对于修改是封闭的”，这意味着一实体是允许在不改变它的源代码的前提下变更它的行为。</p>
+</blockquote>
+<p><strong>对扩展开放，对修改关闭。</strong>在程序需要进行拓展的时候，不能去修改原有的代码，实现一个热插拔的效果。是程序扩展性好，易于维护和升级。</p>
+<p>要达到这样的效果，我们需要使用接口和出抽象类。</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220412093045885.png" alt="image-20220412093045885"></p>
+<p>例如在这里，使用抽象的Animal来代表所有的动物，动物都有吃的行为，但不同动物不一样。当发现新的动物时，我们避免去修改<code>AbstractAniaml</code>的方法，只需要考虑继承其接着重写该方法</p>
+<h2 id="里氏替换原则-Liskov-Substitution-Principle-LSP"><a href="#里氏替换原则-Liskov-Substitution-Principle-LSP" class="headerlink" title="里氏替换原则(Liskov Substitution Principle LSP)"></a>里氏替换原则(Liskov Substitution Principle LSP)</h2><blockquote>
+<p>里氏代换原则中说，任何基类可以出现的地方，子类一定可以出现。 LSP是继承复用的基石，只有当衍生类可以替换掉基类，软件单位的功能不受到影响时，基类才能真正被复用，而衍生类也能够在基类的基础上增加新的行为。里氏代换原则是对“开-闭”原则的补充。实现“开-闭”原则的关键步骤就是抽象化。而基类与子类的继承关系就是抽象化的具体实现，所以里氏代换原则是对实现抽象化的具体步骤的规范。</p>
+</blockquote>
+<p>通俗的理解：子类可以扩展父类的功能，但不能改变父类原有的功能。换句话说，子类继承父类时，除添加新的方法完成新增功能外，尽量不要重写父类的方法。</p>
+<p>如果全都简单的继承父类重写方法完成新的功能，这样写起来虽然简单，但整个体系的复用性会较差。多态使用频繁时，程序运行出错概率较大。</p>
+<p>里式替换原则是对开闭原则的补充，强调在继承父类时，尽可能的避免重写父类方法.</p>
+<p>“正方形不是长方形”便是一个经典的例子。我们知道，在数学上，这是一个伪命题：正方形是特殊的长方形，它们的长和宽相等。</p>
+<p>但在程序设计时，让正方形去继承长方形便是违反了LSP原则。</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220412113056871.png"></p>
+<p>设计一个矩形类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Rectangle</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> width;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> length;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getWidth</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> width;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setWidth</span><span class="params">(<span class="type">int</span> width)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.width = width;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getLength</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> length;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setLength</span><span class="params">(<span class="type">int</span> length)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.length = length;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getArea</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.width * <span class="built_in">this</span>.length;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>设计一个正方形类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Square</span> <span class="keyword">extends</span> <span class="title class_">Rectangle</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setLength</span><span class="params">(<span class="type">int</span> length)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>.setLength(length);</span><br><span class="line">        <span class="built_in">super</span>.setWidth(length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setWidth</span><span class="params">(<span class="type">int</span> width)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>.setWidth(width);</span><br><span class="line">        <span class="built_in">super</span>.setLength(width);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>设计一个操作类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Operate</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 实例一</span></span><br><span class="line">        <span class="type">Rectangle</span> <span class="variable">r1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Rectangle</span>();</span><br><span class="line">        r1.setWidth(<span class="number">3</span>);</span><br><span class="line">        r1.setLength(<span class="number">4</span>);</span><br><span class="line">        System.out.println(r1.getArea());</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 实例二</span></span><br><span class="line">        <span class="type">Rectangle</span> <span class="variable">r2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Square</span>();</span><br><span class="line">        r2.setWidth(<span class="number">3</span>);</span><br><span class="line">        r2.setLength(<span class="number">4</span>);</span><br><span class="line">        System.out.println(r2.getArea());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">12</span><br><span class="line">16</span><br><span class="line"></span><br><span class="line">进程已结束,退出代码0</span><br></pre></td></tr></table></figure>
+
+<p>实例二中，实例化了一个矩形对象，设定长宽分别为3和4，却得到结果16。由此，“正方形不是长方形”，当正方形继承长方形，且重写其方法时，在多态实例化时，带来了灾难性的错误。</p>
+<p>现实生活中，类似的例子还有很多：</p>
+<ul>
+<li>企鹅不是鸟，因为其不会飞</li>
+<li>鸵鸟不是鸟，它也不会飞</li>
+<li>玩具手枪不是枪，它不能抵御敌人</li>
+<li>…</li>
+</ul>
+<h2 id="依赖倒置原则（Dependence-Inversion-Principle）"><a href="#依赖倒置原则（Dependence-Inversion-Principle）" class="headerlink" title="依赖倒置原则（Dependence Inversion Principle）"></a>依赖倒置原则（Dependence Inversion Principle）</h2><blockquote>
+<p>高层模块不应该依赖于低层模块，两者都应该依赖其抽象；抽象不应该依赖细节，细节应该依赖抽象。</p>
+</blockquote>
+<p>DIP就像它的定义一样抽象（流汗黄豆）</p>
+<p>简单解释就是要求开发者对抽象进行编程，不要对实现进行编程，以降低客户与实现模块之间的耦合度。</p>
+<p>逐句来理解：</p>
+<ul>
+<li><strong>高层模块不应该依赖于低层模块，两者都应该依赖其抽象。</strong>也就是说在高层模块与底层模块之间加一层（抽象层）。高层模块依赖抽象层的功能去实现，而底层按照抽象层方法的定义去开发</li>
+<li><strong>抽象不应该依赖细节，细节应该依赖抽象。</strong>举个例子，在定义接口方法时，不要为了要完成某个细节的功能而去定义一个方法，而是提供一个抽象的方法，让实现层去个性化的实现。这也就做到了”举一反三“的效果。</li>
+</ul>
+<p>为什么是<strong>”倒置“</strong>，而不是<strong>”转移“</strong>？</p>
+<p>这也是我思考很久的问题，这里说说我的看法：</p>
+<p>传统开发中，高层功能都紧紧依赖底层来实现：我底层提供了生产奔驰汽车的功能，高层便向外界提供开奔驰的服务API。当客户提出要开宝马时，高层便等待底层实现了生产宝马的方法，再向外界提供开宝马的API。这简直是对OOP的侮辱！于是，为了满足一个通用的业务：例如客户要享受不同的驾驶服务，今天开宝马，明天开特斯拉….引入一个抽象层，高度抽象一下实现的方法，然后交给实现层根据抽象的定义来实现。这样看来，由原来的高层依靠底层提供的功能提供API服务变成了高层先说明我要提供什么API服务，抽象层根据此来抽象业务，实现层再根据抽象层的定义完成逻辑业务，实现了依赖的<em><strong>”反转“</strong></em>。</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220412115523775.png"></p>
+<p>由高层依赖底层，反转为底层依赖高层。由抽象依赖细节，反转为细节依赖抽象。很多人不理解倒置，是因为我们在学习开源框架的过程中，框架就限制了我们按照这些原则进行开发，让我们忽略了设计模式的存在。其实，在SpringBoot的经典四层架构中，处处都是DIP的身影。</p>
+<h2 id="单一职责原则（Single-responsibility-principle，SRP）"><a href="#单一职责原则（Single-responsibility-principle，SRP）" class="headerlink" title="单一职责原则（Single responsibility principle，SRP）"></a>单一职责原则（Single responsibility principle，SRP）</h2><blockquote>
+<p>不要存在多于一个导致类变更的原因</p>
+</blockquote>
+<p>通俗的来说，一个类只负责一项职责</p>
+<p>该原则提出对象不应该承担太多职责，如果一个对象承担了太多的职责，至少存在以下两个缺点：</p>
+<ul>
+<li><p>一个职责的变化可能会削弱或者抑制这个类实现其他职责的能力；</p>
+</li>
+<li><p>当客户端需要该对象的某一个职责时，不得不将其他不需要的职责全都包含进来，从而造成冗余代码或代码的浪费。</p>
+</li>
+</ul>
+<p>单一职责原则的核心就是控制类的粒度大小、将对象解耦、提高其内聚性。</p>
+<p>一类只负责一件事，提高了类的专一度。当有新的业务时，在修改一个类时，大大降低对其他类的干扰。</p>
+<p>在Java开发中，SRP是一种默许的行为。</p>
+<h2 id="迪米特法则（Law-of-Demeter，LOD）"><a href="#迪米特法则（Law-of-Demeter，LOD）" class="headerlink" title="迪米特法则（Law of Demeter，LOD）"></a>迪米特法则（Law of Demeter，LOD）</h2><blockquote>
+<p>迪米特法则（Law of Demeter）又叫作最少知识原则（The Least Knowledge Principle），一个类对于其他类知道的越少越好，就是说一个对象应当对其他对象有尽可能少的了解,只和朋友通信，不和陌生人说话。</p>
+</blockquote>
+<p>通俗来说：如果两个模块之间无须直接通信，那么就不应该直接的相互调用，可以通过第三方转发该调用。这样降低了模块间的耦合度，提高了模块的相对独立性。</p>
+<p>我和朋友常将其称为<strong>”社恐法则“</strong>。当路上遇到小仙女时，却不敢要WX，可以通过社牛朋友代为交接，前去交涉，表达自己的爱慕之意。好吧，开个玩笑，例子可能不完全符合。也建议大家要勇敢示爱，否则就真正降低了和小仙女之间的耦合度了。</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/1248046802.jpg"></p>
+<h2 id="接口隔离法则（Interface-Segregation-Principle，ISP）"><a href="#接口隔离法则（Interface-Segregation-Principle，ISP）" class="headerlink" title="接口隔离法则（Interface Segregation Principle，ISP）"></a>接口隔离法则（Interface Segregation Principle，ISP）</h2><blockquote>
+<p>客户端不应该被迫依赖于它不使用的方法；一个类对另一个类的依赖应该建立在最小的接口上</p>
+</blockquote>
+<p>ISP同单一职责原则，一类将类的功能原子化，一个将接口定义的功能原子化。以降低耦合度，提高内聚度。</p>
+<p>例如这里，理发店可提供洗剪吹服务，于是我定义一个洗剪吹的接口服务。当客户要求只要洗剪而不吹时，就傻眼了。此时再来修改接口，就未被了OCP法则。因此我们需要将接口更加细化。</p>
+<p><img src="D:/%E5%9B%BE%E7%89%87/%E7%B4%A0%E6%9D%90/image-20220412115831936.png" alt="image-20220412115831936"></p>
+<h2 id="合成复用原则（Composite-Reuse-Principle-CRP）"><a href="#合成复用原则（Composite-Reuse-Principle-CRP）" class="headerlink" title="合成复用原则（Composite Reuse Principle, CRP）"></a>合成复用原则（Composite Reuse Principle, CRP）</h2><blockquote>
+<p>尽量先使用组合或者聚合等关联关系来实现，其次再考虑使用继承关系来实现</p>
+</blockquote>
+<p>通常类的复用分为继承复用和合成复用两种。继承复用虽然简单易实现。但破坏类的封装性，提高了耦合度，限制了代码复用的灵活性。</p>
+<p>采用组合或聚合复用时，将已有对象纳入新对象，使之成为新对象的一部分，新对象调用此对象的功能。实现<code>is a</code>到<code>has a</code>的转变。</p>
+<p>很经典的例子：</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220412121919355.png" alt="image-20220412121919355"></p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220412122737339.png" alt="image-20220412122737339"></p>
+<p>使用组合一改继承的啰里啰唆，高效完成了汽车的分类。</p>
+<p>今天总结了OOP开发七大法则，为设计模式的学习打下基础。配图都很卡哇伊啊，UML使用IDEA插件完成。</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220412123044674.png" alt="image-20220412123044674"></p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E9%97%AD%E5%8E%9F%E5%88%99-The-Open-Closed-Principle-OCP"><span class="toc-number">1.</span> <span class="toc-text">开闭原则(The Open&#x2F;Closed Principle,OCP)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8C%E6%B0%8F%E6%9B%BF%E6%8D%A2%E5%8E%9F%E5%88%99-Liskov-Substitution-Principle-LSP"><span class="toc-number">2.</span> <span class="toc-text">里氏替换原则(Liskov Substitution Principle LSP)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%8E%9F%E5%88%99%EF%BC%88Dependence-Inversion-Principle%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">依赖倒置原则（Dependence Inversion Principle）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E4%B8%80%E8%81%8C%E8%B4%A3%E5%8E%9F%E5%88%99%EF%BC%88Single-responsibility-principle%EF%BC%8CSRP%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">单一职责原则（Single responsibility principle，SRP）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%AA%E7%B1%B3%E7%89%B9%E6%B3%95%E5%88%99%EF%BC%88Law-of-Demeter%EF%BC%8CLOD%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">迪米特法则（Law of Demeter，LOD）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%E6%B3%95%E5%88%99%EF%BC%88Interface-Segregation-Principle%EF%BC%8CISP%EF%BC%89"><span class="toc-number">6.</span> <span class="toc-text">接口隔离法则（Interface Segregation Principle，ISP）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%88%E6%88%90%E5%A4%8D%E7%94%A8%E5%8E%9F%E5%88%99%EF%BC%88Composite-Reuse-Principle-CRP%EF%BC%89"><span class="toc-number">7.</span> <span class="toc-text">合成复用原则（Composite Reuse Principle, CRP）</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/965f360ca1cc/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/965f360ca1cc/&text=OOP七大法则"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/965f360ca1cc/&title=OOP七大法则"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/965f360ca1cc/&is_video=false&description=OOP七大法则"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=OOP七大法则&body=Check out this article: https://blog.zhang0.cool/965f360ca1cc/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/965f360ca1cc/&title=OOP七大法则"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/965f360ca1cc/&title=OOP七大法则"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/965f360ca1cc/&title=OOP七大法则"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/965f360ca1cc/&title=OOP七大法则"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/965f360ca1cc/&name=OOP七大法则&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/965f360ca1cc/&t=OOP七大法则"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+      
+        
+          2022
+            <a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">
+              苏ICP备2022044873号
+            </a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <!--
+       -->
+          <li><a href="/">
+              Home
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/about/">
+              About
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/archives/">
+              Articles
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/categories/">
+              Category
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/search/">
+              Search
+            </a></li>
+          <!--
+     -->
+          
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+ 
+  <link
+    rel="preload"
+    href="/lib/font-awesome/css/all.min.css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript
+    ><link
+      rel="stylesheet"
+      href="/lib/font-awesome/css/all.min.css"
+  /></noscript>
+
+
+
+    <!-- jquery -->
+ 
+  
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+
+
+
+<!-- clipboard -->
+
+   
+    
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'Cheung0-bit/fuzzy_ahp';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

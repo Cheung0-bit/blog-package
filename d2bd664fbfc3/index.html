@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="应用层域名系统DNSDNS概述 DNS是一个分布式数据库，提供了主机名和IP地址之间相互转换的服务。分布式指的是每个站点仅保留它自己的那部分数据  Internet域名结构 层次结构，从上至下依次为：根域名、顶级域名、二级域名  域名服务器 一个服务器所负责管辖的范围叫做区（zone） 每一个区设置的权限域名服务器，用来保存该区中的所有主机的域名到IP地址的映射 DNS可以使用UDP或者TCP进行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="应用层">
+<meta property="og:url" content="https://blog.zhang0.cool/d2bd664fbfc3/index.html">
+<meta property="og:site_name" content="小小小张的博客">
+<meta property="og:description" content="应用层域名系统DNSDNS概述 DNS是一个分布式数据库，提供了主机名和IP地址之间相互转换的服务。分布式指的是每个站点仅保留它自己的那部分数据  Internet域名结构 层次结构，从上至下依次为：根域名、顶级域名、二级域名  域名服务器 一个服务器所负责管辖的范围叫做区（zone） 每一个区设置的权限域名服务器，用来保存该区中的所有主机的域名到IP地址的映射 DNS可以使用UDP或者TCP进行">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625152224244.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625153107071.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625153826527.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625154802868.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625154826534.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625160339820.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625160832310.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625161314069.png">
+<meta property="article:published_time" content="2022-06-25T13:03:27.000Z">
+<meta property="article:modified_time" content="2022-11-25T06:52:05.279Z">
+<meta property="article:author" content="张林">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625152224244.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>应用层</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="小小小张的博客" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Articles</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/ec225509277f/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/d8c2599fcfab/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/d2bd664fbfc3/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/d2bd664fbfc3/&text=应用层"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/d2bd664fbfc3/&title=应用层"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/d2bd664fbfc3/&is_video=false&description=应用层"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=应用层&body=Check out this article: https://blog.zhang0.cool/d2bd664fbfc3/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/d2bd664fbfc3/&title=应用层"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/d2bd664fbfc3/&title=应用层"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/d2bd664fbfc3/&title=应用层"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/d2bd664fbfc3/&title=应用层"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/d2bd664fbfc3/&name=应用层&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/d2bd664fbfc3/&t=应用层"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%B1%82"><span class="toc-number">1.</span> <span class="toc-text">应用层</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%9F%E5%90%8D%E7%B3%BB%E7%BB%9FDNS"><span class="toc-number">1.1.</span> <span class="toc-text">域名系统DNS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DNS%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.1.</span> <span class="toc-text">DNS概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Internet%E5%9F%9F%E5%90%8D%E7%BB%93%E6%9E%84"><span class="toc-number">1.1.2.</span> <span class="toc-text">Internet域名结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%9F%E5%90%8D%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">1.1.3.</span> <span class="toc-text">域名服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DNS%E5%8A%AB%E6%8C%81%EF%BC%88DNS-Hijacking%EF%BC%89"><span class="toc-number">1.1.4.</span> <span class="toc-text">DNS劫持（DNS Hijacking）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DNS%E6%B1%A1%E6%9F%93%EF%BC%88DNS-Pollution%EF%BC%89"><span class="toc-number">1.1.5.</span> <span class="toc-text">DNS污染（DNS Pollution）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%BC%A0%E9%80%81%E5%8D%8F%E8%AE%AEFTP"><span class="toc-number">1.2.</span> <span class="toc-text">文件传送协议FTP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#FTP%E6%A6%82%E8%BF%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text">FTP概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">1.2.2.</span> <span class="toc-text">基本工作原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E6%96%87%E4%BB%B6%E4%BC%A0%E9%80%81%E5%8D%8F%E8%AE%AETFTP"><span class="toc-number">1.2.3.</span> <span class="toc-text">简单文件传送协议TFTP</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9C%E7%A8%8B%E7%BB%88%E7%AB%AF%E5%8D%8F%E8%AE%AETELNET"><span class="toc-number">1.3.</span> <span class="toc-text">远程终端协议TELNET</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%87%E7%BB%B4%E7%BD%91WWW"><span class="toc-number">1.4.</span> <span class="toc-text">万维网WWW</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.4.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E6%96%B9%E5%BC%8F"><span class="toc-number">1.4.2.</span> <span class="toc-text">工作方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%87%E7%BB%B4%E7%BD%91%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.3.</span> <span class="toc-text">万维网解决的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E8%B5%84%E6%BA%90%E5%AE%9A%E4%BD%8D%E7%AC%A6URL"><span class="toc-number">1.4.4.</span> <span class="toc-text">统一资源定位符URL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B6%85%E6%96%87%E6%9C%AC%E4%BC%A0%E9%80%81%E5%8D%8F%E8%AE%AEHTTP"><span class="toc-number">1.4.5.</span> <span class="toc-text">超文本传送协议HTTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%87%E7%BB%B4%E7%BD%91%E7%9A%84%E6%96%87%E6%A1%A3"><span class="toc-number">1.4.6.</span> <span class="toc-text">万维网的文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%87%E7%BB%B4%E7%BD%91%E7%9A%84%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.4.7.</span> <span class="toc-text">万维网的信息检索系统</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6"><span class="toc-number">1.5.</span> <span class="toc-text">电子邮件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0-1"><span class="toc-number">1.5.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E9%82%AE%E4%BB%B6%E4%BC%A0%E9%80%81%E5%8D%8F%E8%AE%AESMTP"><span class="toc-number">1.5.2.</span> <span class="toc-text">简单邮件传送协议SMTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E5%AD%90%E9%82%AE%E7%AE%B1%E7%9A%84%E4%BF%A1%E6%81%AF%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.5.3.</span> <span class="toc-text">电子邮箱的信息格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%82%AE%E4%BB%B6%E8%AF%BB%E5%8F%96%E5%8D%8F%E8%AE%AEPOP3%E5%92%8CIMAP"><span class="toc-number">1.5.4.</span> <span class="toc-text">邮件读取协议POP3和IMAP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E4%B8%87%E7%BB%B4%E7%BD%91%E7%9A%84%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6"><span class="toc-number">1.5.5.</span> <span class="toc-text">基于万维网的电子邮件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E7%94%A8%E5%9B%A0%E7%89%B9%E7%BD%91%E9%82%AE%E4%BB%B6%E6%89%A9%E5%85%85MIME"><span class="toc-number">1.5.6.</span> <span class="toc-text">通用因特网邮件扩充MIME</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        应用层
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">张林</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-06-25T13:03:27.000Z" itemprop="datePublished">2022-06-25</time>
+        
+        (Updated: <time datetime="2022-11-25T06:52:05.279Z" itemprop="dateModified">2022-11-25</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h1><h2 id="域名系统DNS"><a href="#域名系统DNS" class="headerlink" title="域名系统DNS"></a>域名系统DNS</h2><h3 id="DNS概述"><a href="#DNS概述" class="headerlink" title="DNS概述"></a>DNS概述</h3><ul>
+<li>DNS是一个分布式数据库，提供了主机名和IP地址之间相互转换的服务。分布式指的是每个站点仅保留它自己的那部分数据</li>
+</ul>
+<h3 id="Internet域名结构"><a href="#Internet域名结构" class="headerlink" title="Internet域名结构"></a>Internet域名结构</h3><ul>
+<li>层次结构，从上至下依次为：根域名、顶级域名、二级域名<br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625152224244.png" alt="image-20220625152224244"></li>
+</ul>
+<h3 id="域名服务器"><a href="#域名服务器" class="headerlink" title="域名服务器"></a>域名服务器</h3><ul>
+<li>一个服务器所负责管辖的范围叫做区（zone）</li>
+<li>每一个区设置的权限域名服务器，用来保存该区中的所有主机的域名到IP地址的映射</li>
+<li>DNS可以使用UDP或者TCP进行传输，端口号位53.大多数情况下使用UDP传输</li>
+</ul>
+<h3 id="DNS劫持（DNS-Hijacking）"><a href="#DNS劫持（DNS-Hijacking）" class="headerlink" title="DNS劫持（DNS Hijacking）"></a>DNS劫持（DNS Hijacking）</h3><ul>
+<li>通过劫持DNS服务器，通过某些手段取得某域名的解析记录控制权，进而修改此域名的解析结果。比如将<code>nuist.edu.cn</code>的IP修改为某黄色网站IP，给学生带来不好的冲浪体验。或者修改为黑客的钓鱼网站，窃取用户个人信息<br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625153107071.png" alt="image-20220625153107071"></li>
+</ul>
+<h3 id="DNS污染（DNS-Pollution）"><a href="#DNS污染（DNS-Pollution）" class="headerlink" title="DNS污染（DNS Pollution）"></a>DNS污染（DNS Pollution）</h3><ul>
+<li>又名域名服务器缓存污染或者域名服务器快照侵害。指一些刻意制造或无意中制造出来的域名服务器分组，把域名指往不正确的IP地址，这是一种DNS缓存投毒攻击。由于DNS查询没有任何的认证机制，且基于无连接不可靠的UDP协议，因此DNS的查询很容易被篡改<br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625153826527.png" alt="image-20220625153826527"></li>
+</ul>
+<h2 id="文件传送协议FTP"><a href="#文件传送协议FTP" class="headerlink" title="文件传送协议FTP"></a>文件传送协议FTP</h2><h3 id="FTP概述"><a href="#FTP概述" class="headerlink" title="FTP概述"></a>FTP概述</h3><ul>
+<li>FTP是因特网上使用得最广泛的文件传送协议</li>
+<li>FTP 提供交互式的访问，允许客户指明文件的类型与格式，并允许文件具有存取权限</li>
+<li>FTP 屏蔽了各计算机系统的细节，因而适合于在异构网络中任意计算机之间传送文件</li>
+</ul>
+<h3 id="基本工作原理"><a href="#基本工作原理" class="headerlink" title="基本工作原理"></a>基本工作原理</h3><ul>
+<li>FTP通过TCP连接，并通过两个连接来传送一个文件<ul>
+<li>控制连接：服务器打开端口号 21 等待客户端的连接，客户端主动建立连接后，使用这个连接将客户端的命令传送给服务器，并传回服务器的应答</li>
+<li>数据连接：用来传送一个文件数据</li>
+</ul>
+</li>
+<li>根据数据连接是否是服务器端主动建立，FTP 有主动和被动两种模式<ul>
+<li>主动模式：服务器端主动建立数据连接，其中服务器端的端口号为 20，客户端的端口号随机，但是必须大于 1024，因为 0~1023 是熟知端口号</li>
+<li>被动模式：客户端主动建立数据连接，其中客户端的端口号由客户端自己指定，服务器端的端口号随机</li>
+<li>主动模式要求客户端开放端口号给服务器端，需要去配置客户端的防火墙。被动模式只需要服务器端开放端口号即可，无需客户端配置防火墙。但是被动模式会导致服务器端的安全性减弱，因为开放了过多的端口号</li>
+</ul>
+</li>
+</ul>
+<h3 id="简单文件传送协议TFTP"><a href="#简单文件传送协议TFTP" class="headerlink" title="简单文件传送协议TFTP"></a>简单文件传送协议TFTP</h3><ul>
+<li>TFTP 是一个很小且易于实现的文件传送协议。</li>
+<li>TFTP 使用客户服务器方式和使用 UDP 数据报，因此 TFTP 需要有自己的差错改正措施。</li>
+<li>TFTP 只支持文件传输而不支持交互。</li>
+<li>TFTP 没有一个庞大的命令集，没有列目录的功能，也不能对用户进行身份鉴别。 </li>
+<li>TFTP 的主要特点是<ul>
+<li>每次传送的数据 PDU 中有 512 字节的数据，但最后一次可不足 512 字节。</li>
+<li>数据 PDU 也称为文件块(block)，每个块按序编号，从 1 开始。</li>
+<li>支持 ASCII 码或二进制传送。</li>
+<li>可对文件进行读或写。</li>
+<li>使用很简单的首部。 </li>
+</ul>
+</li>
+</ul>
+<h2 id="远程终端协议TELNET"><a href="#远程终端协议TELNET" class="headerlink" title="远程终端协议TELNET"></a>远程终端协议TELNET</h2><ul>
+<li>TELNET 是一个简单的远程终端协议，也是因特网的正式标准</li>
+<li>用户用 TELNET 就可在其所在地通过 TCP 连接注册（即登录）到远地的另一个主机上（使用主机名或 IP 地址）</li>
+<li>TELNET 能将用户的击键传到远地主机，同时也能将远地主机的输出通过 TCP 连接返回到用户屏幕。这种服务是透明的，因为用户感觉到好像键盘和显示器是直接连在远地主机上</li>
+<li>现SSH协议更加安全（基于非对称加密的公私钥体系）也更加流行，反正我是没用过TELNET协议<br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625154802868.png" alt="image-20220625154802868"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625154826534.png" alt="image-20220625154826534"></li>
+<li>SSH协议基于一组完备的加密算法<ul>
+<li>密钥交换算法（RSA、DH…）</li>
+<li>认证算法（RSA、DSA…）</li>
+<li>加密数据算法（AES…）</li>
+<li>MAC算法（SHA系列…）</li>
+</ul>
+</li>
+</ul>
+<p>需要有一些密码学基础的铺垫，可以阅读<a target="_blank" rel="noopener" href="https://juejin.cn/post/7071999949654720526">我讲解基础密码学的文章</a>入门，SSH协议实现细节暂不做介绍</p>
+<h2 id="万维网WWW"><a href="#万维网WWW" class="headerlink" title="万维网WWW"></a>万维网WWW</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><ul>
+<li>万维网 WWW (World Wide Web)并非某种特殊的计算机网络</li>
+<li>万维网是一个大规模的、联机式的信息储藏所</li>
+<li>万维网用链接的方法能非常方便地从因特网上的一个站点访问另一个站点，从而主动地按需获取丰富的信息</li>
+<li>万维网是分布式超媒体(hypermedia)系统，它是超文本(hypertext)系统的扩充</li>
+</ul>
+<h3 id="工作方式"><a href="#工作方式" class="headerlink" title="工作方式"></a>工作方式</h3><ul>
+<li>万维网以客户服务器方式工作</li>
+<li>浏览器就是在用户计算机上的万维网客户程序。万维网文档所驻留的计算机则运行服务器程序，因此这个计算机也称为万维网服务器</li>
+</ul>
+<h3 id="万维网解决的问题"><a href="#万维网解决的问题" class="headerlink" title="万维网解决的问题"></a>万维网解决的问题</h3><ul>
+<li>怎样标志分布在整个因特网上的万维网文档<ul>
+<li>使用统一资源定位符 URL (Uniform Resource Locator)来标志万维网上的各种文档</li>
+<li>每一个文档在整个因特网的范围内具有唯一的标识符 URL</li>
+</ul>
+</li>
+<li>用何协议实现万维网上各种超链的链接<ul>
+<li>超文本传送协议 HTTP (Hyper-Text Transfer Protocol)</li>
+</ul>
+</li>
+<li>怎样使各种万维网文档都能在因特网上的各种计算机上显示出来，同时使用户清楚地知道在什么地方存在着超链<ul>
+<li>超文本标记语言 HTML (Hyper-Text Markup Language)使得万维网页面的设计者可以很方便地用一个超链从本页面的某处链接到因特网上的任何一个万维网页面，并且能够在自己的计算机屏幕上将这些页面显示出来</li>
+</ul>
+</li>
+<li>怎样使用户能够很方便地找到所需的信息<ul>
+<li>为了在万维网上方便地查找信息，用户可使用各种的搜索工具（即搜索引擎）</li>
+</ul>
+</li>
+</ul>
+<h3 id="统一资源定位符URL"><a href="#统一资源定位符URL" class="headerlink" title="统一资源定位符URL"></a>统一资源定位符URL</h3><ul>
+<li>统一资源定位符 URL 是对可以从因特网上得到的资源的位置和访问方法的一种简洁的表示</li>
+<li>URL 的一般形式是：&lt;协议&gt;://&lt;主机&gt;:&lt;端口&gt;/&lt;路径&gt; （HTTP协议默认端口80，可忽略不写）<br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625160339820.png" alt="image-20220625160339820"></li>
+</ul>
+<h3 id="超文本传送协议HTTP"><a href="#超文本传送协议HTTP" class="headerlink" title="超文本传送协议HTTP"></a>超文本传送协议HTTP</h3><ul>
+<li>HTTP 是面向事务的客户服务器协议</li>
+<li>HTTP 1.0 协议是无状态的(stateless)</li>
+<li>HTTP 协议本身也是无连接的，虽然它使用了面向连接的 TCP 向上提供的服务</li>
+<li>HTTP 1.1 开始，一次TCP连接建立后，可以持续进行报文传输（短连接 -&gt; 长连接）</li>
+</ul>
+<h3 id="万维网的文档"><a href="#万维网的文档" class="headerlink" title="万维网的文档"></a>万维网的文档</h3><ul>
+<li><p>超文本标记语言HTML</p>
+<ul>
+<li>超文本标记语言 HTML 中的 Markup 的意思就是“设置标记”</li>
+<li>HTML 定义了许多用于排版的命令（即标签）</li>
+<li>HTML 把各种标签嵌入到万维网的页面中。这样就构成了所谓的 HTML 文档。HTML 文档是一种可以用任何文本编辑器创建的 ASCII 码文件<br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625160832310.png" alt="image-20220625160832310"></li>
+</ul>
+</li>
+<li><p>动态万维网文档</p>
+<ul>
+<li>静态文档是指该文档创作完毕后就存放在万维网服务器中，在被用户浏览的过程中，内容不会改变。 </li>
+<li>动态文档是指文档的内容是在浏览器访问万维网服务器时才由应用程序动态创建。</li>
+<li>动态文档和静态文档之间的主要差别体现在服务器一端。这主要是文档内容的生成方法不同。而从浏览器的角度看，这两种文档并没有区别。  </li>
+</ul>
+</li>
+</ul>
+<h3 id="万维网的信息检索系统"><a href="#万维网的信息检索系统" class="headerlink" title="万维网的信息检索系统"></a>万维网的信息检索系统</h3><ul>
+<li>全文检索搜索<ul>
+<li>全文检索搜索引擎是一种纯技术型的检索工具。它的工作原理是通过搜索软件到因特网上的各网站收集信息，找到一个网站后可以从这个网站再链接到另一个网站。然后按照一定的规则建立一个很大的在线数据库供用户查询</li>
+</ul>
+</li>
+<li>分类目录搜索<ul>
+<li>分类目录搜索引擎并不采集网站的任何信息，而是利用各网站向搜索引擎提交的网站信息时填写的关键词和网站描述等信息，经过人工审核编辑后，如果认为符合网站登录的条件，则输入到分类目录的数据库中，供网上用户查询。</li>
+</ul>
+</li>
+</ul>
+<h2 id="电子邮件"><a href="#电子邮件" class="headerlink" title="电子邮件"></a>电子邮件</h2><h3 id="概述-1"><a href="#概述-1" class="headerlink" title="概述"></a>概述</h3><ul>
+<li>电子邮件(e-mail)是因特网上使用得最多的和最受用户欢迎的一种应用</li>
+<li>电子邮件把邮件发送到收件人使用的邮件服务器，并放在其中的收件人邮箱中，收件人可随时上网到自己使用的邮件服务器进行读取</li>
+<li>电子邮件不仅使用方便，而且还具有传递迅速和费用低廉的优点</li>
+<li>一个电子邮件系统由三部分组成：用户代理、邮件服务器以及邮件协议</li>
+</ul>
+<h3 id="简单邮件传送协议SMTP"><a href="#简单邮件传送协议SMTP" class="headerlink" title="简单邮件传送协议SMTP"></a>简单邮件传送协议SMTP</h3><ul>
+<li>SMTP 只能发送 ASCII 码，而互联网邮件扩充 MIME 可以发送二进制文件。MIME 并没有改动或者取代 SMTP，而是增加邮件主体的结构，定义了非 ASCII 码的编码规则</li>
+</ul>
+<h3 id="电子邮箱的信息格式"><a href="#电子邮箱的信息格式" class="headerlink" title="电子邮箱的信息格式"></a>电子邮箱的信息格式</h3><ul>
+<li>一个电子邮件分为信封和内容两大部分</li>
+<li>RFC 822 只规定了邮件内容中的首部(header)格式，而对邮件的主体(body)部分则让用户自由撰写<ul>
+<li>邮件内容的首部<ul>
+<li>“To:”后面填入一个或多个收件人的电子邮件地址。用户只需打开地址簿，点击收件人名字，收件人的电子邮件地址就会自动地填入到合适的位置上</li>
+<li>“Subject:”是邮件的主题。它反映了邮件的主要内容，便于用户查找邮件</li>
+<li>抄送 “Cc:” 表示应给某某人发送一个邮件副本</li>
+<li>“From” 和 “Date” 表示发信人的电子邮件地址和发信日期。“Reply-To” 是对方回信所用的地址</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="邮件读取协议POP3和IMAP"><a href="#邮件读取协议POP3和IMAP" class="headerlink" title="邮件读取协议POP3和IMAP"></a>邮件读取协议POP3和IMAP</h3><ul>
+<li>POP3<ul>
+<li>POP3 的特点是只要用户从服务器上读取了邮件，就把该邮件删除。但最新版本的 POP3 可以不删除邮件</li>
+</ul>
+</li>
+<li>IMAP<ul>
+<li>IMAP 协议中客户端和服务器上的邮件保持同步，如果不手动删除邮件，那么服务器上的邮件也不会被删除。IMAP 这种做法可以让用户随时随地去访问服务器上的邮件</li>
+</ul>
+</li>
+</ul>
+<h3 id="基于万维网的电子邮件"><a href="#基于万维网的电子邮件" class="headerlink" title="基于万维网的电子邮件"></a>基于万维网的电子邮件</h3><ul>
+<li>电子邮件从 A 发送到网易邮件服务器是使用 HTTP 协议</li>
+<li>两个邮件服务器之间的传送使用 SMTP</li>
+<li>邮件从新浪邮件服务器传送到 B 是使用 HTTP 协议<br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625161314069.png" alt="image-20220625161314069"></li>
+</ul>
+<h3 id="通用因特网邮件扩充MIME"><a href="#通用因特网邮件扩充MIME" class="headerlink" title="通用因特网邮件扩充MIME"></a>通用因特网邮件扩充MIME</h3><ul>
+<li><p>MIME 并没有改动 SMTP 或取代它</p>
+</li>
+<li><p>MIME 的意图是继续使用目前的[RFC 822]格式，但增加了邮件主体的结构，并定义了传送非 ASCII 码的编码规则</p>
+</li>
+<li><p>用人话说就是MIME充当适配器，将传送内容进行正确编码（打破只能是ASCII编码的局限性），保证人类看懂</p>
+</li>
+</ul>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%B1%82"><span class="toc-number">1.</span> <span class="toc-text">应用层</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%9F%E5%90%8D%E7%B3%BB%E7%BB%9FDNS"><span class="toc-number">1.1.</span> <span class="toc-text">域名系统DNS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DNS%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.1.</span> <span class="toc-text">DNS概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Internet%E5%9F%9F%E5%90%8D%E7%BB%93%E6%9E%84"><span class="toc-number">1.1.2.</span> <span class="toc-text">Internet域名结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%9F%E5%90%8D%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">1.1.3.</span> <span class="toc-text">域名服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DNS%E5%8A%AB%E6%8C%81%EF%BC%88DNS-Hijacking%EF%BC%89"><span class="toc-number">1.1.4.</span> <span class="toc-text">DNS劫持（DNS Hijacking）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DNS%E6%B1%A1%E6%9F%93%EF%BC%88DNS-Pollution%EF%BC%89"><span class="toc-number">1.1.5.</span> <span class="toc-text">DNS污染（DNS Pollution）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%BC%A0%E9%80%81%E5%8D%8F%E8%AE%AEFTP"><span class="toc-number">1.2.</span> <span class="toc-text">文件传送协议FTP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#FTP%E6%A6%82%E8%BF%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text">FTP概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">1.2.2.</span> <span class="toc-text">基本工作原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E6%96%87%E4%BB%B6%E4%BC%A0%E9%80%81%E5%8D%8F%E8%AE%AETFTP"><span class="toc-number">1.2.3.</span> <span class="toc-text">简单文件传送协议TFTP</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9C%E7%A8%8B%E7%BB%88%E7%AB%AF%E5%8D%8F%E8%AE%AETELNET"><span class="toc-number">1.3.</span> <span class="toc-text">远程终端协议TELNET</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%87%E7%BB%B4%E7%BD%91WWW"><span class="toc-number">1.4.</span> <span class="toc-text">万维网WWW</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.4.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E6%96%B9%E5%BC%8F"><span class="toc-number">1.4.2.</span> <span class="toc-text">工作方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%87%E7%BB%B4%E7%BD%91%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.3.</span> <span class="toc-text">万维网解决的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E8%B5%84%E6%BA%90%E5%AE%9A%E4%BD%8D%E7%AC%A6URL"><span class="toc-number">1.4.4.</span> <span class="toc-text">统一资源定位符URL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B6%85%E6%96%87%E6%9C%AC%E4%BC%A0%E9%80%81%E5%8D%8F%E8%AE%AEHTTP"><span class="toc-number">1.4.5.</span> <span class="toc-text">超文本传送协议HTTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%87%E7%BB%B4%E7%BD%91%E7%9A%84%E6%96%87%E6%A1%A3"><span class="toc-number">1.4.6.</span> <span class="toc-text">万维网的文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%87%E7%BB%B4%E7%BD%91%E7%9A%84%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.4.7.</span> <span class="toc-text">万维网的信息检索系统</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6"><span class="toc-number">1.5.</span> <span class="toc-text">电子邮件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0-1"><span class="toc-number">1.5.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E9%82%AE%E4%BB%B6%E4%BC%A0%E9%80%81%E5%8D%8F%E8%AE%AESMTP"><span class="toc-number">1.5.2.</span> <span class="toc-text">简单邮件传送协议SMTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E5%AD%90%E9%82%AE%E7%AE%B1%E7%9A%84%E4%BF%A1%E6%81%AF%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.5.3.</span> <span class="toc-text">电子邮箱的信息格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%82%AE%E4%BB%B6%E8%AF%BB%E5%8F%96%E5%8D%8F%E8%AE%AEPOP3%E5%92%8CIMAP"><span class="toc-number">1.5.4.</span> <span class="toc-text">邮件读取协议POP3和IMAP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E4%B8%87%E7%BB%B4%E7%BD%91%E7%9A%84%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6"><span class="toc-number">1.5.5.</span> <span class="toc-text">基于万维网的电子邮件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E7%94%A8%E5%9B%A0%E7%89%B9%E7%BD%91%E9%82%AE%E4%BB%B6%E6%89%A9%E5%85%85MIME"><span class="toc-number">1.5.6.</span> <span class="toc-text">通用因特网邮件扩充MIME</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/d2bd664fbfc3/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/d2bd664fbfc3/&text=应用层"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/d2bd664fbfc3/&title=应用层"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/d2bd664fbfc3/&is_video=false&description=应用层"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=应用层&body=Check out this article: https://blog.zhang0.cool/d2bd664fbfc3/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/d2bd664fbfc3/&title=应用层"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/d2bd664fbfc3/&title=应用层"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/d2bd664fbfc3/&title=应用层"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/d2bd664fbfc3/&title=应用层"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/d2bd664fbfc3/&name=应用层&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/d2bd664fbfc3/&t=应用层"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+      
+        
+          2022
+            <a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">
+              苏ICP备2022044873号
+            </a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <!--
+       -->
+          <li><a href="/">
+              Home
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/about/">
+              About
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/archives/">
+              Articles
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/categories/">
+              Category
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/search/">
+              Search
+            </a></li>
+          <!--
+     -->
+          
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+ 
+  <link
+    rel="preload"
+    href="/lib/font-awesome/css/all.min.css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript
+    ><link
+      rel="stylesheet"
+      href="/lib/font-awesome/css/all.min.css"
+  /></noscript>
+
+
+
+    <!-- jquery -->
+ 
+  
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+
+
+
+<!-- clipboard -->
+
+   
+    
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'Cheung0-bit/fuzzy_ahp';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

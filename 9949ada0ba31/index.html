@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="@Api() 用于类 表明此类为swagger资源 value url的路径值 tags 如果设置这个值、value的值会被覆盖    @ApiOperation() 用于方法 说明方法的作用，每个URL资源的定义、 value 方法描述 notes 提示内容 tags 可重新分组（选用）    @ApiParam() 用于方法、参数、字段说明 name 参数名称 value 参数说明 requi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swagger常用注解实验">
+<meta property="og:url" content="https://blog.zhang0.cool/9949ada0ba31/index.html">
+<meta property="og:site_name" content="小小小张的博客">
+<meta property="og:description" content="@Api() 用于类 表明此类为swagger资源 value url的路径值 tags 如果设置这个值、value的值会被覆盖    @ApiOperation() 用于方法 说明方法的作用，每个URL资源的定义、 value 方法描述 notes 提示内容 tags 可重新分组（选用）    @ApiParam() 用于方法、参数、字段说明 name 参数名称 value 参数说明 requi">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/af52c5108953fab3a943a6cd275fdad6.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/a65800abf3f9d69a1470d2e56bf5f384.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/8cccff8f0b13e439a6a3001a14df6cea.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/b81df6de3d7c8dcbb309c90bf97997e3.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/37893583b230463bee621fd9de4715f4.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/e625fca24361ab1d89daf965e5c41eab.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/6a6e07c79e53ea692248be243ed19260.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/02f4b7e49f3f99a80eae2b8be4a33916.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/60c46fc91c0d59e816e60b9d4724d162.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/5f84de8802530111fc6f283cb638bb4c.png">
+<meta property="article:published_time" content="2022-01-28T14:55:09.130Z">
+<meta property="article:modified_time" content="2022-11-25T06:45:15.514Z">
+<meta property="article:author" content="张林">
+<meta property="article:tag" content="swagger">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/af52c5108953fab3a943a6cd275fdad6.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Swagger常用注解实验</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="小小小张的博客" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Articles</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/e65b3748618e/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/f6acfb74408f/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/9949ada0ba31/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/9949ada0ba31/&text=Swagger常用注解实验"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/9949ada0ba31/&title=Swagger常用注解实验"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/9949ada0ba31/&is_video=false&description=Swagger常用注解实验"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Swagger常用注解实验&body=Check out this article: https://blog.zhang0.cool/9949ada0ba31/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/9949ada0ba31/&title=Swagger常用注解实验"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/9949ada0ba31/&title=Swagger常用注解实验"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/9949ada0ba31/&title=Swagger常用注解实验"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/9949ada0ba31/&title=Swagger常用注解实验"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/9949ada0ba31/&name=Swagger常用注解实验&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/9949ada0ba31/&t=Swagger常用注解实验"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Api-%E7%94%A8%E4%BA%8E%E7%B1%BB-%E8%A1%A8%E6%98%8E%E6%AD%A4%E7%B1%BB%E4%B8%BAswagger%E8%B5%84%E6%BA%90"><span class="toc-number">1.</span> <span class="toc-text">@Api() 用于类 表明此类为swagger资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ApiOperation-%E7%94%A8%E4%BA%8E%E6%96%B9%E6%B3%95-%E8%AF%B4%E6%98%8E%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%9C%E7%94%A8%EF%BC%8C%E6%AF%8F%E4%B8%AAURL%E8%B5%84%E6%BA%90%E7%9A%84%E5%AE%9A%E4%B9%89%E3%80%81"><span class="toc-number">2.</span> <span class="toc-text">@ApiOperation() 用于方法 说明方法的作用，每个URL资源的定义、</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ApiParam-%E7%94%A8%E4%BA%8E%E6%96%B9%E6%B3%95%E3%80%81%E5%8F%82%E6%95%B0%E3%80%81%E5%AD%97%E6%AE%B5%E8%AF%B4%E6%98%8E"><span class="toc-number">3.</span> <span class="toc-text">@ApiParam() 用于方法、参数、字段说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ApiModel-%E7%94%A8%E4%BA%8EPost%E4%B8%AD%E8%A1%A8%E5%8D%95%E7%9A%84%E5%AE%9E%E4%BD%93%E7%B1%BB"><span class="toc-number">4.</span> <span class="toc-text">@ApiModel() 用于Post中表单的实体类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ApiModelProperty-%E7%94%A8%E4%BA%8E%E6%96%B9%E6%B3%95-%E3%80%81%E5%AD%97%E6%AE%B5-%E5%AF%B9%E5%AE%9E%E4%BD%93%E7%B1%BB%E5%B1%9E%E6%80%A7%E8%BF%9B%E8%A1%8C%E8%AF%B4%E6%98%8E"><span class="toc-number">5.</span> <span class="toc-text">@ApiModelProperty() 用于方法 、字段 对实体类属性进行说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ApiImplicitParam-ApiImplicitParams"><span class="toc-number">6.</span> <span class="toc-text">@ApiImplicitParam() @ApiImplicitParams()</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Swagger常用注解实验
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">张林</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-01-28T14:55:09.130Z" itemprop="datePublished">2022-01-28</time>
+        
+        (Updated: <time datetime="2022-11-25T06:45:15.514Z" itemprop="dateModified">2022-11-25</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%BC%80%E5%8F%91%E5%AE%9E%E8%B7%B5/">开发实践</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/swagger/" rel="tag">swagger</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h3 id="Api-用于类-表明此类为swagger资源"><a href="#Api-用于类-表明此类为swagger资源" class="headerlink" title="@Api() 用于类 表明此类为swagger资源"></a>@Api() 用于类 表明此类为swagger资源</h3><ul>
+<li><code>value</code> <em>url的路径值</em></li>
+<li><code>tags</code> <em>如果设置这个值、value的值会被覆盖</em></li>
+</ul>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/af52c5108953fab3a943a6cd275fdad6.png" alt="image-20220128205957209"></p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/a65800abf3f9d69a1470d2e56bf5f384.png" alt="image-20220128210038536"></p>
+<h3 id="ApiOperation-用于方法-说明方法的作用，每个URL资源的定义、"><a href="#ApiOperation-用于方法-说明方法的作用，每个URL资源的定义、" class="headerlink" title="@ApiOperation() 用于方法 说明方法的作用，每个URL资源的定义、"></a>@ApiOperation() 用于方法 说明方法的作用，每个URL资源的定义、</h3><ul>
+<li><code>value</code> 方法描述</li>
+<li><code>notes</code> 提示内容</li>
+<li><code>tags</code> 可重新分组（选用）</li>
+</ul>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/8cccff8f0b13e439a6a3001a14df6cea.png" alt="image-20220128210855336"></p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/b81df6de3d7c8dcbb309c90bf97997e3.png" alt="image-20220128211012902"></p>
+<h3 id="ApiParam-用于方法、参数、字段说明"><a href="#ApiParam-用于方法、参数、字段说明" class="headerlink" title="@ApiParam() 用于方法、参数、字段说明"></a>@ApiParam() 用于方法、参数、字段说明</h3><ul>
+<li><code>name</code> 参数名称</li>
+<li><code>value</code> 参数说明</li>
+<li><code>required</code> 是否必填</li>
+<li><code>example</code> 样例说明</li>
+</ul>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/37893583b230463bee621fd9de4715f4.png" alt="image-20220128213555248"></p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/e625fca24361ab1d89daf965e5c41eab.png" alt="image-20220128213626946"></p>
+<h3 id="ApiModel-用于Post中表单的实体类"><a href="#ApiModel-用于Post中表单的实体类" class="headerlink" title="@ApiModel() 用于Post中表单的实体类"></a>@ApiModel() 用于Post中表单的实体类</h3><ul>
+<li><code>value</code> 对象名</li>
+<li><code>description</code> 描述</li>
+</ul>
+<p>常用于使用通过@RequestBody来提交表单的场景</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/6a6e07c79e53ea692248be243ed19260.png" alt="image-20220128214752333"></p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/02f4b7e49f3f99a80eae2b8be4a33916.png" alt="image-20220128215042476"></p>
+<h3 id="ApiModelProperty-用于方法-、字段-对实体类属性进行说明"><a href="#ApiModelProperty-用于方法-、字段-对实体类属性进行说明" class="headerlink" title="@ApiModelProperty() 用于方法 、字段 对实体类属性进行说明"></a>@ApiModelProperty() 用于方法 、字段 对实体类属性进行说明</h3><ul>
+<li><code>value</code> 字段说明</li>
+<li><code>name</code> 字段名字</li>
+<li><code>dataType</code> 重写属性类型（非必须不用加）</li>
+<li><code>required</code> 是否必填</li>
+<li><code>example</code> 样例</li>
+<li><code>hidden</code> 隐藏</li>
+</ul>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/60c46fc91c0d59e816e60b9d4724d162.png" alt="image-20220128224718872"></p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/5f84de8802530111fc6f283cb638bb4c.png" alt="image-20220128224939283"></p>
+<p>通过该注解，在提交<code>Body</code>数据时，会提供详细的关于字段的解释以及正确的样例</p>
+<h3 id="ApiImplicitParam-ApiImplicitParams"><a href="#ApiImplicitParam-ApiImplicitParams" class="headerlink" title="@ApiImplicitParam() @ApiImplicitParams()"></a>@ApiImplicitParam() @ApiImplicitParams()</h3><p>功能和<code>@ApiParam()</code>,一般情况下使用<code>@ApiParam</code>即可</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Api-%E7%94%A8%E4%BA%8E%E7%B1%BB-%E8%A1%A8%E6%98%8E%E6%AD%A4%E7%B1%BB%E4%B8%BAswagger%E8%B5%84%E6%BA%90"><span class="toc-number">1.</span> <span class="toc-text">@Api() 用于类 表明此类为swagger资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ApiOperation-%E7%94%A8%E4%BA%8E%E6%96%B9%E6%B3%95-%E8%AF%B4%E6%98%8E%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%9C%E7%94%A8%EF%BC%8C%E6%AF%8F%E4%B8%AAURL%E8%B5%84%E6%BA%90%E7%9A%84%E5%AE%9A%E4%B9%89%E3%80%81"><span class="toc-number">2.</span> <span class="toc-text">@ApiOperation() 用于方法 说明方法的作用，每个URL资源的定义、</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ApiParam-%E7%94%A8%E4%BA%8E%E6%96%B9%E6%B3%95%E3%80%81%E5%8F%82%E6%95%B0%E3%80%81%E5%AD%97%E6%AE%B5%E8%AF%B4%E6%98%8E"><span class="toc-number">3.</span> <span class="toc-text">@ApiParam() 用于方法、参数、字段说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ApiModel-%E7%94%A8%E4%BA%8EPost%E4%B8%AD%E8%A1%A8%E5%8D%95%E7%9A%84%E5%AE%9E%E4%BD%93%E7%B1%BB"><span class="toc-number">4.</span> <span class="toc-text">@ApiModel() 用于Post中表单的实体类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ApiModelProperty-%E7%94%A8%E4%BA%8E%E6%96%B9%E6%B3%95-%E3%80%81%E5%AD%97%E6%AE%B5-%E5%AF%B9%E5%AE%9E%E4%BD%93%E7%B1%BB%E5%B1%9E%E6%80%A7%E8%BF%9B%E8%A1%8C%E8%AF%B4%E6%98%8E"><span class="toc-number">5.</span> <span class="toc-text">@ApiModelProperty() 用于方法 、字段 对实体类属性进行说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ApiImplicitParam-ApiImplicitParams"><span class="toc-number">6.</span> <span class="toc-text">@ApiImplicitParam() @ApiImplicitParams()</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/9949ada0ba31/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/9949ada0ba31/&text=Swagger常用注解实验"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/9949ada0ba31/&title=Swagger常用注解实验"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/9949ada0ba31/&is_video=false&description=Swagger常用注解实验"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Swagger常用注解实验&body=Check out this article: https://blog.zhang0.cool/9949ada0ba31/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/9949ada0ba31/&title=Swagger常用注解实验"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/9949ada0ba31/&title=Swagger常用注解实验"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/9949ada0ba31/&title=Swagger常用注解实验"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/9949ada0ba31/&title=Swagger常用注解实验"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/9949ada0ba31/&name=Swagger常用注解实验&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/9949ada0ba31/&t=Swagger常用注解实验"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+      
+        
+          2022
+            <a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">
+              苏ICP备2022044873号
+            </a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <!--
+       -->
+          <li><a href="/">
+              Home
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/about/">
+              About
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/archives/">
+              Articles
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/categories/">
+              Category
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/search/">
+              Search
+            </a></li>
+          <!--
+     -->
+          
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+ 
+  <link
+    rel="preload"
+    href="/lib/font-awesome/css/all.min.css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript
+    ><link
+      rel="stylesheet"
+      href="/lib/font-awesome/css/all.min.css"
+  /></noscript>
+
+
+
+    <!-- jquery -->
+ 
+  
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+
+
+
+<!-- clipboard -->
+
+   
+    
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'Cheung0-bit/fuzzy_ahp';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="反射就是把Java类中的各个成分映射成一个个的Java对象。即在运行状态中，对于任意一个类，都能够知道这个类的所以属性和方法；对于任意一个对象，都能调用它的任意一个方法和属性。这种动态获取信息及动态调用对象方法的功能叫Java的反射机制  每一个Java程序执行必须通过编译、加载、链接和初始化四个阶段  编译：将.java.文件编译成字节码.class文件 加载：查找并加载类的二进制数据 链接：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="反射">
+<meta property="og:url" content="https://blog.zhang0.cool/dfe1358e3906/index.html">
+<meta property="og:site_name" content="小小小张的博客">
+<meta property="og:description" content="反射就是把Java类中的各个成分映射成一个个的Java对象。即在运行状态中，对于任意一个类，都能够知道这个类的所以属性和方法；对于任意一个对象，都能调用它的任意一个方法和属性。这种动态获取信息及动态调用对象方法的功能叫Java的反射机制  每一个Java程序执行必须通过编译、加载、链接和初始化四个阶段  编译：将.java.文件编译成字节码.class文件 加载：查找并加载类的二进制数据 链接：">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220305164658560.png">
+<meta property="article:published_time" content="2022-03-05T13:36:38.000Z">
+<meta property="article:modified_time" content="2022-11-25T07:06:05.777Z">
+<meta property="article:author" content="张林">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="反射">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220305164658560.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>反射</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="小小小张的博客" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Articles</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/35a4384a259e/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/d44c84785a23/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/dfe1358e3906/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/dfe1358e3906/&text=反射"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/dfe1358e3906/&title=反射"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/dfe1358e3906/&is_video=false&description=反射"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=反射&body=Check out this article: https://blog.zhang0.cool/dfe1358e3906/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/dfe1358e3906/&title=反射"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/dfe1358e3906/&title=反射"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/dfe1358e3906/&title=反射"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/dfe1358e3906/&title=反射"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/dfe1358e3906/&name=反射&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/dfe1358e3906/&t=反射"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFClass%E7%B1%BB"><span class="toc-number">1.</span> <span class="toc-text">什么是Class类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96Class%E5%AE%9E%E4%BE%8B%E7%9A%84%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">获取Class实例的三种方式：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E5%8F%8D%E5%B0%84%E5%88%9B%E5%BB%BA%E7%B1%BB%E5%AF%B9%E8%B1%A1"><span class="toc-number">3.</span> <span class="toc-text">通过反射创建类对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E5%8F%8D%E5%B0%84%E8%8E%B7%E5%8F%96%E7%B1%BB%E5%B1%9E%E6%80%A7%E3%80%81%E6%96%B9%E6%B3%95%E3%80%81%E6%9E%84%E9%80%A0%E5%99%A8"><span class="toc-number">4.</span> <span class="toc-text">通过反射获取类属性、方法、构造器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%94%B9%E8%AE%BF%E9%97%AE%E6%9D%83%E9%99%90%E5%92%8C%E5%AE%9E%E4%BE%8B%E8%B5%8B%E5%80%BC"><span class="toc-number">5.</span> <span class="toc-text">更改访问权限和实例赋值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">6.</span> <span class="toc-text">运用场景</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        反射
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">张林</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-03-05T13:36:38.000Z" itemprop="datePublished">2022-03-05</time>
+        
+        (Updated: <time datetime="2022-11-25T07:06:05.777Z" itemprop="dateModified">2022-11-25</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Java/">Java</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Java/" rel="tag">Java</a>, <a class="tag-link-link" href="/tags/%E5%8F%8D%E5%B0%84/" rel="tag">反射</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <blockquote>
+<p>反射就是把Java类中的各个成分映射成一个个的Java对象。即在运行状态中，对于任意一个类，都能够知道这个类的所以属性和方法；对于任意一个对象，都能调用它的任意一个方法和属性。这种动态获取信息及动态调用对象方法的功能叫Java的反射机制</p>
+</blockquote>
+<p>每一个Java程序执行必须通过编译、加载、链接和初始化四个阶段</p>
+<ul>
+<li>编译：将.java.文件编译成字节码.class文件</li>
+<li>加载：查找并加载类的二进制数据</li>
+<li>链接：<ul>
+<li>验证：确保被加载类的正确性</li>
+<li>为类的静态变量分配内存，并将其初始化为默认值</li>
+<li>将类中的符号转换为直接引用</li>
+</ul>
+</li>
+<li>初始化：为类的静态变量赋予正确的初始值</li>
+</ul>
+<h2 id="什么是Class类"><a href="#什么是Class类" class="headerlink" title="什么是Class类"></a>什么是Class类</h2><blockquote>
+<p>在Java中，每个class都有一个相应的Class对象。也就是说，当我们编写一个类，编译完成后，在生成的.class文件中，就会产生一个Class对象，用于表示这个类的类型信息</p>
+</blockquote>
+<p>也就是说，无论你是什么对象，总会有有一个隐藏的Class对象与你相对应，而Class的实例表示正在运行的 Java 应用程序中的类和接口。借此，实现了我们Java的反射机制。</p>
+<h2 id="获取Class实例的三种方式："><a href="#获取Class实例的三种方式：" class="headerlink" title="获取Class实例的三种方式："></a>获取Class实例的三种方式：</h2><ul>
+<li>实例化对象调用getClass()方法</li>
+<li>使用Class类的静态方法forName()，用类的名字获取一个Class实例</li>
+<li>运用.class的方式来获取Class实例，对于基本数据类型的封装类，还可以采用.TYPE来获取相对应的基本数据类型的Class实例</li>
+</ul>
+<p>用代码来看一看：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">reflect</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line"></span><br><span class="line">        <span class="type">Apple</span> <span class="variable">apple</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Apple</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用对象的getClass()方法</span></span><br><span class="line">        <span class="type">Class</span> <span class="variable">a1</span> <span class="operator">=</span> apple.getClass();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用Class类的静态方法forName()</span></span><br><span class="line">        <span class="type">Class</span> <span class="variable">a2</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;p1.apple&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 运用.class的方式来获取Class实例</span></span><br><span class="line">        <span class="type">Class</span> <span class="variable">a3</span> <span class="operator">=</span> Apple.class;</span><br><span class="line"></span><br><span class="line">        System.out.printf(<span class="string">&quot;a1: %s\na2: %s\na3: %s&quot;</span>, a1, a2, a3);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Apple</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer weight;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String color;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a1: class p1.apple</span><br><span class="line">a2: class p1.apple</span><br><span class="line">a3: class p1.apple</span><br><span class="line">进程已结束,退出代码0</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="通过反射创建类对象"><a href="#通过反射创建类对象" class="headerlink" title="通过反射创建类对象"></a>通过反射创建类对象</h2><p>通过反射创建类对象主要有两种方式：通过 Class 对象的 <code>newInstance()</code> 方法、通过 Constructor 对象的 <code>newInstance()</code> 方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">reflect</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 通过 Class 对象的 newInstance() 方法</span></span><br><span class="line">        <span class="type">Class</span> <span class="variable">temp1</span> <span class="operator">=</span> Apple.class;</span><br><span class="line">        <span class="type">Apple</span> <span class="variable">apple1</span> <span class="operator">=</span> (Apple) temp1.newInstance();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 通过 Constructor 对象的 newInstance() 方法</span></span><br><span class="line">        <span class="type">Class</span> <span class="variable">temp2</span> <span class="operator">=</span> Apple.class;</span><br><span class="line">        <span class="type">Constructor</span> <span class="variable">constructor1</span> <span class="operator">=</span> temp2.getConstructor();</span><br><span class="line">        <span class="type">Apple</span> <span class="variable">apple2</span> <span class="operator">=</span> (Apple)constructor1.newInstance();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 通过 Constructor 对象创建类对象可以选择特定构造方法，而通过 Class 对象则只能使用默认的无参数构造方法。</span></span><br><span class="line">        <span class="type">Class</span> <span class="variable">temp3</span> <span class="operator">=</span> Apple.class;</span><br><span class="line">        <span class="type">Constructor</span> <span class="variable">constructor2</span> <span class="operator">=</span> temp3.getConstructor(Integer.class,String.class);</span><br><span class="line">        <span class="type">Apple</span> <span class="variable">apple</span> <span class="operator">=</span> (Apple)constructor2.newInstance(<span class="number">2</span>, <span class="string">&quot;Red&quot;</span>);</span><br><span class="line">        System.out.println(apple);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Apple</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer weight;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String color;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 无参构造器</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Apple</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;我是无参构造！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 有参构造器</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Apple</span><span class="params">(Integer weight,String color)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.weight = weight;</span><br><span class="line">        <span class="built_in">this</span>.color = color;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 重写方法 方便打印显示对象内容</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Apple&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;weight=&quot;</span> + weight +</span><br><span class="line">                <span class="string">&quot;, color=&#x27;&quot;</span> + color + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">我是无参构造！</span><br><span class="line">我是无参构造！</span><br><span class="line">Apple&#123;weight=2, color=&#x27;Red&#x27;&#125;</span><br><span class="line"></span><br><span class="line">进程已结束,退出代码0</span><br></pre></td></tr></table></figure>
+
+<h2 id="通过反射获取类属性、方法、构造器"><a href="#通过反射获取类属性、方法、构造器" class="headerlink" title="通过反射获取类属性、方法、构造器"></a>通过反射获取类属性、方法、构造器</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">reflect</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> NoSuchFieldException &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 返回一个类中所有可访问的公共字段，包括该类的公共字段和其继承的类的公共字段</span></span><br><span class="line">        Field[] fields1 = Apple.class.getFields();</span><br><span class="line">        System.out.println(<span class="string">&quot;getFields结果&quot;</span>);</span><br><span class="line">        Arrays.stream(fields1).forEach(System.out::println);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 返回一个类中全部字段，但只包括该类的字段</span></span><br><span class="line">        Field[] fields2 = Apple.class.getDeclaredFields();</span><br><span class="line">        System.out.println(<span class="string">&quot;getDeclaredFields结果&quot;</span>);</span><br><span class="line">        Arrays.stream(fields2).forEach(System.out::println);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 根据字段名返回一个公开字段</span></span><br><span class="line">        <span class="type">Field</span> <span class="variable">field1</span> <span class="operator">=</span> Apple.class.getField(<span class="string">&quot;noThing&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;getField结果&quot;</span>);</span><br><span class="line">        System.out.println(field1);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 根据字段名返回一个字段</span></span><br><span class="line">        <span class="type">Field</span> <span class="variable">field2</span> <span class="operator">=</span> Apple.class.getDeclaredField(<span class="string">&quot;color&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;getDeclaredField结果&quot;</span>);</span><br><span class="line">        System.out.println(field2);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 同Field Method也有四种获取方式</span></span><br><span class="line">        <span class="comment">// 这里举其中一个例子</span></span><br><span class="line">        Method[] methods = Apple.class.getDeclaredMethods();</span><br><span class="line">        System.out.println(<span class="string">&quot;getDeclaredMethods结果&quot;</span>);</span><br><span class="line">        Arrays.stream(methods).forEach(System.out::println);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 同上 举一个获取构造器的例子</span></span><br><span class="line">        Constructor[] constructors = Apple.class.getDeclaredConstructors();</span><br><span class="line">        System.out.println(<span class="string">&quot;getDeclaredConstructors结果&quot;</span>);</span><br><span class="line">        Arrays.stream(constructors).forEach(System.out::println);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Apple</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer weight;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String color;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String noThing;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Apple</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Apple</span><span class="params">(Integer weight, String color)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.weight = weight;</span><br><span class="line">        <span class="built_in">this</span>.color = color;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Apple&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;weight=&quot;</span> + weight +</span><br><span class="line">                <span class="string">&quot;, color=&#x27;&quot;</span> + color + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">getFields结果</span><br><span class="line">public java.lang.String p1.Apple.noThing</span><br><span class="line">getDeclaredFields结果</span><br><span class="line">private java.lang.Integer p1.Apple.weight</span><br><span class="line">private java.lang.String p1.Apple.color</span><br><span class="line">public java.lang.String p1.Apple.noThing</span><br><span class="line">getField结果</span><br><span class="line">public java.lang.String p1.Apple.noThing</span><br><span class="line">getDeclaredField结果</span><br><span class="line">private java.lang.String p1.Apple.color</span><br><span class="line">getDeclaredMethods结果</span><br><span class="line">public java.lang.String p1.Apple.toString()</span><br><span class="line">getDeclaredConstructors结果</span><br><span class="line">public p1.Apple()</span><br><span class="line">public p1.Apple(java.lang.Integer,java.lang.String)</span><br></pre></td></tr></table></figure>
+
+<h2 id="更改访问权限和实例赋值"><a href="#更改访问权限和实例赋值" class="headerlink" title="更改访问权限和实例赋值"></a>更改访问权限和实例赋值</h2><p>首先，通过<code>field.setAccessible()</code>可更改属性的访问权限</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220305164658560.png" alt="image-20220305164658560"></p>
+<p>我们写一个例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">reflect</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> NoSuchFieldException &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 实例化一个Apple</span></span><br><span class="line">        <span class="type">Apple</span> <span class="variable">apple</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Apple</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取所有字段 并统一设定为公有属性</span></span><br><span class="line">        Field[] fields = Apple.class.getDeclaredFields();</span><br><span class="line">        Arrays.stream(fields).forEach( field -&gt; &#123;</span><br><span class="line">            field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">            <span class="comment">// 打印结果</span></span><br><span class="line">            System.out.println(field);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (field.getType() == Integer.class) &#123;</span><br><span class="line">                    field.set(apple, <span class="number">5</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (field.getType() == String.class) &#123;</span><br><span class="line">                    field.set(apple, <span class="string">&quot;Red&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="comment">// 查看apple结果</span></span><br><span class="line">        System.out.println(apple);</span><br><span class="line">      </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Apple</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer weight;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String color;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Apple&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;weight=&quot;</span> + weight +</span><br><span class="line">                <span class="string">&quot;, color=&#x27;&quot;</span> + color + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">private java.lang.Integer p1.Apple.weight</span><br><span class="line">private java.lang.String p1.Apple.color</span><br><span class="line">Apple&#123;weight=5, color=&#x27;Red&#x27;&#125;</span><br><span class="line"></span><br><span class="line">进程已结束,退出代码0</span><br></pre></td></tr></table></figure>
+
+<p>通过源码文档和打印结果，可见<code>setAccessable()</code>方法并没有改变类字段的访问权限，而是作为一个标志，使得我们反射获取实例过程中可以对其进行操作</p>
+<h2 id="运用场景"><a href="#运用场景" class="headerlink" title="运用场景"></a>运用场景</h2><p>在我看来，反射机制实际上就是上帝模式，如果说方法的调用是 Java 正确的打开方式，那反射机制就是上帝偷偷开的后门，只要存在对应的class，一切都能够被调用。</p>
+<p>众所周知，语言有<strong>静态语言</strong>和<strong>动态语言</strong>两大分类，静态语言例如C/C++、Java、C#等，动态语言有Python、PHP、JavaScript等。为了让Java语言也有动态语言的特性，有了反射机制，解耦以及提高代码的灵活性。</p>
+<p>反射在开发过中或许并不常见，可我们使用的框架工具底层都有反射的存在。动态代理设计模式、JDBC 的数据库的连接、Spring 框架的使用等都应用到了反射机制。</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFClass%E7%B1%BB"><span class="toc-number">1.</span> <span class="toc-text">什么是Class类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96Class%E5%AE%9E%E4%BE%8B%E7%9A%84%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">获取Class实例的三种方式：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E5%8F%8D%E5%B0%84%E5%88%9B%E5%BB%BA%E7%B1%BB%E5%AF%B9%E8%B1%A1"><span class="toc-number">3.</span> <span class="toc-text">通过反射创建类对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E5%8F%8D%E5%B0%84%E8%8E%B7%E5%8F%96%E7%B1%BB%E5%B1%9E%E6%80%A7%E3%80%81%E6%96%B9%E6%B3%95%E3%80%81%E6%9E%84%E9%80%A0%E5%99%A8"><span class="toc-number">4.</span> <span class="toc-text">通过反射获取类属性、方法、构造器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%94%B9%E8%AE%BF%E9%97%AE%E6%9D%83%E9%99%90%E5%92%8C%E5%AE%9E%E4%BE%8B%E8%B5%8B%E5%80%BC"><span class="toc-number">5.</span> <span class="toc-text">更改访问权限和实例赋值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">6.</span> <span class="toc-text">运用场景</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/dfe1358e3906/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/dfe1358e3906/&text=反射"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/dfe1358e3906/&title=反射"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/dfe1358e3906/&is_video=false&description=反射"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=反射&body=Check out this article: https://blog.zhang0.cool/dfe1358e3906/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/dfe1358e3906/&title=反射"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/dfe1358e3906/&title=反射"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/dfe1358e3906/&title=反射"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/dfe1358e3906/&title=反射"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/dfe1358e3906/&name=反射&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/dfe1358e3906/&t=反射"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+      
+        
+          2022
+            <a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">
+              苏ICP备2022044873号
+            </a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <!--
+       -->
+          <li><a href="/">
+              Home
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/about/">
+              About
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/archives/">
+              Articles
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/categories/">
+              Category
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/search/">
+              Search
+            </a></li>
+          <!--
+     -->
+          
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+ 
+  <link
+    rel="preload"
+    href="/lib/font-awesome/css/all.min.css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript
+    ><link
+      rel="stylesheet"
+      href="/lib/font-awesome/css/all.min.css"
+  /></noscript>
+
+
+
+    <!-- jquery -->
+ 
+  
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+
+
+
+<!-- clipboard -->
+
+   
+    
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'Cheung0-bit/fuzzy_ahp';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="我与链表的初识为什么要学链表？链表干嘛的？ 这就是链表牛逼所在。之前我们储存数据都是通过数组，可数组开辟的是一段连续的空间，如果我们要储存一个特别大特别大的数据，计算机内极有可能找不到这么大的一块储存空间。这时候，链表闪亮登场。用链表储存数据，不需要开辟一段连续的空间。在储存数据时，只需要随机找到一个空余的空间并赋值，接下来再寻找下一个空余的空间并赋值。就像在一堆珠子中随机捡一个珠子，把它串在线上">
+<meta property="og:type" content="article">
+<meta property="og:title" content="链表入门">
+<meta property="og:url" content="https://blog.zhang0.cool/b6933317be5a/index.html">
+<meta property="og:site_name" content="小小小张的博客">
+<meta property="og:description" content="我与链表的初识为什么要学链表？链表干嘛的？ 这就是链表牛逼所在。之前我们储存数据都是通过数组，可数组开辟的是一段连续的空间，如果我们要储存一个特别大特别大的数据，计算机内极有可能找不到这么大的一块储存空间。这时候，链表闪亮登场。用链表储存数据，不需要开辟一段连续的空间。在储存数据时，只需要随机找到一个空余的空间并赋值，接下来再寻找下一个空余的空间并赋值。就像在一堆珠子中随机捡一个珠子，把它串在线上">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210107122257572.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyMDM4ODk3,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210107131715280.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyMDM4ODk3,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210107134108222.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyMDM4ODk3,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210107131929940.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyMDM4ODk3,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210107134302821.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyMDM4ODk3,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2021-01-07T07:10:02.000Z">
+<meta property="article:modified_time" content="2022-11-25T07:11:30.889Z">
+<meta property="article:author" content="张林">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20210107122257572.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyMDM4ODk3,size_16,color_FFFFFF,t_70">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>链表入门</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="小小小张的博客" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Articles</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/b45bf59cab8f/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/b6933317be5a/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/b6933317be5a/&text=链表入门"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/b6933317be5a/&title=链表入门"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/b6933317be5a/&is_video=false&description=链表入门"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=链表入门&body=Check out this article: https://blog.zhang0.cool/b6933317be5a/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/b6933317be5a/&title=链表入门"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/b6933317be5a/&title=链表入门"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/b6933317be5a/&title=链表入门"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/b6933317be5a/&title=链表入门"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/b6933317be5a/&name=链表入门&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/b6933317be5a/&t=链表入门"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%88%91%E4%B8%8E%E9%93%BE%E8%A1%A8%E7%9A%84%E5%88%9D%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">我与链表的初识</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        链表入门
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">张林</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-01-07T07:10:02.000Z" itemprop="datePublished">2021-01-07</time>
+        
+        (Updated: <time datetime="2022-11-25T07:11:30.889Z" itemprop="dateModified">2022-11-25</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%BC%80%E5%8F%91%E5%AE%9E%E8%B7%B5/">开发实践</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="我与链表的初识"><a href="#我与链表的初识" class="headerlink" title="我与链表的初识"></a>我与链表的初识</h1><p><strong>为什么要学链表？链表干嘛的？</strong></p>
+<p>这就是链表牛逼所在。之前我们储存数据都是通过数组，可数组开辟的是一段连续的空间，如果我们要储存一个特别大特别大的数据，计算机内极有可能找不到这么大的一块储存空间。这时候，链表闪亮登场。用链表储存数据，不需要开辟一段连续的空间。在储存数据时，只需要随机找到一个空余的空间并赋值，接下来再寻找下一个空余的空间并赋值。就像在一堆珠子中随机捡一个珠子，把它串在线上，最终形成了一个珍珠串，把它送给女朋友。所以，链表就是这样，把一个个不连续的地址串起来，用以储存庞大的数据。（说的不对直接骂）</p>
+<p>从珍珠串开始，便引入了链表最基本的几个概念。<br><strong>节点，头指针，首节点，尾节点</strong></p>
+<p>节点就是每个结构体中数据域和指针域构成的整体（不能理解这段中文意思的没关系，我一开始也不懂，去往下看）。简单理解节点就是珍珠串上的每一颗珍珠。<br>在我们储存完数据后，在读取时必须得找到第一个节点的位置，这样才能像多米诺骨牌一样一个一个寻找下一个节点的位置。因此头指针的作用就是给我们指出第一个节点位置。就好比珍珠串第一个珍珠前绳子打的结。<br>首节点很简单，就是第一个珍珠。相对应，尾节点就是最后一个珍珠。</p>
+<p><strong>现在，我们看一下链表都是怎么构造的</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="type">int</span> a;</span><br><span class="line">	<span class="type">double</span> b;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>是不是有些不知所措，结构体中为什么又定义了一个结构体指针？<br>记得我之前说的数据域和指针域吗？在这段代码中，数据域就是node结构体中的int类型数据a和double类型数据b，而指针域就是结构体中的next指针，next指针指向了下一个struct node类型的地址，是不是有点递归的意思。<br><img src="https://img-blog.csdnimg.cn/20210107122257572.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyMDM4ODk3,size_16,color_FFFFFF,t_70"><br>数据域用来储存数据，指针域指向下一个开辟的地址，以继续储存数据。</p>
+<p><strong>为了继续熟悉这个结构，我们来构造一个静态链表</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">student</span>  //构造链表</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="type">int</span> num;</span><br><span class="line">	<span class="type">double</span> score;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">student</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">student</span> <span class="title">a</span>,<span class="title">b</span>,<span class="title">c</span>,*<span class="title">head</span>;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//对结构体进行赋值</span></span><br><span class="line">	a.num=<span class="number">1</span>;</span><br><span class="line">	a.score=<span class="number">89.5</span>;</span><br><span class="line">	b.num=<span class="number">2</span>;</span><br><span class="line">	b.score=<span class="number">98</span>;</span><br><span class="line">	c.num=<span class="number">3</span>;</span><br><span class="line">	c.score=<span class="number">85</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//头指针指向a所在地址</span></span><br><span class="line">	head=&amp;a;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//每个结构体指针指向下一个结构体</span></span><br><span class="line">	a.next=&amp;b;</span><br><span class="line">	b.next=&amp;c;</span><br><span class="line">	c.next=<span class="literal">NULL</span>; <span class="comment">//最后一个节点指针域指向空</span></span><br><span class="line">	<span class="comment">//打印链表</span></span><br><span class="line">	<span class="keyword">do</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d %.lf\n&quot;</span>,head-&gt;num,head-&gt;score);</span><br><span class="line">		head=head-&gt;next;</span><br><span class="line">	&#125;<span class="keyword">while</span>(head!=<span class="literal">NULL</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>通过静态链表来理解链表非常关键，初学的朋友一定要细细品味这段代码</strong></p>
+<p><strong>建立一个动态链表</strong><br>相信细品过建立静态链表的同学会发现，要是我要储存未知个数个数据，静态链表明显没用了呀！还不如做个数组呢！<br><em>因此，我们来建立一个动态链表。</em><br>首先，你们需要会malloc()函数。不会的给大家推篇博客学习一下再来吧<a target="_blank" rel="noopener" href="https://blog.csdn.net/flowing_wind/article/details/81240910?ops_request_misc=%25257B%252522request%25255Fid%252522%25253A%252522160999445016780262596046%252522%25252C%252522scm%252522%25253A%25252220140713.130102334..%252522%25257D&request_id=160999445016780262596046&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-81240910.first_rank_v2_pc_rank_v29&utm_term=malloc%20C%E8%AF%AD%E8%A8%80">请点我q(≧▽≦q)</a><br>通过malloc()函数我们就可以开辟一段符合每段节点长度的储存空间，再上一个节点的指针域指向该空间的首地址，以新建一个节点<br>下面赠上代码，请细品</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//宏定义</span></span><br><span class="line"><span class="meta"># <span class="keyword">define</span> NODE struct node  <span class="comment">//用NODE代替struct node 减少下面每次构造一个结构体指针都要打这么多字的麻烦 </span></span></span><br><span class="line"><span class="meta"># <span class="keyword">define</span> LEN sizeof(NODE)  <span class="comment">//用LEN代替每个节点的长度</span></span></span><br><span class="line"></span><br><span class="line">NODE* <span class="title function_">creatlist</span><span class="params">(<span class="type">void</span>)</span>;     <span class="comment">//建立动态链表</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">printlist</span><span class="params">(NODE*)</span>;     <span class="comment">//打印链表</span></span><br><span class="line"></span><br><span class="line">NODE</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> num;</span><br><span class="line">	NODE * next;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">NODE* <span class="title function_">creatlist</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	NODE *pN,*temp;</span><br><span class="line">	NODE *head=<span class="literal">NULL</span>,*tail=<span class="literal">NULL</span>;</span><br><span class="line">	<span class="type">int</span> n=<span class="number">0</span>;</span><br><span class="line">	temp=pN=(NODE *)<span class="built_in">malloc</span>(LEN);    <span class="comment">//开辟空间</span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n请给每个节点赋值，以0作为结束\n&quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;pN-&gt;num); </span><br><span class="line">	<span class="keyword">while</span>(pN-&gt;num!=<span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		n++;</span><br><span class="line">		<span class="keyword">if</span>(n==<span class="number">1</span>)</span><br><span class="line">			head=pN;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			temp-&gt;next=pN;</span><br><span class="line">		temp=pN;</span><br><span class="line">		pN=(NODE*)<span class="built_in">malloc</span>(LEN);</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;pN-&gt;num); </span><br><span class="line">	&#125;</span><br><span class="line">	temp-&gt;next=tail;</span><br><span class="line">	<span class="keyword">return</span> head;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">printlist</span><span class="params">(NODE* head)</span></span><br><span class="line">&#123;</span><br><span class="line">	NODE* p=head;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n您建立的链表为：\n&quot;</span>);</span><br><span class="line">	<span class="keyword">while</span>(p!=<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,p-&gt;num);</span><br><span class="line">		p=p-&gt;next;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	NODE* p=creatlist();     <span class="comment">//p指向返回的head地址</span></span><br><span class="line">	printlist(p);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>看不明白请多看几次，可在纸上模拟整个程序的运作过程</strong></p>
+<p>学会建立动态链表后我们再来学习两个基本技能：<br><strong>1.删除某个节点</strong><br><img src="https://img-blog.csdnimg.cn/20210107131715280.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyMDM4ODk3,size_16,color_FFFFFF,t_70#pic_center" alt="字丑勿喷"><br>函数片段如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">NODE* <span class="title function_">delete_node</span><span class="params">(NODE* head)</span></span><br><span class="line">&#123;</span><br><span class="line">	NODE*p1,*p2;</span><br><span class="line">	<span class="keyword">if</span>(head==<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;\nThe list is null!\n&quot;</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> m;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n您想删除第几个节点呢？\n&quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;m);</span><br><span class="line">	p1=p2=head;</span><br><span class="line">	<span class="keyword">if</span>(m==<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		head=head-&gt;next;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		m--;</span><br><span class="line">		<span class="keyword">while</span>(m--)</span><br><span class="line">		&#123;</span><br><span class="line">			p2=p1;</span><br><span class="line">			p1=p1-&gt;next;</span><br><span class="line">		&#125;</span><br><span class="line">		p2-&gt;next=p1-&gt;next;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> head;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>完整代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta"># <span class="keyword">define</span> NODE struct node</span></span><br><span class="line"><span class="meta"># <span class="keyword">define</span> LEN sizeof(NODE)</span></span><br><span class="line"></span><br><span class="line">NODE* <span class="title function_">creatlist</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">printlist</span><span class="params">(NODE*)</span>;</span><br><span class="line">NODE* <span class="title function_">delete_node</span><span class="params">(NODE*)</span>;</span><br><span class="line"></span><br><span class="line">NODE</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> num;</span><br><span class="line">	NODE * next;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">NODE* <span class="title function_">creatlist</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	NODE *pN,*temp;</span><br><span class="line">	NODE *head=<span class="literal">NULL</span>,*tail=<span class="literal">NULL</span>;</span><br><span class="line">	<span class="type">int</span> n=<span class="number">0</span>;</span><br><span class="line">	temp=pN=(NODE *)<span class="built_in">malloc</span>(LEN);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;请给每个节点赋值，以0作为赋值的结束\n&quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;pN-&gt;num); </span><br><span class="line">	<span class="keyword">while</span>(pN-&gt;num!=<span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		n++;</span><br><span class="line">		<span class="keyword">if</span>(n==<span class="number">1</span>)</span><br><span class="line">			head=pN;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			temp-&gt;next=pN;</span><br><span class="line">		temp=pN;</span><br><span class="line">		pN=(NODE*)<span class="built_in">malloc</span>(LEN);</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;pN-&gt;num); </span><br><span class="line">	&#125;</span><br><span class="line">	temp-&gt;next=tail;</span><br><span class="line">	<span class="keyword">return</span> head;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">printlist</span><span class="params">(NODE* head)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n该链表每个节点的值为：\n&quot;</span>);</span><br><span class="line">	NODE* p=head;</span><br><span class="line">	<span class="keyword">while</span>(p!=<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,p-&gt;num);</span><br><span class="line">		p=p-&gt;next;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">NODE* <span class="title function_">delete_node</span><span class="params">(NODE* head)</span></span><br><span class="line">&#123;</span><br><span class="line">	NODE*p1,*p2;</span><br><span class="line">	<span class="keyword">if</span>(head==<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;\nThe list is null!\n&quot;</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> m;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n您想删除第几个节点呢？\n&quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;m);</span><br><span class="line">	p1=p2=head;</span><br><span class="line">	<span class="keyword">if</span>(m==<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		head=head-&gt;next;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		m--;</span><br><span class="line">		<span class="keyword">while</span>(m--)</span><br><span class="line">		&#123;</span><br><span class="line">			p2=p1;</span><br><span class="line">			p1=p1-&gt;next;</span><br><span class="line">		&#125;</span><br><span class="line">		p2-&gt;next=p1-&gt;next;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> head;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	NODE* p=creatlist();</span><br><span class="line">	printlist(p);</span><br><span class="line">	p=delete_node(p);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n删除成功!\n&quot;</span>);</span><br><span class="line">	system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	printlist(p);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>实现效果<br><img src="https://img-blog.csdnimg.cn/20210107134108222.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyMDM4ODk3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><strong>2.插入一个节点</strong><br><img src="https://img-blog.csdnimg.cn/20210107131929940.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyMDM4ODk3,size_16,color_FFFFFF,t_70#pic_center" alt="字丑勿喷"><br>函数片段</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">NODE* <span class="title function_">insert_node</span><span class="params">(NODE* head)</span></span><br><span class="line">&#123;</span><br><span class="line">	NODE*p1,*p2,*p3;</span><br><span class="line">	<span class="keyword">if</span>(head==<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;\nThe list is null!\n&quot;</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> m;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n您想在第几个节点后插入一个节点呢？\n&quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;m);</span><br><span class="line">	p1=p2=head;</span><br><span class="line">	<span class="keyword">while</span>(m--)</span><br><span class="line">	&#123;</span><br><span class="line">		p2=p1;</span><br><span class="line">		p1=p1-&gt;next;</span><br><span class="line">	&#125;</span><br><span class="line">	p3=(NODE*)<span class="built_in">malloc</span>(LEN);</span><br><span class="line">	p2-&gt;next=p3;</span><br><span class="line">	p3-&gt;next=p1;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n您想给该节点赋值为？\n&quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;p3-&gt;num);</span><br><span class="line">	<span class="keyword">return</span> head;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>完整程序</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta"># <span class="keyword">define</span> NODE struct node</span></span><br><span class="line"><span class="meta"># <span class="keyword">define</span> LEN sizeof(NODE)</span></span><br><span class="line"></span><br><span class="line">NODE* <span class="title function_">creatlist</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">printlist</span><span class="params">(NODE*)</span>;</span><br><span class="line">NODE* <span class="title function_">insert_node</span><span class="params">(NODE*)</span>;</span><br><span class="line"></span><br><span class="line">NODE</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> num;</span><br><span class="line">	NODE * next;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">NODE* <span class="title function_">creatlist</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	NODE *pN,*temp;</span><br><span class="line">	NODE *head=<span class="literal">NULL</span>,*tail=<span class="literal">NULL</span>;</span><br><span class="line">	<span class="type">int</span> n=<span class="number">0</span>;</span><br><span class="line">	temp=pN=(NODE *)<span class="built_in">malloc</span>(LEN);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;请给每个节点赋值，以0作为赋值的结束\n&quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;pN-&gt;num); </span><br><span class="line">	<span class="keyword">while</span>(pN-&gt;num!=<span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		n++;</span><br><span class="line">		<span class="keyword">if</span>(n==<span class="number">1</span>)</span><br><span class="line">			head=pN;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			temp-&gt;next=pN;</span><br><span class="line">		temp=pN;</span><br><span class="line">		pN=(NODE*)<span class="built_in">malloc</span>(LEN);</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;pN-&gt;num); </span><br><span class="line">	&#125;</span><br><span class="line">	temp-&gt;next=tail;</span><br><span class="line">	<span class="keyword">return</span> head;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">printlist</span><span class="params">(NODE* head)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n该链表每个节点的值为：\n&quot;</span>);</span><br><span class="line">	NODE* p=head;</span><br><span class="line">	<span class="keyword">while</span>(p!=<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,p-&gt;num);</span><br><span class="line">		p=p-&gt;next;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">NODE* <span class="title function_">insert_node</span><span class="params">(NODE* head)</span></span><br><span class="line">&#123;</span><br><span class="line">	NODE*p1,*p2,*p3;</span><br><span class="line">	<span class="keyword">if</span>(head==<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;\nThe list is null!\n&quot;</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> m;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n您想在第几个节点后插入一个节点呢？\n&quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;m);</span><br><span class="line">	p1=p2=head;</span><br><span class="line">	<span class="keyword">while</span>(m--)</span><br><span class="line">	&#123;</span><br><span class="line">		p2=p1;</span><br><span class="line">		p1=p1-&gt;next;</span><br><span class="line">	&#125;</span><br><span class="line">	p3=(NODE*)<span class="built_in">malloc</span>(LEN);</span><br><span class="line">	p2-&gt;next=p3;</span><br><span class="line">	p3-&gt;next=p1;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n您想给该节点赋值为？\n&quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;p3-&gt;num);</span><br><span class="line">	<span class="keyword">return</span> head;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	NODE* p=creatlist();</span><br><span class="line">	printlist(p);</span><br><span class="line">	p=insert_node(p);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n插入成功！\n&quot;</span>);</span><br><span class="line">	system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	printlist(p);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>实现效果<br><img src="https://img-blog.csdnimg.cn/20210107134302821.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyMDM4ODk3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%88%91%E4%B8%8E%E9%93%BE%E8%A1%A8%E7%9A%84%E5%88%9D%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">我与链表的初识</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/b6933317be5a/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/b6933317be5a/&text=链表入门"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/b6933317be5a/&title=链表入门"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/b6933317be5a/&is_video=false&description=链表入门"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=链表入门&body=Check out this article: https://blog.zhang0.cool/b6933317be5a/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/b6933317be5a/&title=链表入门"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/b6933317be5a/&title=链表入门"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/b6933317be5a/&title=链表入门"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/b6933317be5a/&title=链表入门"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/b6933317be5a/&name=链表入门&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/b6933317be5a/&t=链表入门"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+      
+        
+          2022
+            <a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">
+              苏ICP备2022044873号
+            </a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <!--
+       -->
+          <li><a href="/">
+              Home
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/about/">
+              About
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/archives/">
+              Articles
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/categories/">
+              Category
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/search/">
+              Search
+            </a></li>
+          <!--
+     -->
+          
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+ 
+  <link
+    rel="preload"
+    href="/lib/font-awesome/css/all.min.css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript
+    ><link
+      rel="stylesheet"
+      href="/lib/font-awesome/css/all.min.css"
+  /></noscript>
+
+
+
+    <!-- jquery -->
+ 
+  
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+
+
+
+<!-- clipboard -->
+
+   
+    
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'Cheung0-bit/fuzzy_ahp';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="数据链路层数据链路层的基本概念 结点：数据链路层上的结点主要是主机和路由器。由物理线路联接起来的两个结点，又叫相邻结点 链路：网络中两个结点之间的物理通道，链路的传输介质主要有双绞线、光纤和微波。分为有线链路、无线链路 数据链路：两络中两个结点之间的逻辑通道，把实现控制数据传输协议的硬件和软件加到链路上就构成数据链路 帧：链路层的协议数据单元，作用是封装网络层数据报  差错检测CRC CRC(Cy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据链路层">
+<meta property="og:url" content="https://blog.zhang0.cool/e221d0ff1f7c/index.html">
+<meta property="og:site_name" content="小小小张的博客">
+<meta property="og:description" content="数据链路层数据链路层的基本概念 结点：数据链路层上的结点主要是主机和路由器。由物理线路联接起来的两个结点，又叫相邻结点 链路：网络中两个结点之间的物理通道，链路的传输介质主要有双绞线、光纤和微波。分为有线链路、无线链路 数据链路：两络中两个结点之间的逻辑通道，把实现控制数据传输协议的硬件和软件加到链路上就构成数据链路 帧：链路层的协议数据单元，作用是封装网络层数据报  差错检测CRC CRC(Cy">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623160721934.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624132657828.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624132753152.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624132837149.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624132934591.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624133026776.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624114620303.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624114738737.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624115611659.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624115628533.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624140834140.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/6-191106130541362.gif">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624142925658.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143016641.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143054537.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143112691.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143139558.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143308295.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152314525.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143317408.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143325845.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152224057.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143335861.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143355422.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152134129.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143410365.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143417666.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143425418.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152336193.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152534267.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152559825.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152630973.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152722078.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152748287.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152813003.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152833066.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152850835.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152857936.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624153442595.png">
+<meta property="article:published_time" content="2022-06-25T13:01:33.000Z">
+<meta property="article:modified_time" content="2022-11-25T06:50:50.661Z">
+<meta property="article:author" content="张林">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623160721934.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>数据链路层</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="小小小张的博客" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Articles</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/e421777b34f1/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/7d98e0ab697e/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/e221d0ff1f7c/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/e221d0ff1f7c/&text=数据链路层"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/e221d0ff1f7c/&title=数据链路层"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/e221d0ff1f7c/&is_video=false&description=数据链路层"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=数据链路层&body=Check out this article: https://blog.zhang0.cool/e221d0ff1f7c/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/e221d0ff1f7c/&title=数据链路层"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/e221d0ff1f7c/&title=数据链路层"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/e221d0ff1f7c/&title=数据链路层"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/e221d0ff1f7c/&title=数据链路层"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/e221d0ff1f7c/&name=数据链路层&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/e221d0ff1f7c/&t=数据链路层"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="toc-number">1.</span> <span class="toc-text">数据链路层</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">数据链路层的基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%AE%E9%94%99%E6%A3%80%E6%B5%8B"><span class="toc-number">1.2.</span> <span class="toc-text">差错检测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CRC"><span class="toc-number">1.2.1.</span> <span class="toc-text">CRC</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%82%B9%E5%88%B0%E7%82%B9%E9%93%BE%E8%B7%AF%E7%9A%84%E5%81%9C%E6%AD%A2-%E7%AD%89%E5%BE%85%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.</span> <span class="toc-text">点到点链路的停止&#x2F;等待协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E5%B7%AE%E9%94%99%E6%83%85%E5%86%B5"><span class="toc-number">1.3.1.</span> <span class="toc-text">无差错情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%89%E5%B7%AE%E9%94%99%E6%83%85%E5%86%B5"><span class="toc-number">1.3.2.</span> <span class="toc-text">有差错情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%A1%E9%81%93%E5%88%A9%E7%94%A8%E7%8E%87"><span class="toc-number">1.3.3.</span> <span class="toc-text">信道利用率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SW%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%BC%BA%E7%82%B9%E5%8F%8A%E6%94%B9%E8%BF%9B%E6%96%B9%E5%90%91"><span class="toc-number">1.3.4.</span> <span class="toc-text">SW协议的缺点及改进方向</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E5%8D%8F%E8%AE%AE%EF%BC%8C%E8%BF%9E%E7%BB%ADARQ%E4%B8%8E%E9%80%89%E6%8B%A9%E9%87%8D%E4%BC%A0ARQ"><span class="toc-number">1.4.</span> <span class="toc-text">滑动窗口协议，连续ARQ与选择重传ARQ</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E7%BB%ADARQ"><span class="toc-number">1.4.1.</span> <span class="toc-text">连续ARQ</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E9%87%8D%E4%BC%A0ARQ"><span class="toc-number">1.4.2.</span> <span class="toc-text">选择重传ARQ</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%B9%BF%E6%92%AD%E4%BF%A1%E9%81%93%E7%9A%84%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%88CSMA-CD%EF%BC%89"><span class="toc-number">1.5.</span> <span class="toc-text">使用广播信道的数据链路层（CSMA&#x2F;CD）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%80%E5%9F%9F%E7%BD%91%E7%9A%84%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="toc-number">1.5.1.</span> <span class="toc-text">局域网的数据链路层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CSMA-CD%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.5.2.</span> <span class="toc-text">CSMA&#x2F;CD协议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-number">1.6.</span> <span class="toc-text">以太网</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%B9%BF%E6%92%AD%E4%BF%A1%E9%81%93%E7%9A%84%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-number">1.6.1.</span> <span class="toc-text">使用广播信道的以太网</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A9%E5%B1%95%E7%9A%84%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-number">1.6.2.</span> <span class="toc-text">扩展的以太网</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="toc-number">1.7.</span> <span class="toc-text">虚拟局域网</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="toc-number">1.8.</span> <span class="toc-text">无线局域网</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#WLAN-Wireless-Local-Area-Network"><span class="toc-number">1.8.1.</span> <span class="toc-text">WLAN(Wireless Local Area Network)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CSMA-CA%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.8.2.</span> <span class="toc-text">CSMA&#x2F;CA协议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98"><span class="toc-number">1.9.</span> <span class="toc-text">例题</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        数据链路层
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">张林</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-06-25T13:01:33.000Z" itemprop="datePublished">2022-06-25</time>
+        
+        (Updated: <time datetime="2022-11-25T06:50:50.661Z" itemprop="dateModified">2022-11-25</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="数据链路层"><a href="#数据链路层" class="headerlink" title="数据链路层"></a>数据链路层</h1><h2 id="数据链路层的基本概念"><a href="#数据链路层的基本概念" class="headerlink" title="数据链路层的基本概念"></a>数据链路层的基本概念</h2><ul>
+<li>结点：数据链路层上的结点主要是主机和路由器。由物理线路联接起来的两个结点，又叫相邻结点</li>
+<li>链路：网络中两个结点之间的物理通道，链路的传输介质主要有双绞线、光纤和微波。分为有线链路、无线链路</li>
+<li>数据链路：两络中两个结点之间的逻辑通道，把实现控制数据传输协议的硬件和软件加到链路上就构成数据链路</li>
+<li>帧：链路层的协议数据单元，作用是封装网络层数据报</li>
+</ul>
+<h2 id="差错检测"><a href="#差错检测" class="headerlink" title="差错检测"></a>差错检测</h2><h3 id="CRC"><a href="#CRC" class="headerlink" title="CRC"></a>CRC</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=CRC&spm=1001.2101.3001.7020">CRC</a>(Cyclic Redundancy Check)，即循环冗余校核，是一种根据网络数据包或电脑文件等数据产生简短固定位数校核码的快速算法，主要用来检测或校核数据传输或者保存后可能出现的错误。CRC利用除法及余数的原理，实现错误侦测的功能，具有原理清晰、实现简单等优点</p>
+</blockquote>
+<p>观看<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1V4411Z7VA?spm_id_from=333.337.search-card.all.click&vd_source=8d8360de53c055be8fcd9bc677712e0e">B站教学视频</a></p>
+<p>举例说明：</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623160721934.png" alt="image-20220623160721934"></p>
+<h2 id="点到点链路的停止-等待协议"><a href="#点到点链路的停止-等待协议" class="headerlink" title="点到点链路的停止/等待协议"></a>点到点链路的停止/等待协议</h2><blockquote>
+<p>停止等待协议（stop-and-wait）是最简单但也是最基础的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/4329290">数据链路层</a>协议。很多有关协议的基本概念都可以从这个协议中学习到。停止等待就是每发送完一个分组就停止发送，等待对方的确认。在收到确认后再发送下一个分组。</p>
+</blockquote>
+<h3 id="无差错情况"><a href="#无差错情况" class="headerlink" title="无差错情况"></a>无差错情况</h3><p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624132657828.png" alt="image-20220624132657828"></p>
+<h3 id="有差错情况"><a href="#有差错情况" class="headerlink" title="有差错情况"></a>有差错情况</h3><p>每发完一个数据帧时，必须保留它的副本。数据帧和确认帧必须编号。每当发送一个帧时就启动一个计时器。</p>
+<ul>
+<li><p>数据帧丢失或出错<br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624132753152.png" alt="image-20220624132753152"></p>
+</li>
+<li><p>ACK丢失<br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624132837149.png" alt="image-20220624132837149"></p>
+</li>
+<li><p>ACK迟到<br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624132934591.png" alt="image-20220624132934591"></p>
+</li>
+</ul>
+<h3 id="信道利用率"><a href="#信道利用率" class="headerlink" title="信道利用率"></a>信道利用率</h3><p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624133026776.png" alt="image-20220624133026776"></p>
+<h3 id="SW协议的缺点及改进方向"><a href="#SW协议的缺点及改进方向" class="headerlink" title="SW协议的缺点及改进方向"></a>SW协议的缺点及改进方向</h3><ul>
+<li>缺点: 信道远远没有被数据比特填满</li>
+<li>改进方向: 产生了两种协议,连续ARQ和选择重传ARQ</li>
+</ul>
+<h2 id="滑动窗口协议，连续ARQ与选择重传ARQ"><a href="#滑动窗口协议，连续ARQ与选择重传ARQ" class="headerlink" title="滑动窗口协议，连续ARQ与选择重传ARQ"></a>滑动窗口协议，连续ARQ与选择重传ARQ</h2><blockquote>
+<p>滑动窗口协议（Sliding Window Protocol），属于TCP协议的一种应用，用于网络数据传输时的<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6&spm=1001.2101.3001.7020">流量控制</a>，以避免拥塞的发生。该协议允许发送方在停止并等待确认前发送多个数据分组。由于发送方不必每发一个分组就停下来等待确认，因此该协议可以加速数据的传输，提高网络吞吐量</p>
+</blockquote>
+<p>当发送方发送大量的数据包时，接收方并不一定有能力全部接受。为解决这一矛盾，窗口控制应运而生。</p>
+<p>既有窗口控制，便有发送窗口和接收窗口</p>
+<p>当发送窗口和接收窗口的大小均为1时，该窗口协议就是等待重传协议了，故等待重传协议也叫做ARQ（Automatic Re Transmission Query）</p>
+<p>但普通的ARQ信道利用率太低，当发生发送数据包丢失或ACK丢失等时，便会发生超时重传，这样RTT时间会大大增多，使得信道利用率大大降低，便有了连续ARQ和选择重传ARQ</p>
+<h3 id="连续ARQ"><a href="#连续ARQ" class="headerlink" title="连续ARQ"></a>连续ARQ</h3><p>此时，我们增大发送窗口。大小区间为  <code>( 1, pow(2, n) - 1 ]</code></p>
+<p>其中n为传输数据的bit数量</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624114620303.png" alt="image-20220624114620303"></p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624114738737.png" alt="image-20220624114738737"></p>
+<p>当某一个数据帧出错时，即使后面的N个数据帧正确到达，也要被被丢弃。并返回最后一个正确返回的ACK，提示发送方从第一个出错的数据帧处重新发送。<strong>因此，连续ARQ也被称为回退N帧协议（Go-Back-N）</strong></p>
+<h3 id="选择重传ARQ"><a href="#选择重传ARQ" class="headerlink" title="选择重传ARQ"></a>选择重传ARQ</h3><p>连续ARQ的缺点也非常明显，当数据帧出错时，发送方会回退N帧进行重传，浪费了时间。</p>
+<p>为解决这一问题，加大接收窗口和接收缓存，<strong>以空间换时间</strong></p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624115611659.png" alt="image-20220624115611659"></p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624115628533.png" alt="image-20220624115628533"></p>
+<h2 id="使用广播信道的数据链路层（CSMA-CD）"><a href="#使用广播信道的数据链路层（CSMA-CD）" class="headerlink" title="使用广播信道的数据链路层（CSMA/CD）"></a>使用广播信道的数据链路层（CSMA/CD）</h2><h3 id="局域网的数据链路层"><a href="#局域网的数据链路层" class="headerlink" title="局域网的数据链路层"></a>局域网的数据链路层</h3><ul>
+<li>局域网是一种典型的广播信道，主要特点是网络为一个单位所拥有，且地理范围和站点数目均有限</li>
+<li>主要有以太网、令牌环网、FDDI 和 ATM 等局域网技术，目前以太网占领着有线局域网市场</li>
+<li>可以按照网络拓扑结构对局域网进行分类：<ul>
+<li>星形网</li>
+<li>环形网</li>
+<li>总线网</li>
+<li>树形网 </li>
+</ul>
+</li>
+<li>数据链路层的两个子层<ul>
+<li>逻辑链路控制 LLC (Logical Link Control)子层  <ul>
+<li>LLC子层与传输媒体无关,一般不考虑LLC子层</li>
+</ul>
+</li>
+<li>媒体接入控制 MAC (Medium Access Control)子层<ul>
+<li>决定谁获得媒体的使用权,即解决<strong>信道分配</strong>问题 </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>适配器<ul>
+<li>网络接口板又称为通信适配器(adapter)或网络接口卡 NIC (Network Interface Card)，或“网卡”</li>
+<li>主要功能<ul>
+<li>进行串行/并行转换</li>
+<li>对数据进行缓存</li>
+<li>在计算机的操作系统安装设备驱动程序</li>
+<li>实现以太网协议</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="CSMA-CD协议"><a href="#CSMA-CD协议" class="headerlink" title="CSMA/CD协议"></a>CSMA/CD协议</h3><ul>
+<li><p>CSMA (Carries Sense Multiple Access) 是一种具有信道检测功能的分布式介质访问控制方法</p>
+</li>
+<li><p>在坚持CSMA的基础上增加冲突检测CD(Collision Detection)</p>
+</li>
+<li><p>CSMA/CD 表示载波监听多点接入/碰撞检测</p>
+<ul>
+<li>多点接入: 说明这是总线型网络,许多主机以多点的方式连接到总线上</li>
+<li>载波监听: 每个主机必须不停的监听信道.在发送前,如果监听到信道正在使用,就必须等待</li>
+<li>碰撞检测: 在发送中, 如果监听到信道已有其他主机正在发送数据,就表示发生了碰撞.虽然每个主机在发送数据之前都已经监听到信道为空闲,但是由于电磁波的传播时延的存在,还是有可能会发生碰撞</li>
+</ul>
+</li>
+<li><p>具体实现</p>
+<ul>
+<li>记端到端的传播时延为 τ，最先发送的站点最多经过 2τ 就可以知道是否发生了碰撞，称 2τ 为 争用期 。只有经过争用期之后还没有检测到碰撞，才能肯定这次发送不会发生碰撞</li>
+<li>当发生碰撞时，站点要停止发送，等待一段时间再发送。这个时间采用 截断二进制指数退避算法 来确定。从离散的整数集合 {0, 1, .., (pow(2,k)-1)} 中随机取出一个数，记作 r，然后取 r 倍的争用期作为重传等待时间</li>
+<li>当重传达 16 次仍不能成功时即丢弃该帧，并向高层报告</li>
+</ul>
+</li>
+</ul>
+<h2 id="以太网"><a href="#以太网" class="headerlink" title="以太网"></a>以太网</h2><blockquote>
+<p>以太网是一种<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%B1%80%E5%9F%9F%E7%BD%91/5456521">计算机局域网</a>技术。<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/IEEE">IEEE</a>组织的[IEEE 802.3](<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/IEEE">https://baike.baidu.com/item/IEEE</a> 802.3/3684685)标准制定了以太网的技术标准，它规定了包括<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%89%A9%E7%90%86%E5%B1%82">物理层</a>的连线、电子信号和介质访问层<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%8D%8F%E8%AE%AE/13020269">协议</a>的内容。以太网是应用最普遍的局域网技术，取代了其他局域网技术如<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E4%BB%A4%E7%89%8C%E7%8E%AF">令牌环</a>、<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/FDDI">FDDI</a>和<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/ARCNET">ARCNET</a></p>
+</blockquote>
+<p>简单来说,以太网就是一种规范局域网如何工作的标准,也是现在最流行最普及的一套解决方案</p>
+<h3 id="使用广播信道的以太网"><a href="#使用广播信道的以太网" class="headerlink" title="使用广播信道的以太网"></a>使用广播信道的以太网</h3><ul>
+<li>使用集线器的星形拓扑<ul>
+<li>传统以太网最初是使用粗同轴电缆，后来演进到使用比较便宜的细同轴电缆，最后发展为使用更便宜和更灵活的双绞线</li>
+<li>这种以太网采用星形拓扑，在星形的中心则增加了一种可靠性非常高的设备，叫做集线器(hub)</li>
+</ul>
+</li>
+<li>以太网的信道利用率<ul>
+<li>一个帧从开始发送，经可能发生的碰撞后，将再重传数次，到发送成功且信道转为空闲(即再经过时间 τ  使得信道上无信号在传播)时为止，是发送一帧所需的平均时间</li>
+<li><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624140834140.png" alt="image-20220624140834140"></li>
+</ul>
+</li>
+<li>以太网的MAC层<ul>
+<li>MAC 地址是链路层地址，长度为 6 字节（48 位），用于唯一标识网络适配器（网卡）</li>
+<li>一台主机拥有多少个网络适配器就有多少个 MAC 地址。例如笔记本电脑普遍存在无线网络适配器和有线网络适配器，因此就有两个 MAC 地址</li>
+</ul>
+</li>
+<li>以太网帧格式<ul>
+<li>类型 标记上层使用的协议</li>
+<li>数据 长度在46-1500之间 如果太小则需要填充</li>
+<li>FCS 帧检验序列 使用的是CRC检验方法<br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/6-191106130541362.gif" alt="以太帧结构（格式）"></li>
+</ul>
+</li>
+</ul>
+<h3 id="扩展的以太网"><a href="#扩展的以太网" class="headerlink" title="扩展的以太网"></a>扩展的以太网</h3><ul>
+<li>在物理层上扩展<ul>
+<li>用集线器组成更大的局域网都在一个碰撞域中<ul>
+<li>优点<ul>
+<li>使原来属于不同碰撞域的局域网上的计算机能够进行跨碰撞域的通信</li>
+<li>扩大了局域网覆盖的地理范围</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>碰撞域增大了，但总的吞吐量并未提高</li>
+<li>如果不同的碰撞域使用不同的数据率，那么就不能用集线器将它们互连起来</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>在数据链路层扩展以太网<ul>
+<li>在数据链路层扩展局域网是使用网桥<ul>
+<li>网桥工作在数据链路层，它根据 MAC 帧的目的地址对收到的帧进行转发.网桥具有过滤帧的功能。当网桥收到一个帧时，并不是向所有的接口转发此帧，而是先检查此帧的目的 MAC 地址，然后再确定将该帧转发到哪一个接口 <ul>
+<li>优点<ul>
+<li>过滤通信量</li>
+<li>扩大了物理范围</li>
+<li>提高了可靠性</li>
+<li>可互连不同物理层、不同 MAC 子层和不同速率（如10 Mb/s 和 100 Mb/s 以太网）的局域网</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>存储转发增加了时延</li>
+<li>在MAC 子层并没有流量控制功能 </li>
+<li>具有不同 MAC 子层的网段桥接在一起时时延更大</li>
+<li>网桥只适合于用户数不太多(不超过几百个)和通信量不太大的局域网，否则有时还会因传播过多的广播信息而产生网络拥塞。这就是所谓的广播风暴</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>交换机<ul>
+<li>交换机具有自学习能力，学习的是交换表的内容，交换表中存储着 MAC 地址到接口的映射.正是由于这种自学习能力，因此交换机是一种即插即用设备，不需要网络管理员手动配置交换表内容</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="虚拟局域网"><a href="#虚拟局域网" class="headerlink" title="虚拟局域网"></a>虚拟局域网</h2><ul>
+<li>虚拟局域网可以建立与物理位置无关的逻辑组，只有在同一个虚拟局域网中的成员才会收到链路层广播信息。</li>
+<li>使用 VLAN 干线连接来建立虚拟局域网，每台交换机上的一个特殊接口被设置为干线接口，以互连 VLAN 交换机。IEEE 定义了一种扩展的以太网帧格式 802.1Q，它在标准以太网帧上加进了 4 字节首部 VLAN 标签，用于表示该帧属于哪一个虚拟局域网</li>
+</ul>
+<h2 id="无线局域网"><a href="#无线局域网" class="headerlink" title="无线局域网"></a>无线局域网</h2><h3 id="WLAN-Wireless-Local-Area-Network"><a href="#WLAN-Wireless-Local-Area-Network" class="headerlink" title="WLAN(Wireless Local Area Network)"></a>WLAN(Wireless Local Area Network)</h3><ul>
+<li>采用无线通信技术的局域网</li>
+<li>提供了移动接入的功能</li>
+<li>节省投资,建网速度较快</li>
+<li>支持便携设备联网</li>
+</ul>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624142925658.png" alt="image-20220624142925658"></p>
+<h3 id="CSMA-CA协议"><a href="#CSMA-CA协议" class="headerlink" title="CSMA/CA协议"></a>CSMA/CA协议</h3><p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143016641.png" alt="image-20220624143016641"><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143054537.png" alt="image-20220624143054537"><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143112691.png" alt="image-20220624143112691"><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143139558.png" alt="image-20220624143139558"></p>
+<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143308295.png" alt="image-20220624143308295"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152314525.png" alt="image-20220624152314525"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143317408.png" alt="image-20220624143317408"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143325845.png" alt="image-20220624143325845"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152224057.png" alt="image-20220624152224057"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143335861.png"><br>    0比特填充法,5个连续1后添加0<br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143355422.png" alt="image-20220624143355422"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152134129.png" alt="image-20220624143402657"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143410365.png" alt="image-20220624143410365"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143417666.png" alt="image-20220624143417666"><br>    接受窗口同时受发送窗口的限制<br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624143425418.png" alt="image-20220624143425418"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152336193.png" alt="image-20220624152336193"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152534267.png" alt="image-20220624152534267"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152559825.png" alt="image-20220624152559825"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152630973.png" alt="image-20220624152630973"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152722078.png" alt="image-20220624152722078"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152748287.png" alt="image-20220624152748287"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152813003.png" alt="image-20220624152813003"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152833066.png" alt="image-20220624152833066"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152850835.png" alt="image-20220624152850835"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624152857936.png" alt="image-20220624152857936"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220624153442595.png" alt="image-20220624153442595"></p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="toc-number">1.</span> <span class="toc-text">数据链路层</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">数据链路层的基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%AE%E9%94%99%E6%A3%80%E6%B5%8B"><span class="toc-number">1.2.</span> <span class="toc-text">差错检测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CRC"><span class="toc-number">1.2.1.</span> <span class="toc-text">CRC</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%82%B9%E5%88%B0%E7%82%B9%E9%93%BE%E8%B7%AF%E7%9A%84%E5%81%9C%E6%AD%A2-%E7%AD%89%E5%BE%85%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.</span> <span class="toc-text">点到点链路的停止&#x2F;等待协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E5%B7%AE%E9%94%99%E6%83%85%E5%86%B5"><span class="toc-number">1.3.1.</span> <span class="toc-text">无差错情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%89%E5%B7%AE%E9%94%99%E6%83%85%E5%86%B5"><span class="toc-number">1.3.2.</span> <span class="toc-text">有差错情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%A1%E9%81%93%E5%88%A9%E7%94%A8%E7%8E%87"><span class="toc-number">1.3.3.</span> <span class="toc-text">信道利用率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SW%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%BC%BA%E7%82%B9%E5%8F%8A%E6%94%B9%E8%BF%9B%E6%96%B9%E5%90%91"><span class="toc-number">1.3.4.</span> <span class="toc-text">SW协议的缺点及改进方向</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E5%8D%8F%E8%AE%AE%EF%BC%8C%E8%BF%9E%E7%BB%ADARQ%E4%B8%8E%E9%80%89%E6%8B%A9%E9%87%8D%E4%BC%A0ARQ"><span class="toc-number">1.4.</span> <span class="toc-text">滑动窗口协议，连续ARQ与选择重传ARQ</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E7%BB%ADARQ"><span class="toc-number">1.4.1.</span> <span class="toc-text">连续ARQ</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E9%87%8D%E4%BC%A0ARQ"><span class="toc-number">1.4.2.</span> <span class="toc-text">选择重传ARQ</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%B9%BF%E6%92%AD%E4%BF%A1%E9%81%93%E7%9A%84%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%88CSMA-CD%EF%BC%89"><span class="toc-number">1.5.</span> <span class="toc-text">使用广播信道的数据链路层（CSMA&#x2F;CD）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%80%E5%9F%9F%E7%BD%91%E7%9A%84%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="toc-number">1.5.1.</span> <span class="toc-text">局域网的数据链路层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CSMA-CD%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.5.2.</span> <span class="toc-text">CSMA&#x2F;CD协议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-number">1.6.</span> <span class="toc-text">以太网</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%B9%BF%E6%92%AD%E4%BF%A1%E9%81%93%E7%9A%84%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-number">1.6.1.</span> <span class="toc-text">使用广播信道的以太网</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A9%E5%B1%95%E7%9A%84%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-number">1.6.2.</span> <span class="toc-text">扩展的以太网</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="toc-number">1.7.</span> <span class="toc-text">虚拟局域网</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="toc-number">1.8.</span> <span class="toc-text">无线局域网</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#WLAN-Wireless-Local-Area-Network"><span class="toc-number">1.8.1.</span> <span class="toc-text">WLAN(Wireless Local Area Network)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CSMA-CA%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.8.2.</span> <span class="toc-text">CSMA&#x2F;CA协议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98"><span class="toc-number">1.9.</span> <span class="toc-text">例题</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/e221d0ff1f7c/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/e221d0ff1f7c/&text=数据链路层"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/e221d0ff1f7c/&title=数据链路层"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/e221d0ff1f7c/&is_video=false&description=数据链路层"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=数据链路层&body=Check out this article: https://blog.zhang0.cool/e221d0ff1f7c/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/e221d0ff1f7c/&title=数据链路层"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/e221d0ff1f7c/&title=数据链路层"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/e221d0ff1f7c/&title=数据链路层"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/e221d0ff1f7c/&title=数据链路层"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/e221d0ff1f7c/&name=数据链路层&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/e221d0ff1f7c/&t=数据链路层"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+      
+        
+          2022
+            <a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">
+              苏ICP备2022044873号
+            </a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <!--
+       -->
+          <li><a href="/">
+              Home
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/about/">
+              About
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/archives/">
+              Articles
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/categories/">
+              Category
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/search/">
+              Search
+            </a></li>
+          <!--
+     -->
+          
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+ 
+  <link
+    rel="preload"
+    href="/lib/font-awesome/css/all.min.css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript
+    ><link
+      rel="stylesheet"
+      href="/lib/font-awesome/css/all.min.css"
+  /></noscript>
+
+
+
+    <!-- jquery -->
+ 
+  
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+
+
+
+<!-- clipboard -->
+
+   
+    
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'Cheung0-bit/fuzzy_ahp';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

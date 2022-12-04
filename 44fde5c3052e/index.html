@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="前言树是数据结构中必学的一种数据结构。在实际应用中，常见的树结构有二叉搜索树、B树、B+树、AVL树、红黑树、字典树等。对应的用途列举如下：  B&#x2F;B+树：主要用于文件系统以及数据库中做索引 AVL树：平衡二叉树，windows对进程地址空间的管理用到了AVL 红黑树：平衡二叉树的一种改进，广泛的应用在C++STL中，如map、set，以及JDK中的HashMap、TreeMap等 Trie（字典">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二叉搜索树">
+<meta property="og:url" content="https://blog.zhang0.cool/44fde5c3052e/index.html">
+<meta property="og:site_name" content="小小小张的博客">
+<meta property="og:description" content="前言树是数据结构中必学的一种数据结构。在实际应用中，常见的树结构有二叉搜索树、B树、B+树、AVL树、红黑树、字典树等。对应的用途列举如下：  B&#x2F;B+树：主要用于文件系统以及数据库中做索引 AVL树：平衡二叉树，windows对进程地址空间的管理用到了AVL 红黑树：平衡二叉树的一种改进，广泛的应用在C++STL中，如map、set，以及JDK中的HashMap、TreeMap等 Trie（字典">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220723142156081.png">
+<meta property="article:published_time" content="2022-08-19T13:20:31.000Z">
+<meta property="article:modified_time" content="2022-11-25T07:07:02.607Z">
+<meta property="article:author" content="张林">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220723142156081.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>二叉搜索树</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="小小小张的博客" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Articles</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/845406c897f1/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/ec225509277f/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/44fde5c3052e/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/44fde5c3052e/&text=二叉搜索树"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/44fde5c3052e/&title=二叉搜索树"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/44fde5c3052e/&is_video=false&description=二叉搜索树"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=二叉搜索树&body=Check out this article: https://blog.zhang0.cool/44fde5c3052e/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/44fde5c3052e/&title=二叉搜索树"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/44fde5c3052e/&title=二叉搜索树"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/44fde5c3052e/&title=二叉搜索树"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/44fde5c3052e/&title=二叉搜索树"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/44fde5c3052e/&name=二叉搜索树&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/44fde5c3052e/&t=二叉搜索树"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%EF%BC%88BST-Binary-Search-Tree%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">二叉搜索树（BST Binary Search Tree）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">2.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E7%82%B9"><span class="toc-number">2.2.</span> <span class="toc-text">特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%80%E9%99%90%E6%80%A7"><span class="toc-number">2.3.</span> <span class="toc-text">局限性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.4.</span> <span class="toc-text">代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="toc-number">2.4.1.</span> <span class="toc-text">构建二叉树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9"><span class="toc-number">2.4.2.</span> <span class="toc-text">删除节点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E6%A3%80%E9%AA%8C"><span class="toc-number">2.5.</span> <span class="toc-text">测试检验</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        二叉搜索树
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">张林</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-08-19T13:20:31.000Z" itemprop="datePublished">2022-08-19</time>
+        
+        (Updated: <time datetime="2022-11-25T07:07:02.607Z" itemprop="dateModified">2022-11-25</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>树是数据结构中必学的一种数据结构。在实际应用中，常见的树结构有二叉搜索树、B树、B+树、AVL树、红黑树、字典树等。<br>对应的用途列举如下：</p>
+<ul>
+<li>B/B+树：主要用于文件系统以及数据库中做索引</li>
+<li>AVL树：平衡二叉树，windows对进程地址空间的管理用到了AVL</li>
+<li>红黑树：平衡二叉树的一种改进，广泛的应用在C++STL中，如map、set，以及JDK中的HashMap、TreeMap等</li>
+<li>Trie（字典树）：又经常叫做前缀树，主要用于字符串检索、文本预测、词频统计等</li>
+</ul>
+<h2 id="二叉搜索树（BST-Binary-Search-Tree）"><a href="#二叉搜索树（BST-Binary-Search-Tree）" class="headerlink" title="二叉搜索树（BST Binary Search Tree）"></a>二叉搜索树（BST Binary Search Tree）</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>二叉搜索树也叫做二叉排序树，二叉搜索树采用二分思维将数据按照规则组装在一个树形结构中，大大提高了数据检索的效率。对于一颗普通的二叉树进行中序遍历，即可获取一个有序的数序列</p>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>非空左子树的所有键值小于根节点的值</li>
+<li>非空右子树的所有键值大于根节点的值</li>
+<li>左右子树都是二叉搜索树</li>
+</ul>
+<h3 id="局限性"><a href="#局限性" class="headerlink" title="局限性"></a>局限性</h3><p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220723142156081.png" alt="image-20220723142156081"></p>
+<p>从图中可见，在改变一串数列组内顺序后，会得到不同的二叉搜索树。最好的情况下，搜索数据的时间复杂度为O(logN)，最坏的情况下，该树会退化为线性表，导致时间复杂度变为O(N)，因此，在二叉搜索树的基础上，又衍生出了AVL树和红黑树。后者基于二叉搜索树，做出了更多的限制。</p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>首先，我们需要构建一颗二叉树。首当其冲，我们顶一个数的节点类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Node</span>&lt;T <span class="keyword">extends</span> <span class="title class_">Comparable</span>&lt;T&gt;&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 数据域</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> T data;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 节点子树的高度</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> height;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 左孩子</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> Node&lt;T&gt; leftChild;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 右孩子</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> Node&lt;T&gt; rightChild;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Node</span><span class="params">(T data)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(data, <span class="literal">null</span>, <span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Node</span><span class="params">(T data, Node&lt;T&gt; leftChild, Node&lt;T&gt; rightChild)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.data = data;</span><br><span class="line">        <span class="built_in">this</span>.leftChild = leftChild;</span><br><span class="line">        <span class="built_in">this</span>.rightChild = rightChild;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>data字段由于不限定传入的对象类型，在这里使用泛型可以很好的规范</p>
+<h4 id="构建二叉树"><a href="#构建二叉树" class="headerlink" title="构建二叉树"></a>构建二叉树</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BsTree</span>&lt;T <span class="keyword">extends</span> <span class="title class_">Comparable</span>&lt;T&gt;&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Node&lt;T&gt; root;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">createTree</span><span class="params">(T data)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (data == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        root = insert(root, data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Node&lt;T&gt; <span class="title function_">insert</span><span class="params">(Node&lt;T&gt; root, T data)</span> &#123;</span><br><span class="line">        <span class="comment">// 根节点为空，说明树为空，则创建一颗树</span></span><br><span class="line">        <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Node</span>&lt;&gt;(data);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (compare(root, data) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                root.leftChild = insert(root.leftChild, data);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (compare(root, data) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                root.rightChild = insert(root.rightChild, data);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> root;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> T <span class="title function_">getMin</span><span class="params">(Node&lt;T&gt; root)</span> &#123;</span><br><span class="line">        Node&lt;T&gt; temp = root;</span><br><span class="line">        <span class="keyword">while</span> (temp.leftChild != <span class="literal">null</span>) &#123;</span><br><span class="line">            temp = temp.leftChild;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> temp.data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> T <span class="title function_">getMax</span><span class="params">(Node&lt;T&gt; root)</span> &#123;</span><br><span class="line">        Node&lt;T&gt; temp = root;</span><br><span class="line">        <span class="keyword">while</span> (temp.rightChild != <span class="literal">null</span>) &#123;</span><br><span class="line">            temp = temp.rightChild;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> temp.data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="title function_">compare</span><span class="params">(Node&lt;T&gt; root, T data)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> root.data.compareTo(data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">printTree</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.print(<span class="string">&quot;前序遍历： &quot;</span>);</span><br><span class="line">        preOrder(root);</span><br><span class="line">        System.out.println();</span><br><span class="line">        System.out.print(<span class="string">&quot;中序遍历： &quot;</span>);</span><br><span class="line">        inOrder(root);</span><br><span class="line">        System.out.println();</span><br><span class="line">        System.out.print(<span class="string">&quot;后序遍历： &quot;</span>);</span><br><span class="line">        postOrder(root);</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">preOrder</span><span class="params">(Node&lt;T&gt; root)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (root != <span class="literal">null</span>) &#123;</span><br><span class="line">            System.out.print(root.data);</span><br><span class="line">            System.out.print(<span class="string">&quot; &quot;</span>);</span><br><span class="line">            preOrder(root.leftChild);</span><br><span class="line">            preOrder(root.rightChild);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">inOrder</span><span class="params">(Node&lt;T&gt; root)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (root != <span class="literal">null</span>) &#123;</span><br><span class="line">            inOrder(root.leftChild);</span><br><span class="line">            System.out.print(root.data);</span><br><span class="line">            System.out.print(<span class="string">&quot; &quot;</span>);</span><br><span class="line">            inOrder(root.rightChild);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">postOrder</span><span class="params">(Node&lt;T&gt; root)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (root != <span class="literal">null</span>) &#123;</span><br><span class="line">            postOrder(root.leftChild);</span><br><span class="line">            postOrder(root.rightChild);</span><br><span class="line">            System.out.print(root.data);</span><br><span class="line">            System.out.print(<span class="string">&quot; &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>createTree</code>方法，每当要插入一个新节点时，便调用该函数。该函数会递归的搜索整棵树，确保找到一个合适的位置插入新的节点（比根节点小则插在左子树，大则插在右子树）</li>
+<li><code>printTree</code>方法，用于打印建造完成的树。底层提供前序、中序、后序三种遍历方式</li>
+<li><code>compare</code>方法用于比较两个节点的大小，这里简单使用<code>hashcode</code>来作比较。众所周知，<code>Integer</code>对象的<code>hashcode</code>即为本身</li>
+</ul>
+<h4 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h4><p>在二叉搜索树中，删除一个节点算是相当复杂的一份工作。主要面临三种情况</p>
+<ul>
+<li>节点为叶子节点，则直接删除</li>
+<li>只包含左子树或者右子树的节点，则将父节点指向待删除的节点的唯一直接子节点</li>
+<li>包含左右子树的节点，则寻找右子树最小值或左子树最大值替换该节点</li>
+</ul>
+<p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">deleteNode</span><span class="params">(T data)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (data == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    root = delete(root, data);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Node&lt;T&gt; <span class="title function_">delete</span><span class="params">(Node&lt;T&gt; root, T data)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (compare(root, data) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        root.rightChild = delete(root.rightChild, data);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (compare(root, data) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        root.leftChild = delete(root.leftChild, data);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 该节点拥有左右子树</span></span><br><span class="line">        <span class="keyword">if</span> (root.leftChild != <span class="literal">null</span> &amp;&amp; root.rightChild != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="type">T</span> <span class="variable">temp</span> <span class="operator">=</span> getMin(root.rightChild);</span><br><span class="line">            root.data = temp;</span><br><span class="line">            root.rightChild = delete(root.rightChild, temp);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (root.leftChild != <span class="literal">null</span>) &#123;</span><br><span class="line">                root = root.leftChild;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                root = root.rightChild;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>getMin</code>方法用于寻找树中的最小节点。在一颗二叉排序树中，一目了然的，最小节点就是这棵树最靠左的节点</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> T <span class="title function_">getMin</span><span class="params">(Node&lt;T&gt; root)</span> &#123;</span><br><span class="line">       Node&lt;T&gt; temp = root;</span><br><span class="line">       <span class="keyword">while</span> (temp.leftChild != <span class="literal">null</span>) &#123;</span><br><span class="line">           temp = temp.leftChild;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> temp.data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="测试检验"><a href="#测试检验" class="headerlink" title="测试检验"></a>测试检验</h3><p>编写单元测试，检验结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Integer[] arrays = <span class="keyword">new</span> <span class="title class_">Integer</span>[]&#123;<span class="number">50</span>, <span class="number">66</span>, <span class="number">60</span>, <span class="number">26</span>, <span class="number">21</span>, <span class="number">30</span>, <span class="number">70</span>, <span class="number">68</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">createBsTree</span><span class="params">()</span> &#123;</span><br><span class="line">    BsTree&lt;Integer&gt; bsTree = <span class="keyword">new</span> <span class="title class_">BsTree</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (Integer data : arrays) &#123;</span><br><span class="line">        bsTree.createTree(data);</span><br><span class="line">    &#125;</span><br><span class="line">    bsTree.printTree();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">deleteNode</span><span class="params">()</span> &#123;</span><br><span class="line">    BsTree&lt;Integer&gt; bsTree = <span class="keyword">new</span> <span class="title class_">BsTree</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (Integer data : arrays) &#123;</span><br><span class="line">        bsTree.createTree(data);</span><br><span class="line">    &#125;</span><br><span class="line">    bsTree.deleteNode(<span class="number">50</span>);</span><br><span class="line">    bsTree.printTree();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>createBsTree</code>方法建立的二叉搜索树为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">前序遍历： 50 26 21 30 66 60 70 68 </span><br><span class="line">中序遍历： 21 26 30 50 60 66 68 70 </span><br><span class="line">后序遍历： 21 30 26 60 68 70 66 50 </span><br></pre></td></tr></table></figure>
+
+<p><code>deleteNode</code>方法测试结果为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">前序遍历： 60 26 21 30 66 70 68 </span><br><span class="line">中序遍历： 21 26 30 60 66 68 70 </span><br><span class="line">后序遍历： 21 30 26 68 70 66 60 </span><br></pre></td></tr></table></figure>
+
+<p>观察得到，中序遍历的结果就是一组升序排列的数列</p>
+<p>相关代码可以在 <a target="_blank" rel="noopener" href="https://github.com/Cheung0-bit/tree-practice">https://github.com/Cheung0-bit/tree-practice</a> 中找到</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%EF%BC%88BST-Binary-Search-Tree%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">二叉搜索树（BST Binary Search Tree）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">2.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E7%82%B9"><span class="toc-number">2.2.</span> <span class="toc-text">特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%80%E9%99%90%E6%80%A7"><span class="toc-number">2.3.</span> <span class="toc-text">局限性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.4.</span> <span class="toc-text">代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="toc-number">2.4.1.</span> <span class="toc-text">构建二叉树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9"><span class="toc-number">2.4.2.</span> <span class="toc-text">删除节点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E6%A3%80%E9%AA%8C"><span class="toc-number">2.5.</span> <span class="toc-text">测试检验</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/44fde5c3052e/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/44fde5c3052e/&text=二叉搜索树"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/44fde5c3052e/&title=二叉搜索树"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/44fde5c3052e/&is_video=false&description=二叉搜索树"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=二叉搜索树&body=Check out this article: https://blog.zhang0.cool/44fde5c3052e/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/44fde5c3052e/&title=二叉搜索树"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/44fde5c3052e/&title=二叉搜索树"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/44fde5c3052e/&title=二叉搜索树"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/44fde5c3052e/&title=二叉搜索树"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/44fde5c3052e/&name=二叉搜索树&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/44fde5c3052e/&t=二叉搜索树"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+      
+        
+          2022
+            <a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">
+              苏ICP备2022044873号
+            </a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <!--
+       -->
+          <li><a href="/">
+              Home
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/about/">
+              About
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/archives/">
+              Articles
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/categories/">
+              Category
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/search/">
+              Search
+            </a></li>
+          <!--
+     -->
+          
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+ 
+  <link
+    rel="preload"
+    href="/lib/font-awesome/css/all.min.css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript
+    ><link
+      rel="stylesheet"
+      href="/lib/font-awesome/css/all.min.css"
+  /></noscript>
+
+
+
+    <!-- jquery -->
+ 
+  
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+
+
+
+<!-- clipboard -->
+
+   
+    
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'Cheung0-bit/fuzzy_ahp';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

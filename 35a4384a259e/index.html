@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Java是一门天然的面向对象的语言。而所有我们手动创造出来的类，都继承于同一个类，即Object类。  可以看一下Object类的结构  native方法首先，超类拥有一个native方法 1234private static native void registerNatives();static &amp;#123;    registerNatives();&amp;#125;  Java中，用native">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Object超类">
+<meta property="og:url" content="https://blog.zhang0.cool/35a4384a259e/index.html">
+<meta property="og:site_name" content="小小小张的博客">
+<meta property="og:description" content="Java是一门天然的面向对象的语言。而所有我们手动创造出来的类，都继承于同一个类，即Object类。  可以看一下Object类的结构  native方法首先，超类拥有一个native方法 1234private static native void registerNatives();static &amp;#123;    registerNatives();&amp;#125;  Java中，用native">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220305142053739.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220305142635820.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220305201245418.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220305201448883.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220305210832521.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220305222641496.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220305233711988.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220306124021691.png">
+<meta property="article:published_time" content="2022-03-05T13:38:10.000Z">
+<meta property="article:modified_time" content="2022-11-25T07:05:47.540Z">
+<meta property="article:author" content="张林">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220305142053739.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Object超类</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="小小小张的博客" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Articles</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/a662afcb6b08/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/dfe1358e3906/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/35a4384a259e/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/35a4384a259e/&text=Object超类"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/35a4384a259e/&title=Object超类"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/35a4384a259e/&is_video=false&description=Object超类"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Object超类&body=Check out this article: https://blog.zhang0.cool/35a4384a259e/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/35a4384a259e/&title=Object超类"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/35a4384a259e/&title=Object超类"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/35a4384a259e/&title=Object超类"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/35a4384a259e/&title=Object超类"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/35a4384a259e/&name=Object超类&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/35a4384a259e/&t=Object超类"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#native%E6%96%B9%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">native方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#getClass%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">getClass方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hashCode%E6%96%B9%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">hashCode方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#equals%E6%96%B9%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">equals方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%92%8Cequals%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">4.1.</span> <span class="toc-text">&#x3D;&#x3D;和equals的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#clone%E6%96%B9%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">clone方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D"><span class="toc-number">5.1.</span> <span class="toc-text">浅拷贝和深拷贝</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%BE%8B%E5%AD%90"><span class="toc-number">5.1.1.</span> <span class="toc-text">浅拷贝例子</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%B7%B1%E6%8B%B7%E8%B4%9D"><span class="toc-number">5.1.2.</span> <span class="toc-text">实现深拷贝</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#toString%E6%96%B9%E6%B3%95"><span class="toc-number">6.</span> <span class="toc-text">toString方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E6%96%B9%E6%B3%95"><span class="toc-number">7.</span> <span class="toc-text">线程方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#finalize%E6%96%B9%E6%B3%95"><span class="toc-number">8.</span> <span class="toc-text">finalize方法</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Object超类
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">张林</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-03-05T13:38:10.000Z" itemprop="datePublished">2022-03-05</time>
+        
+        (Updated: <time datetime="2022-11-25T07:05:47.540Z" itemprop="dateModified">2022-11-25</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Java/">Java</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Java/" rel="tag">Java</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>Java是一门天然的面向对象的语言。而所有我们手动创造出来的类，都继承于同一个类，即Object类。</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220305142053739.png" alt="image-20220305142053739"></p>
+<p>可以看一下Object类的结构</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220305142635820.png" alt="image-20220305142635820"></p>
+<h2 id="native方法"><a href="#native方法" class="headerlink" title="native方法"></a>native方法</h2><p>首先，超类拥有一个native方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title function_">registerNatives</span><span class="params">()</span>;</span><br><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">    registerNatives();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Java中，用native关键字修饰的函数表明该方法的实现并不是在Java中去完成。而是被C/C++完成，并被编译成了<code>.ddl</code>文件，由Java去调用。registerNatives()方法本身，主要作用是将C/C++中的方法映射到Java中的native方法，实现方法命名的解耦。同时，也定义了一个静态代码块，由此，每当我们创建Java对象时，都系统总是先调用静态代码块，即调用native方法。该方法被private修饰，表明了这个方法是私有的，不被外部调用</p>
+<h2 id="getClass方法"><a href="#getClass方法" class="headerlink" title="getClass方法"></a>getClass方法</h2><p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220305201245418.png" alt="image-20220305201245418"></p>
+<p>通过此方法,可获得类的Class实例,具体可见<a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_52038897/article/details/123297725?spm=1001.2014.3001.5501">Java反射机制</a></p>
+<h2 id="hashCode方法"><a href="#hashCode方法" class="headerlink" title="hashCode方法"></a>hashCode方法</h2><p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220305201448883.png" alt="image-20220305201448883"></p>
+<p><strong>百度百科</strong>的定义如下:</p>
+<blockquote>
+<p>哈希码（HashCode），并不是完全唯一的，它是一种算法，让同一个类的对象按照自己不同的特征尽量的有不同的哈希码，但不表示不同的对象哈希码完全不同。也有相同的情况，看程序员如何写哈希码的算法。</p>
+</blockquote>
+<p>散列表（Hash table，也叫哈希表),是根据关键码值(Key value)而直接进行访问的数据结构,把关键码值映射到表中一个位置来访问记录，以加快查找的速度.</p>
+<p>由此可见,通过Java内部的散列函数,可以给每个实例化的对象分配一个内存地址,并记录在散列表中,便于在程序中查找、新建、对比对象时更加高效。</p>
+<p>写一个实例打印看看：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">base</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="type">Apple</span> <span class="variable">apple</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Apple</span>();</span><br><span class="line">        System.out.println(apple.hashCode());</span><br><span class="line">        System.out.println(apple);</span><br><span class="line">        System.out.println(Integer.valueOf(<span class="string">&quot;74a14482&quot;</span>,<span class="number">16</span>));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Apple</span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1956725890</span><br><span class="line">p2.Apple@74a14482</span><br><span class="line">1956725890</span><br><span class="line"></span><br><span class="line">进程已结束,退出代码0</span><br></pre></td></tr></table></figure>
+
+<p>可见对象的哈希地址为10进制数，与打印的原生16进制地址相对应</p>
+<h2 id="equals方法"><a href="#equals方法" class="headerlink" title="equals方法"></a>equals方法</h2><blockquote>
+<p>Object equals() 方法用于比较两个对象是否相等。</p>
+<p>equals() 方法比较两个对象，是判断两个对象引用指向的是同一个对象，即比较 2 个对象的内存地址是否相等。</p>
+</blockquote>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220305210832521.png" alt="image-20220305210832521"></p>
+<p>可见equals比较两个对象是否相等时，比较的是两个对象的hashcode是否相等。因此，若要重写equals方法，通常也要重写hashcode方法。</p>
+<p>例如，String类型并不是一个原生的数据类型（例如int，char，double等），而是Java重新封装的对象。String、Integer等都重写了equals方法，改变为比较值是否相等，而不是引用类型（hashcode）</p>
+<p>例如String对equals方法的重新封装：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object anObject)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span> == anObject) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (anObject <span class="keyword">instanceof</span> String) &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">anotherString</span> <span class="operator">=</span> (String)anObject;</span><br><span class="line">            <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> value.length;</span><br><span class="line">            <span class="keyword">if</span> (n == anotherString.value.length) &#123;</span><br><span class="line">                <span class="type">char</span> v1[] = value;</span><br><span class="line">                <span class="type">char</span> v2[] = anotherString.value;</span><br><span class="line">                <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">while</span> (n-- != <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (v1[i] != v2[i])</span><br><span class="line">                        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">                    i++;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>instanceof</code> 是 Java 的保留关键字。它的作用是测试它左边的对象是否是它右边的类的实例，返回 <code>boolean</code> 的数据类型。源码表示，会先匹配引用是否相同，相同则返回真，否则将String实例转化为字符数组，并逐个匹配是否相等，即匹配值是否相等。</p>
+<p>String同时也重写了hashcode方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> &#123;</span><br><span class="line">       <span class="type">int</span> <span class="variable">h</span> <span class="operator">=</span> hash;</span><br><span class="line">       <span class="keyword">if</span> (h == <span class="number">0</span> &amp;&amp; value.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">           <span class="type">char</span> val[] = value;</span><br><span class="line"></span><br><span class="line">           <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; value.length; i++) &#123;</span><br><span class="line">               h = <span class="number">31</span> * h + val[i];</span><br><span class="line">           &#125;</span><br><span class="line">           hash = h;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> h;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>hash</code>默认为0，所以重写hash计算公式为：<code>hash=s[0]*31^(n-1) + s[1]*31^(n-2) + ... + s[n-1]</code></p>
+<h3 id="和equals的区别"><a href="#和equals的区别" class="headerlink" title="==和equals的区别"></a>==和equals的区别</h3><ul>
+<li><p>== ：当比较基本类型时，则比较两者的值是否相等；当比较引用类型时，则比较引用引用（hashcode）是否相等</p>
+</li>
+<li><p>equals：由源码，比较引用是否相等，部分类型如String、Integer等重写了equals方法，比较值是否相等</p>
+</li>
+</ul>
+<p>举几个例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">base</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// new两个String对象，但内容相同</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">a</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&quot;xxx&quot;</span>);</span><br><span class="line">        <span class="type">String</span> <span class="variable">b</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&quot;xxx&quot;</span>);</span><br><span class="line">        System.out.println(a == b);    <span class="comment">// 比较hash值，因为是两个不同的实例化对象，所以不同，返回false</span></span><br><span class="line">        System.out.println(a.equals(b)); <span class="comment">// 比较内容，均为“xxx”，返回true</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 生成两个引用</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">c</span> <span class="operator">=</span> <span class="string">&quot;xxx&quot;</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">d</span> <span class="operator">=</span> <span class="string">&quot;xxx&quot;</span>;</span><br><span class="line">        System.out.println(c == d); <span class="comment">// 比较hash值，因为指向同一个引用，所以相同，返回true</span></span><br><span class="line">        System.out.println(c.equals(d)); <span class="comment">// 比较内容，均为“xxx”，返回true</span></span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>总结：equals 本质上就是 ==，只不过 String 和 Integer 等重写了 equals 方法，把它变成了值比较，所以一般情况下 可理解为equals 比较的是值是否相等。</p>
+<h2 id="clone方法"><a href="#clone方法" class="headerlink" title="clone方法"></a>clone方法</h2><blockquote>
+<p>Object clone() 方法用于创建并返回一个对象的拷贝。</p>
+<p>clone 方法是浅拷贝，对象内属性引用的对象只会拷贝引用地址，而不会将引用的对象重新分配内存，相对应的深拷贝则会连引用的对象也重新创建。</p>
+</blockquote>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220305222641496.png" alt="image-20220305222641496"></p>
+<p>由源码文档，clone方法只能实现浅拷贝，且类需要重写clone方法，调用super.clone来获取返回的对象，因为不同包下，基类保护的实例方法子类无权访问。另外，object类本身没有实现Cloneable接口，但我们自己写的类需要继承Cloneable接口，否则会总会抛出CloneNotSupportedException异常。</p>
+<p>写个例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">base</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> CloneNotSupportedException &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 实例化一个Student对象</span></span><br><span class="line">        <span class="type">Student</span> <span class="variable">student</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="number">18</span>,<span class="string">&quot;Tony&quot;</span>);</span><br><span class="line">        <span class="comment">// 打印内容</span></span><br><span class="line">        System.out.println(student);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 克隆student实例</span></span><br><span class="line">        <span class="type">Student</span> <span class="variable">anotherStudent</span> <span class="operator">=</span> (Student) student.clone();</span><br><span class="line">        <span class="comment">// 打印克隆内容</span></span><br><span class="line">        System.out.println(anotherStudent);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span> <span class="keyword">implements</span> <span class="title class_">Cloneable</span> &#123;</span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    String name;</span><br><span class="line"></span><br><span class="line">    Student(<span class="type">int</span> age, String name) &#123;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Object <span class="title function_">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>.clone();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Student&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;age=&quot;</span> + age +</span><br><span class="line">                <span class="string">&quot;, name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Student&#123;age=18, name=&#x27;Tony&#x27;&#125;</span><br><span class="line">Student&#123;age=18, name=&#x27;Tony&#x27;&#125;</span><br><span class="line"></span><br><span class="line">进程已结束,退出代码0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="浅拷贝和深拷贝"><a href="#浅拷贝和深拷贝" class="headerlink" title="浅拷贝和深拷贝"></a>浅拷贝和深拷贝</h3><h4 id="浅拷贝例子"><a href="#浅拷贝例子" class="headerlink" title="浅拷贝例子"></a>浅拷贝例子</h4><p>当拷贝的对象的成员有引用对象时，例如在Student类中包含了另一个Teacher对象时，被克隆的对象和克隆的对象指向同一个Teacher引用，所以当改变Teacher的数据时，克隆的对象也会随之改变</p>
+<p>写个例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">base</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> CloneNotSupportedException &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 实例化一个Teacher对象</span></span><br><span class="line">        <span class="type">Teacher</span> <span class="variable">teacher</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Teacher</span>(<span class="number">25</span>,<span class="string">&quot;JayChou&quot;</span>);</span><br><span class="line">        <span class="comment">// 实例化一个Student对象</span></span><br><span class="line">        <span class="type">Student</span> <span class="variable">student</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="number">18</span>, <span class="string">&quot;Tony&quot;</span>,teacher);</span><br><span class="line">        <span class="comment">// 打印内容</span></span><br><span class="line">        System.out.println(student);</span><br><span class="line">        <span class="comment">// 克隆student实例</span></span><br><span class="line">        <span class="type">Student</span> <span class="variable">anotherStudent</span> <span class="operator">=</span> (Student) student.clone();</span><br><span class="line">        System.out.println(anotherStudent);</span><br><span class="line">        System.out.println(<span class="string">&quot;---------------------------------------&quot;</span>);</span><br><span class="line">        <span class="comment">// 修改teacher数据,并更新student</span></span><br><span class="line">        teacher.setAge(<span class="number">30</span>);</span><br><span class="line">        student.setTeacher(teacher);</span><br><span class="line">        <span class="comment">// 打印修改后的student实例和克隆对象实例</span></span><br><span class="line">        System.out.println(student);</span><br><span class="line">        System.out.println(anotherStudent);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span> <span class="keyword">implements</span> <span class="title class_">Cloneable</span> &#123;</span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    String name;</span><br><span class="line">    Teacher teacher;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setTeacher</span><span class="params">(Teacher teacher)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.teacher = teacher;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Student(<span class="type">int</span> age, String name, Teacher teacher) &#123;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.teacher = teacher;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Object <span class="title function_">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>.clone();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Student&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;age=&quot;</span> + age +</span><br><span class="line">                <span class="string">&quot;, name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, teacher=&quot;</span> + teacher +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Teacher</span> <span class="keyword">implements</span> <span class="title class_">Cloneable</span> &#123;</span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    String name;</span><br><span class="line"></span><br><span class="line">    Teacher(<span class="type">int</span> age, String name) &#123;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setAge</span><span class="params">(<span class="type">int</span> age)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Object <span class="title function_">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>.clone();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Teacher&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;age=&quot;</span> + age +</span><br><span class="line">                <span class="string">&quot;, name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Student&#123;age=18, name=&#x27;Tony&#x27;, teacher=Teacher&#123;age=25, name=&#x27;JayChou&#x27;&#125;&#125;</span><br><span class="line">Student&#123;age=18, name=&#x27;Tony&#x27;, teacher=Teacher&#123;age=25, name=&#x27;JayChou&#x27;&#125;&#125;</span><br><span class="line">---------------------------------------</span><br><span class="line">Student&#123;age=18, name=&#x27;fuck&#x27;, teacher=Teacher&#123;age=30, name=&#x27;JayChou&#x27;&#125;&#125;</span><br><span class="line">Student&#123;age=18, name=&#x27;Tony&#x27;, teacher=Teacher&#123;age=30, name=&#x27;JayChou&#x27;&#125;&#125;</span><br><span class="line"></span><br><span class="line">进程已结束,退出代码0</span><br></pre></td></tr></table></figure>
+
+<p>这就是浅拷贝的结果，因指向同一个引用，当其中一个实例发生更新时，会发生连锁变化</p>
+<p>所以相反，实现深拷贝，使得不会发生连锁反应，让克隆与被克隆对象彻底分离！</p>
+<h4 id="实现深拷贝"><a href="#实现深拷贝" class="headerlink" title="实现深拷贝"></a>实现深拷贝</h4><p>大致有一下思路：</p>
+<ul>
+<li>不采用clone方法，重新new一个对象，将需要复制的对象所有属性成员放进去</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 实例化一个Teacher对象</span></span><br><span class="line">       <span class="type">Teacher</span> <span class="variable">teacher</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Teacher</span>(<span class="number">25</span>,<span class="string">&quot;JayChou&quot;</span>);</span><br><span class="line">       <span class="comment">// 实例化一个Student对象</span></span><br><span class="line">       <span class="type">Student</span> <span class="variable">student</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="number">18</span>, <span class="string">&quot;Tony&quot;</span>,teacher);</span><br><span class="line">       <span class="comment">// 打印内容</span></span><br><span class="line">       System.out.println(student);</span><br><span class="line">       <span class="comment">// new一个一模一样的！</span></span><br><span class="line">       <span class="type">Student</span> <span class="variable">anotherStudent</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="number">18</span>,<span class="string">&quot;Tony&quot;</span>,<span class="keyword">new</span> <span class="title class_">Teacher</span>(<span class="number">25</span>,<span class="string">&quot;JayChou&quot;</span>));</span><br><span class="line">       System.out.println(anotherStudent);</span><br><span class="line">       System.out.println(<span class="string">&quot;---------------------------------------&quot;</span>);</span><br><span class="line">       <span class="comment">// 修改teacher数据,并更新student</span></span><br><span class="line">       teacher.setAge(<span class="number">30</span>);</span><br><span class="line">       student.setTeacher(teacher);</span><br><span class="line">       <span class="comment">// 打印修改后的student实例和克隆对象实例</span></span><br><span class="line">       System.out.println(student);</span><br><span class="line">       System.out.println(anotherStudent);</span><br></pre></td></tr></table></figure>
+
+<p>打印结果：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Student&#123;age=18, name=&#x27;Tony&#x27;, teacher=Teacher&#123;age=25, name=&#x27;JayChou&#x27;&#125;&#125;</span><br><span class="line">Student&#123;age=18, name=&#x27;Tony&#x27;, teacher=Teacher&#123;age=25, name=&#x27;JayChou&#x27;&#125;&#125;</span><br><span class="line">---------------------------------------</span><br><span class="line">Student&#123;age=18, name=&#x27;Tony&#x27;, teacher=Teacher&#123;age=30, name=&#x27;JayChou&#x27;&#125;&#125;</span><br><span class="line">Student&#123;age=18, name=&#x27;Tony&#x27;, teacher=Teacher&#123;age=25, name=&#x27;JayChou&#x27;&#125;&#125;</span><br><span class="line"></span><br><span class="line">进程已结束,退出代码0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>重写clone方法，将每个引用对象也实现克隆</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Object <span class="title function_">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException &#123;</span><br><span class="line">        <span class="type">Student</span> <span class="variable">student</span> <span class="operator">=</span> (Student) <span class="built_in">super</span>.clone();</span><br><span class="line">        student.setTeacher((Teacher) <span class="built_in">this</span>.teacher.clone());</span><br><span class="line">        <span class="keyword">return</span> student;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Student&#123;age=18, name=&#x27;Tony&#x27;, teacher=Teacher&#123;age=25, name=&#x27;JayChou&#x27;&#125;&#125;</span><br><span class="line">Student&#123;age=18, name=&#x27;Tony&#x27;, teacher=Teacher&#123;age=25, name=&#x27;JayChou&#x27;&#125;&#125;</span><br><span class="line">---------------------------------------</span><br><span class="line">Student&#123;age=18, name=&#x27;Tony&#x27;, teacher=Teacher&#123;age=30, name=&#x27;JayChou&#x27;&#125;&#125;</span><br><span class="line">Student&#123;age=18, name=&#x27;Tony&#x27;, teacher=Teacher&#123;age=25, name=&#x27;JayChou&#x27;&#125;&#125;</span><br><span class="line"></span><br><span class="line">进程已结束,退出代码0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>序列化</li>
+</ul>
+<p>序列化的方式有很多，主要是工具比较多…这里我使用Apache Commons Lang序列化</p>
+<p>首先，相关类都需要继承序列化接口（接口并没有实质的实现内容，仅仅作为一个标志）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">base</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> CloneNotSupportedException &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 实例化一个Teacher对象</span></span><br><span class="line">        <span class="type">Teacher</span> <span class="variable">teacher</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Teacher</span>(<span class="number">25</span>,<span class="string">&quot;JayChou&quot;</span>);</span><br><span class="line">        <span class="comment">// 实例化一个Student对象</span></span><br><span class="line">        <span class="type">Student</span> <span class="variable">student</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="number">18</span>, <span class="string">&quot;Tony&quot;</span>,teacher);</span><br><span class="line">        <span class="comment">// 打印内容</span></span><br><span class="line">        System.out.println(student);</span><br><span class="line">        <span class="comment">// 序列化深拷贝</span></span><br><span class="line">        <span class="type">Student</span> <span class="variable">anotherStudent</span> <span class="operator">=</span> (Student) SerializationUtils.clone(student);</span><br><span class="line">        System.out.println(anotherStudent);</span><br><span class="line">        System.out.println(<span class="string">&quot;---------------------------------------&quot;</span>);</span><br><span class="line">        <span class="comment">// 打印序列化后内容 为字节流</span></span><br><span class="line">        <span class="type">byte</span>[] res = SerializationUtils.serialize(student);</span><br><span class="line">        System.out.println(SerializationUtils.serialize(student));</span><br><span class="line">        <span class="comment">// 打印反序列化结果</span></span><br><span class="line">        System.out.println(SerializationUtils.deserialize(res));</span><br><span class="line">        System.out.println(<span class="string">&quot;---------------------------------------&quot;</span>);</span><br><span class="line">        <span class="comment">// 修改teacher数据,并更新student</span></span><br><span class="line">        teacher.setAge(<span class="number">30</span>);</span><br><span class="line">        student.setTeacher(teacher);</span><br><span class="line">        <span class="comment">// 打印修改后的student实例和克隆对象实例</span></span><br><span class="line">        System.out.println(student);</span><br><span class="line">        System.out.println(anotherStudent);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    String name;</span><br><span class="line">    Teacher teacher;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setTeacher</span><span class="params">(Teacher teacher)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.teacher = teacher;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Student(<span class="type">int</span> age, String name, Teacher teacher) &#123;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.teacher = teacher;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Student&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;age=&quot;</span> + age +</span><br><span class="line">                <span class="string">&quot;, name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, teacher=&quot;</span> + teacher +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Teacher</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    String name;</span><br><span class="line"></span><br><span class="line">    Teacher(<span class="type">int</span> age, String name) &#123;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setAge</span><span class="params">(<span class="type">int</span> age)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Teacher&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;age=&quot;</span> + age +</span><br><span class="line">                <span class="string">&quot;, name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Student&#123;age=18, name=&#x27;Tony&#x27;, teacher=Teacher&#123;age=25, name=&#x27;JayChou&#x27;&#125;&#125;</span><br><span class="line">Student&#123;age=18, name=&#x27;Tony&#x27;, teacher=Teacher&#123;age=25, name=&#x27;JayChou&#x27;&#125;&#125;</span><br><span class="line">---------------------------------------</span><br><span class="line">[B@50040f0c</span><br><span class="line">Student&#123;age=18, name=&#x27;Tony&#x27;, teacher=Teacher&#123;age=25, name=&#x27;JayChou&#x27;&#125;&#125;</span><br><span class="line">---------------------------------------</span><br><span class="line">Student&#123;age=18, name=&#x27;Tony&#x27;, teacher=Teacher&#123;age=30, name=&#x27;JayChou&#x27;&#125;&#125;</span><br><span class="line">Student&#123;age=18, name=&#x27;Tony&#x27;, teacher=Teacher&#123;age=25, name=&#x27;JayChou&#x27;&#125;&#125;</span><br><span class="line"></span><br><span class="line">进程已结束,退出代码0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>总结：第一种方式笨笨的哈哈，第二种方式需要手动重写clone方法，当对象复杂时，就不是一个明智的选择了。相比较之下，第三种当时显的十分方便帅气，可由于底层实现的复杂，<strong>存在一定的系统开销</strong>。</p>
+<h2 id="toString方法"><a href="#toString方法" class="headerlink" title="toString方法"></a>toString方法</h2><p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220305233711988.png" alt="image-20220305233711988"></p>
+<p>当没有重写该方法时，当打印实例化对象时，则返回类名与hash地址的16进制拼接字符串。为便于人们阅读，建议所有子类重写该方法</p>
+<p>例如我的Student类重写了该方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    String name;</span><br><span class="line">    Teacher teacher;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setTeacher</span><span class="params">(Teacher teacher)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.teacher = teacher;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Student(<span class="type">int</span> age, String name, Teacher teacher) &#123;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.teacher = teacher;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Student&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;age=&quot;</span> + age +</span><br><span class="line">                <span class="string">&quot;, name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, teacher=&quot;</span> + teacher +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>则打印该对象时会返回人们便于阅读的内容：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Student&#123;age=18, name=&#x27;Tony&#x27;, teacher=Teacher&#123;age=25, name=&#x27;JayChou&#x27;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="线程方法"><a href="#线程方法" class="headerlink" title="线程方法"></a>线程方法</h2><p>wait(),wait(long),wait(long,int),notify(),notifyAll()分别用于线程的休眠于唤醒，在多线程内容中再做详解</p>
+<h2 id="finalize方法"><a href="#finalize方法" class="headerlink" title="finalize方法"></a>finalize方法</h2><p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220306124021691.png" alt="image-20220306124021691"></p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#native%E6%96%B9%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">native方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#getClass%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">getClass方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hashCode%E6%96%B9%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">hashCode方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#equals%E6%96%B9%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">equals方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%92%8Cequals%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">4.1.</span> <span class="toc-text">&#x3D;&#x3D;和equals的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#clone%E6%96%B9%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">clone方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D"><span class="toc-number">5.1.</span> <span class="toc-text">浅拷贝和深拷贝</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%BE%8B%E5%AD%90"><span class="toc-number">5.1.1.</span> <span class="toc-text">浅拷贝例子</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%B7%B1%E6%8B%B7%E8%B4%9D"><span class="toc-number">5.1.2.</span> <span class="toc-text">实现深拷贝</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#toString%E6%96%B9%E6%B3%95"><span class="toc-number">6.</span> <span class="toc-text">toString方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E6%96%B9%E6%B3%95"><span class="toc-number">7.</span> <span class="toc-text">线程方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#finalize%E6%96%B9%E6%B3%95"><span class="toc-number">8.</span> <span class="toc-text">finalize方法</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/35a4384a259e/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/35a4384a259e/&text=Object超类"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/35a4384a259e/&title=Object超类"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/35a4384a259e/&is_video=false&description=Object超类"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Object超类&body=Check out this article: https://blog.zhang0.cool/35a4384a259e/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/35a4384a259e/&title=Object超类"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/35a4384a259e/&title=Object超类"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/35a4384a259e/&title=Object超类"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/35a4384a259e/&title=Object超类"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/35a4384a259e/&name=Object超类&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/35a4384a259e/&t=Object超类"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+      
+        
+          2022
+            <a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">
+              苏ICP备2022044873号
+            </a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <!--
+       -->
+          <li><a href="/">
+              Home
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/about/">
+              About
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/archives/">
+              Articles
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/categories/">
+              Category
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/search/">
+              Search
+            </a></li>
+          <!--
+     -->
+          
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+ 
+  <link
+    rel="preload"
+    href="/lib/font-awesome/css/all.min.css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript
+    ><link
+      rel="stylesheet"
+      href="/lib/font-awesome/css/all.min.css"
+  /></noscript>
+
+
+
+    <!-- jquery -->
+ 
+  
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+
+
+
+<!-- clipboard -->
+
+   
+    
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'Cheung0-bit/fuzzy_ahp';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

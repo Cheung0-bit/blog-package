@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="ASCIIASCII ((American Standard Code for Information Interchange): 美国信息交换标准代码）是基于拉丁字母的一套电脑编码系统，主要用于显示现代英语和其西欧语言。 码表如下：  观察表可得出：  0-31和127是控制字符或通信专用字符，例如6号字符ACK用于计算就网络的通信 48-57号字符标识阿拉伯数字0-9，48-57即8为二进制数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机字符编码简单梳理">
+<meta property="og:url" content="https://blog.zhang0.cool/d44c84785a23/index.html">
+<meta property="og:site_name" content="小小小张的博客">
+<meta property="og:description" content="ASCIIASCII ((American Standard Code for Information Interchange): 美国信息交换标准代码）是基于拉丁字母的一套电脑编码系统，主要用于显示现代英语和其西欧语言。 码表如下：  观察表可得出：  0-31和127是控制字符或通信专用字符，例如6号字符ACK用于计算就网络的通信 48-57号字符标识阿拉伯数字0-9，48-57即8为二进制数">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/a6cfcef55aff21212067604d5740ce89.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/52d2f7724f4ccbaf40d3dceacab6c6d9.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/d3847b6bd798334dbd61163138d508a7.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/064e7bcb659c1457c309a77d3706892b.png">
+<meta property="article:published_time" content="2022-02-25T12:54:59.000Z">
+<meta property="article:modified_time" content="2022-11-25T06:48:22.025Z">
+<meta property="article:author" content="张林">
+<meta property="article:tag" content="计算机组成原理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/a6cfcef55aff21212067604d5740ce89.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>计算机字符编码简单梳理</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="小小小张的博客" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Articles</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/dfe1358e3906/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/37b81c3e02e2/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/d44c84785a23/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/d44c84785a23/&text=计算机字符编码简单梳理"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/d44c84785a23/&title=计算机字符编码简单梳理"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/d44c84785a23/&is_video=false&description=计算机字符编码简单梳理"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=计算机字符编码简单梳理&body=Check out this article: https://blog.zhang0.cool/d44c84785a23/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/d44c84785a23/&title=计算机字符编码简单梳理"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/d44c84785a23/&title=计算机字符编码简单梳理"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/d44c84785a23/&title=计算机字符编码简单梳理"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/d44c84785a23/&title=计算机字符编码简单梳理"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/d44c84785a23/&name=计算机字符编码简单梳理&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/d44c84785a23/&t=计算机字符编码简单梳理"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ASCII"><span class="toc-number">1.</span> <span class="toc-text">ASCII</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GB2312-80"><span class="toc-number">2.</span> <span class="toc-text">GB2312-80</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BA%E4%BD%8D%E7%A0%81"><span class="toc-number">2.1.</span> <span class="toc-text">区位码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BD%E6%A0%87%E7%A0%81"><span class="toc-number">2.2.</span> <span class="toc-text">国标码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%BA%E5%86%85%E7%A0%81"><span class="toc-number">2.3.</span> <span class="toc-text">机内码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GBK%E5%92%8CUTF-8"><span class="toc-number">3.</span> <span class="toc-text">GBK和UTF-8</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        计算机字符编码简单梳理
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">张林</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-02-25T12:54:59.000Z" itemprop="datePublished">2022-02-25</time>
+        
+        (Updated: <time datetime="2022-11-25T06:48:22.025Z" itemprop="dateModified">2022-11-25</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" rel="tag">计算机组成原理</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="ASCII"><a href="#ASCII" class="headerlink" title="ASCII"></a>ASCII</h2><p>ASCII ((American Standard Code for Information Interchange): 美国信息交换标准代码）是基于拉丁字母的一套电脑编码系统，主要用于显示现代英语和其西欧语言。</p>
+<p>码表如下：</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/a6cfcef55aff21212067604d5740ce89.png"></p>
+<p>观察表可得出：</p>
+<ul>
+<li>0-31和127是控制字符或通信专用字符，例如6号字符ACK用于计算就网络的通信</li>
+<li>48-57号字符标识阿拉伯数字0-9，48-57即8为二进制数<code>0011 0000</code> - <code>0011 1001</code>，即后四位可看作0-9的<code>8421</code>码</li>
+<li>65-90号字符为大写字母A-Z，8位二进制数<code>0100 0001</code> - <code>01011010</code>，前三位均为<code>010</code>，后五位为1-26的二进制数</li>
+<li>97-122号字符为小写字母a-z，8位二进制数<code>0110 0001</code> - <code>0111 1010</code>，前三位均为<code>011</code>，后五位为1-26的二进制数</li>
+</ul>
+<p>由此规律，若告诉大写<code>X</code>的二进制码为<code>0101 1000</code>，则直接得出小写<code>x</code>的二进制码为<code>0111 1000</code></p>
+<h2 id="GB2312-80"><a href="#GB2312-80" class="headerlink" title="GB2312-80"></a>GB2312-80</h2><p>为使中国汉字也可在计算机上表示出来，1980年国家标准局发布了<code>GB2312-80</code>编码</p>
+<h3 id="区位码"><a href="#区位码" class="headerlink" title="区位码"></a>区位码</h3><p>基本集共收入汉字6763个和非汉字图形字符682个。整个字符集分成94个区，每区有94个位。每个区位上只有一个字符，因此可用所在的区和位来对汉字进行编码，成为区位码。</p>
+<p>01-09区收录除汉字外的682个字符</p>
+<p>10-15区为空白区，没有使用</p>
+<p>16-55区收录3755个一级汉字，按拼音排序</p>
+<p>56-87区收录3008个二级汉字。按部首/笔画排序</p>
+<p>88-94区为空白区，没有使用</p>
+<p>可通过<a target="_blank" rel="noopener" href="http://www.jscj.com/index/gb2312.php">区位码查询</a>自己了解一下</p>
+<p>例如：</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/52d2f7724f4ccbaf40d3dceacab6c6d9.png" alt="image-20220225111108308"></p>
+<p>可得<code>我</code>的区位码为<code>4650</code></p>
+<h3 id="国标码"><a href="#国标码" class="headerlink" title="国标码"></a>国标码</h3><p>在区位码设计时，为将ASCII码中英文数字之类包含在内，将非中文字符放在了01-09区，可问题是<strong>还有32个控制通信字符没有考虑在内</strong></p>
+<p>因此，将区码和位码均偏移32位，即都加上20H</p>
+<p>那为什么区码和位码都要加20H呢，因为英文采用ASCII码，0-127个字符，即2的7次方个字符，占了7位，最高位补0，满8位位一个字节。例如我向朋友发送字符A，在机器码中则表示为<code>0100 0001</code>。而区位码的存在，使得表示中国汉字需要<strong>两个字节</strong>，因此，每个字节都要加上20H，给32个特殊字符让出位置</p>
+<p>因此<code>我</code>的区位码4650（2E32）转化为国标码为4E52（2E+20 32+20）</p>
+<h3 id="机内码"><a href="#机内码" class="headerlink" title="机内码"></a>机内码</h3><p>在前面提到过，A占一个字节，8位二进制数为<code>0100 0001</code>，最高位0是一个<strong>标识</strong>，表示这是一个ASCII码</p>
+<p>而国内码转化为二进制流后，为避免与ASCII码发生冲突，则将最高位定位1，这样<code>1100 0001</code>就代表着一个GB2312编码，计算机就不是将其判定为ASCII码</p>
+<p>因此在国标码的基础上，区码和位码均加上<code>1000 0000</code>即80H</p>
+<p>因此<code>我</code>的机内码为CED2（4E+80 52+80）</p>
+<p>可用Python验证一下：</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/d3847b6bd798334dbd61163138d508a7.png" alt="image-20220225115714900"></p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/064e7bcb659c1457c309a77d3706892b.png" alt="image-20220225115734224"></p>
+<p>与我们计算的完全一致！</p>
+<h2 id="GBK和UTF-8"><a href="#GBK和UTF-8" class="headerlink" title="GBK和UTF-8"></a>GBK和UTF-8</h2><p>随着互联网发展，GB2312编码不能够满足中国字符的表达（中国汉字有上万个），因此在GB2312的基础上，做出了扩展，这里不做深究了。</p>
+<p>世界上国家太多了，一个国家一套编码不太现实。这个世界从来都是有需求就有供应。这时候，为拯救你的硬盘和流量，<strong>ISO</strong>(International Organization for Standardization)国际标准组织就站出来要融合世界所有字符，经过长期的发展，形成了UTF-8编码</p>
+<p>UTF-8编码盛行的当下，gb2312和gbk编码亦有着广泛的使用……</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ASCII"><span class="toc-number">1.</span> <span class="toc-text">ASCII</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GB2312-80"><span class="toc-number">2.</span> <span class="toc-text">GB2312-80</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BA%E4%BD%8D%E7%A0%81"><span class="toc-number">2.1.</span> <span class="toc-text">区位码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BD%E6%A0%87%E7%A0%81"><span class="toc-number">2.2.</span> <span class="toc-text">国标码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%BA%E5%86%85%E7%A0%81"><span class="toc-number">2.3.</span> <span class="toc-text">机内码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GBK%E5%92%8CUTF-8"><span class="toc-number">3.</span> <span class="toc-text">GBK和UTF-8</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/d44c84785a23/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/d44c84785a23/&text=计算机字符编码简单梳理"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/d44c84785a23/&title=计算机字符编码简单梳理"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/d44c84785a23/&is_video=false&description=计算机字符编码简单梳理"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=计算机字符编码简单梳理&body=Check out this article: https://blog.zhang0.cool/d44c84785a23/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/d44c84785a23/&title=计算机字符编码简单梳理"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/d44c84785a23/&title=计算机字符编码简单梳理"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/d44c84785a23/&title=计算机字符编码简单梳理"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/d44c84785a23/&title=计算机字符编码简单梳理"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/d44c84785a23/&name=计算机字符编码简单梳理&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/d44c84785a23/&t=计算机字符编码简单梳理"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+      
+        
+          2022
+            <a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">
+              苏ICP备2022044873号
+            </a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <!--
+       -->
+          <li><a href="/">
+              Home
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/about/">
+              About
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/archives/">
+              Articles
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/categories/">
+              Category
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/search/">
+              Search
+            </a></li>
+          <!--
+     -->
+          
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+ 
+  <link
+    rel="preload"
+    href="/lib/font-awesome/css/all.min.css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript
+    ><link
+      rel="stylesheet"
+      href="/lib/font-awesome/css/all.min.css"
+  /></noscript>
+
+
+
+    <!-- jquery -->
+ 
+  
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+
+
+
+<!-- clipboard -->
+
+   
+    
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'Cheung0-bit/fuzzy_ahp';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

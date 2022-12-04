@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="今晚给云服务器配MySQL出了不少奇怪的问题 感谢守望时空33大佬的文章 让我解决所有问题  若大家是Debian系统，可直接看大佬的博客   1.下载并上传现在服务器执行: sudo apt purge mariadb* 在下载页面选择适合自己的版本 在这里我选择：  将下载好的tar文件解压，将所有deb文件上传到指定路径，并进入该路径，安装所有deb文件 例如: 1234mkdir &#x2F;roo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu Linux 配置 MySQL 8.0">
+<meta property="og:url" content="https://blog.zhang0.cool/dfe61ddc5a2b/index.html">
+<meta property="og:site_name" content="小小小张的博客">
+<meta property="og:description" content="今晚给云服务器配MySQL出了不少奇怪的问题 感谢守望时空33大佬的文章 让我解决所有问题  若大家是Debian系统，可直接看大佬的博客   1.下载并上传现在服务器执行: sudo apt purge mariadb* 在下载页面选择适合自己的版本 在这里我选择：  将下载好的tar文件解压，将所有deb文件上传到指定路径，并进入该路径，安装所有deb文件 例如: 1234mkdir &#x2F;roo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/ce0cdd899e62ba95bb353ec829870206.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/6226db5ebd5d1e2907b97b8090d5b645.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/efc5229797b51f4e21266683c5960086.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/4568e2cb70f9f0d416793cb7af1525b9.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/1c16a9409132b5f7d171e8d56f98e793.png">
+<meta property="article:published_time" content="2021-12-06T06:55:06.000Z">
+<meta property="article:modified_time" content="2022-11-25T06:56:56.604Z">
+<meta property="article:author" content="张林">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/img_convert/ce0cdd899e62ba95bb353ec829870206.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Ubuntu Linux 配置 MySQL 8.0</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="小小小张的博客" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Articles</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/220d06915e9c/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/132732cb74cf/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/dfe61ddc5a2b/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/dfe61ddc5a2b/&text=Ubuntu Linux 配置 MySQL 8.0"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/dfe61ddc5a2b/&title=Ubuntu Linux 配置 MySQL 8.0"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/dfe61ddc5a2b/&is_video=false&description=Ubuntu Linux 配置 MySQL 8.0"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Ubuntu Linux 配置 MySQL 8.0&body=Check out this article: https://blog.zhang0.cool/dfe61ddc5a2b/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/dfe61ddc5a2b/&title=Ubuntu Linux 配置 MySQL 8.0"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/dfe61ddc5a2b/&title=Ubuntu Linux 配置 MySQL 8.0"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/dfe61ddc5a2b/&title=Ubuntu Linux 配置 MySQL 8.0"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/dfe61ddc5a2b/&title=Ubuntu Linux 配置 MySQL 8.0"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/dfe61ddc5a2b/&name=Ubuntu Linux 配置 MySQL 8.0&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/dfe61ddc5a2b/&t=Ubuntu Linux 配置 MySQL 8.0"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%8B%E8%BD%BD%E5%B9%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.</span> <span class="toc-text">1.下载并上传</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">2.修改配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%90%AF%E5%8A%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9C%8D%E5%8A%A1"><span class="toc-number">3.</span> <span class="toc-text">3.启动数据库服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%AE%BE%E7%BD%AE%E5%A4%96%E7%BD%91%E5%8F%AF%E4%BB%A5%E8%BF%9E%E6%8E%A5%EF%BC%88%E9%87%8D%E5%A4%B4%E6%88%8F%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">4.设置外网可以连接（重头戏）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E8%BF%9E%E6%8E%A5%E6%B5%8B%E8%AF%95"><span class="toc-number">5.</span> <span class="toc-text">5.连接测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B8%B8%E8%A7%84%E6%93%8D%E4%BD%9C"><span class="toc-number">6.</span> <span class="toc-text">6.MySQL数据库常规操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E7%94%A8%E6%88%B7"><span class="toc-number">6.1.</span> <span class="toc-text">添加用户</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81"><span class="toc-number">6.2.</span> <span class="toc-text">修改用户密码</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Ubuntu Linux 配置 MySQL 8.0
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">张林</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-12-06T06:55:06.000Z" itemprop="datePublished">2021-12-06</time>
+        
+        (Updated: <time datetime="2022-11-25T06:56:56.604Z" itemprop="dateModified">2022-11-25</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/MySQL/" rel="tag">MySQL</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>今晚给云服务器配<code>MySQL</code>出了不少奇怪的问题 感谢<a target="_blank" rel="noopener" href="https://juejin.cn/user/915274236957640">守望时空33</a>大佬的文章 让我解决所有问题  若大家是<code>Debian</code>系统，可直接看大佬的<a target="_blank" rel="noopener" href="https://juejin.cn/post/6989125524937244686#heading-5">博客 </a> </p>
+<h3 id="1-下载并上传"><a href="#1-下载并上传" class="headerlink" title="1.下载并上传"></a>1.下载并上传</h3><p>现在服务器执行: <code>sudo apt purge mariadb*</code></p>
+<p>在<a target="_blank" rel="noopener" href="https://dev.mysql.com/downloads/mysql/">下载页面</a>选择适合自己的版本</p>
+<p>在这里我选择：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/ce0cdd899e62ba95bb353ec829870206.png" alt="image-20211206205815515"></p>
+<p>将下载好的<code>tar</code>文件解压，将所有<code>deb</code>文件上传到指定路径，并进入该路径，安装所有<code>deb</code>文件</p>
+<p>例如:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir <span class="operator">/</span>root<span class="operator">/</span>MySQL8<span class="number">.0</span></span><br><span class="line">cd <span class="operator">/</span>root<span class="operator">/</span>MySQL8<span class="number">.0</span></span><br><span class="line"><span class="comment">-- 上传所有deb文件</span></span><br><span class="line">sudo dpkg <span class="operator">-</span>i <span class="operator">*</span>.deb</span><br></pre></td></tr></table></figure>
+
+<p>若安装后出现错误，可执行：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt <span class="keyword">update</span></span><br><span class="line">sudo apt install <span class="operator">-</span>f</span><br></pre></td></tr></table></figure>
+
+<p>成功后，会显示一个界面让你设置root密码，即数据库超级管理员root的密码，设置即可：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/6226db5ebd5d1e2907b97b8090d5b645.png" alt="image-20211206211202782"></p>
+<p>告知你MySQL 8.0 有新的加密方式，OK即可</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/efc5229797b51f4e21266683c5960086.png" alt="image-20211206211322231"></p>
+<p>然后会让你选择加密方式，有新加密方式和传统加密方式两种。这里需要说明的是如果选择新加密方式可能远程连接数据库时会报错，所以没特殊需要建议选择传统加密方式：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/4568e2cb70f9f0d416793cb7af1525b9.png" alt="image-20211206211630923"><br>如果刚才忘记设置密码了，可以通过以下命令设置密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">use mysql;</span><br><span class="line">alter user &#x27;root&#x27;@&#x27;localhost&#x27; IDENTIFIED WITH mysql_native_password BY &#x27;你的密码&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>完成安装</strong></p>
+<h3 id="2-修改配置文件"><a href="#2-修改配置文件" class="headerlink" title="2.修改配置文件"></a>2.修改配置文件</h3><p><code>MySQL 8</code>的配置文件在<code>/etc/mysql/my.cnf</code>，没有特殊需要一般不用修改。不过我们一般只需修改服务端的配置即可。服务端配置需要修改<code>/etc/mysql/mysql.conf.d/mysqld.cnf</code>文件，打开这个文件可以看到：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Copyright (c) 2014, 2021, Oracle and/or its affiliates.</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash"><span class="comment"># This program is free software; you can redistribute it and/or modify</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">it under the terms of the GNU General Public License, version 2.0,</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">as published by the Free Software Foundation.</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash"><span class="comment"># This program is also distributed with certain software (including</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">but not limited to OpenSSL) that is licensed under separate terms,</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">as designated <span class="keyword">in</span> a particular file or component or <span class="keyword">in</span> included license</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">documentation.  The authors of MySQL hereby grant you an additional</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">permission to <span class="built_in">link</span> the program and your derivative works with the</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">separately licensed software that they have included with MySQL.</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash"><span class="comment"># This program is distributed in the hope that it will be useful,</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">but WITHOUT ANY WARRANTY; without even the implied warranty of</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">GNU General Public License, version 2.0, <span class="keyword">for</span> more details.</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash"><span class="comment"># You should have received a copy of the GNU General Public License</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">along with this program; <span class="keyword">if</span> not, write to the Free Software</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash"><span class="comment"># The MySQL  Server configuration file.</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash"><span class="comment"># For explanations see</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">http://dev.mysql.com/doc/mysql/en/server-system-variables.html</span></span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line">pid-file        = /var/run/mysqld/mysqld.pid</span><br><span class="line">socket          = /var/run/mysqld/mysqld.sock</span><br><span class="line">datadir         = /var/lib/mysql</span><br><span class="line">log-error       = /var/log/mysql/error.log</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>上面<code>[mysqld]</code>表示一个配置组，即为服务端配置，这个配置组下面的四行配置依次代表：进程文件位置、socket文件位置、数据库存放文件夹和错误日志文件位置。</p>
+<p>通过在下面添加<code>port=自定义端口号</code>可以自定义端口号(默认为3306)<br>字符集，建议改成utf8mb4  <code>character-set-server=utf8mb4</code></p>
+<p>再修改<code>/etc/mysql/my.cnf</code>这个配置文件，加入<code>[client]</code>配置组（如果没有的话）并设置字符集，添加如下语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[client]</span><br><span class="line"><span class="keyword">default</span><span class="operator">-</span><span class="type">character</span><span class="operator">-</span><span class="keyword">set</span><span class="operator">=</span>utf8mb4</span><br></pre></td></tr></table></figure>
+
+<p>重启MySQL服务 见3</p>
+<h3 id="3-启动数据库服务"><a href="#3-启动数据库服务" class="headerlink" title="3.启动数据库服务"></a>3.启动数据库服务</h3><p>通过这个目录启动：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysql <span class="keyword">start</span></span><br></pre></td></tr></table></figure>
+
+<p>停止：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysql stop</span><br></pre></td></tr></table></figure>
+
+<p>重启（修改完配置文件重启生效）：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysql restart</span><br></pre></td></tr></table></figure>
+
+<p>安装完成，MySQL的服务端是默认开机自启动的，我们可以通过下列命令打开/关闭MySQL的开机自启动：</p>
+<p>允许开机自启：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable mysql</span><br></pre></td></tr></table></figure>
+
+<p>禁用开机自启：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl disable mysql</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-设置外网可以连接（重头戏）"><a href="#4-设置外网可以连接（重头戏）" class="headerlink" title="4.设置外网可以连接（重头戏）"></a>4.设置外网可以连接（重头戏）</h3><ul>
+<li>连接数据库</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql <span class="operator">-</span>u root <span class="operator">-</span>p</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>依次执行</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">use mysql;</span><br><span class="line"><span class="keyword">update</span> <span class="keyword">user</span> <span class="keyword">set</span> host<span class="operator">=</span><span class="string">&#x27;%&#x27;</span> <span class="keyword">where</span> <span class="keyword">user</span><span class="operator">=</span><span class="string">&#x27;root&#x27;</span>;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>host</code>原来为<code>localhost</code>，只能由本机访问，通过通配符<code>&#39;%&#39;</code>允许所有IP访问</p>
+<h3 id="5-连接测试"><a href="#5-连接测试" class="headerlink" title="5.连接测试"></a>5.连接测试</h3><p>我用本地Windows10进行测试</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/1c16a9409132b5f7d171e8d56f98e793.png" alt="image-20211206213249661"></p>
+<p><strong>连接成功！</strong></p>
+<h3 id="6-MySQL数据库常规操作"><a href="#6-MySQL数据库常规操作" class="headerlink" title="6.MySQL数据库常规操作"></a>6.MySQL数据库常规操作</h3><h4 id="添加用户"><a href="#添加用户" class="headerlink" title="添加用户"></a>添加用户</h4><p><code>create user &#39;用户名&#39;@&#39;可接受连接的主机的ip&#39; identified by &#39;用户密码&#39;;</code></p>
+<p>例如：</p>
+<p>创建用户a密码为123456，a只能从本机登录（主机字段为localhost）：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> <span class="string">&#x27;a&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> identified <span class="keyword">by</span> <span class="string">&#x27;123456&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>创建用户b密码为123456，b可以从外网任何主机远程登录（主机字段为%）：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> <span class="string">&#x27;b&#x27;</span>@<span class="string">&#x27;%&#x27;</span> identified <span class="keyword">by</span> <span class="string">&#x27;123456&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>然后授权用户：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grant</span> 权限 <span class="keyword">on</span> 授权可操作的数据库.授权可操作的表名 <span class="keyword">to</span> <span class="string">&#x27;被授权用户&#x27;</span>@<span class="string">&#x27;可操作的主机ip&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>其中权限字段有SELECT , INSERT , UPDATE等，若授予所有权限则这里填ALL。</p>
+<p>例如给b授予操作所有数据库的所有表的全部权限：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grant</span> <span class="keyword">ALL</span> <span class="keyword">on</span> <span class="operator">*</span>.<span class="operator">*</span> <span class="keyword">to</span> <span class="string">&#x27;b&#x27;</span>@<span class="string">&#x27;%&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，用以上命令授权的用户不能给其它用户授权,如果想让该用户可以授权,用如下的命令:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant 权限 on 授权可操作的数据库.授权可操作的表名 to &#x27;用户名&#x27;@&#x27;可操作主机&#x27; with grant option;</span><br></pre></td></tr></table></figure>
+
+<p>例如给b授予操作所有数据库的所有表的全部权限并有授权权限：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grant</span> <span class="keyword">ALL</span> <span class="keyword">on</span> <span class="operator">*</span>.<span class="operator">*</span> <span class="keyword">to</span> <span class="string">&#x27;b&#x27;</span>@<span class="string">&#x27;%&#x27;</span> <span class="keyword">with</span> <span class="keyword">grant</span> option;</span><br></pre></td></tr></table></figure>
+
+<h4 id="修改用户密码"><a href="#修改用户密码" class="headerlink" title="修改用户密码"></a>修改用户密码</h4><p>在MySQL8中，使用alter语句修改密码。先登录，然后执行以下语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">user</span> <span class="string">&#x27;用户名&#x27;</span>@<span class="string">&#x27;授权的登录地址&#x27;</span> identified <span class="keyword">by</span> <span class="string">&#x27;新密码&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>注意登录root或者任何高权限账户可以修改自己以及其他用户密码，而普通账户登录只能修改自己的密码。</p>
+<p><strong>其它的增删改查基本操作就不过多赘述</strong></p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%8B%E8%BD%BD%E5%B9%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.</span> <span class="toc-text">1.下载并上传</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">2.修改配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%90%AF%E5%8A%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9C%8D%E5%8A%A1"><span class="toc-number">3.</span> <span class="toc-text">3.启动数据库服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%AE%BE%E7%BD%AE%E5%A4%96%E7%BD%91%E5%8F%AF%E4%BB%A5%E8%BF%9E%E6%8E%A5%EF%BC%88%E9%87%8D%E5%A4%B4%E6%88%8F%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">4.设置外网可以连接（重头戏）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E8%BF%9E%E6%8E%A5%E6%B5%8B%E8%AF%95"><span class="toc-number">5.</span> <span class="toc-text">5.连接测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B8%B8%E8%A7%84%E6%93%8D%E4%BD%9C"><span class="toc-number">6.</span> <span class="toc-text">6.MySQL数据库常规操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E7%94%A8%E6%88%B7"><span class="toc-number">6.1.</span> <span class="toc-text">添加用户</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81"><span class="toc-number">6.2.</span> <span class="toc-text">修改用户密码</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/dfe61ddc5a2b/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/dfe61ddc5a2b/&text=Ubuntu Linux 配置 MySQL 8.0"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/dfe61ddc5a2b/&title=Ubuntu Linux 配置 MySQL 8.0"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/dfe61ddc5a2b/&is_video=false&description=Ubuntu Linux 配置 MySQL 8.0"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Ubuntu Linux 配置 MySQL 8.0&body=Check out this article: https://blog.zhang0.cool/dfe61ddc5a2b/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/dfe61ddc5a2b/&title=Ubuntu Linux 配置 MySQL 8.0"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/dfe61ddc5a2b/&title=Ubuntu Linux 配置 MySQL 8.0"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/dfe61ddc5a2b/&title=Ubuntu Linux 配置 MySQL 8.0"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/dfe61ddc5a2b/&title=Ubuntu Linux 配置 MySQL 8.0"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/dfe61ddc5a2b/&name=Ubuntu Linux 配置 MySQL 8.0&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/dfe61ddc5a2b/&t=Ubuntu Linux 配置 MySQL 8.0"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+      
+        
+          2022
+            <a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">
+              苏ICP备2022044873号
+            </a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <!--
+       -->
+          <li><a href="/">
+              Home
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/about/">
+              About
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/archives/">
+              Articles
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/categories/">
+              Category
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/search/">
+              Search
+            </a></li>
+          <!--
+     -->
+          
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+ 
+  <link
+    rel="preload"
+    href="/lib/font-awesome/css/all.min.css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript
+    ><link
+      rel="stylesheet"
+      href="/lib/font-awesome/css/all.min.css"
+  /></noscript>
+
+
+
+    <!-- jquery -->
+ 
+  
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+
+
+
+<!-- clipboard -->
+
+   
+    
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'Cheung0-bit/fuzzy_ahp';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

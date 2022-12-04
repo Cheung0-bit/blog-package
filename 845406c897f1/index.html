@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="概述为解决二叉搜索树退化成一张链表的情况，改进出了AVL（取名与作者G.M.Adelson-Velsky和E.M.Landis） 一颗AVL具备的条件：  必须是一颗BST 每个节点的左右子树高度至多相差1  AVL树的查找、插入、删除等操作在平均和最坏的情况下都是O(logN)，得益于其一直在动态的维护平衡性 相关参数 平衡因子 左子树高度减去右子树高度的值称为该节点的平衡因子BF(Balanc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="平衡树">
+<meta property="og:url" content="https://blog.zhang0.cool/845406c897f1/index.html">
+<meta property="og:site_name" content="小小小张的博客">
+<meta property="og:description" content="概述为解决二叉搜索树退化成一张链表的情况，改进出了AVL（取名与作者G.M.Adelson-Velsky和E.M.Landis） 一颗AVL具备的条件：  必须是一颗BST 每个节点的左右子树高度至多相差1  AVL树的查找、插入、删除等操作在平均和最坏的情况下都是O(logN)，得益于其一直在动态的维护平衡性 相关参数 平衡因子 左子树高度减去右子树高度的值称为该节点的平衡因子BF(Balanc">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220723165252254.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220723165416390.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220723165429874.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220723165447301.png">
+<meta property="article:published_time" content="2022-08-19T13:21:00.000Z">
+<meta property="article:modified_time" content="2022-11-25T07:06:49.533Z">
+<meta property="article:author" content="张林">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220723165252254.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>平衡树</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="小小小张的博客" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Articles</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/45f7bd58d3ed/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/44fde5c3052e/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/845406c897f1/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/845406c897f1/&text=平衡树"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/845406c897f1/&title=平衡树"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/845406c897f1/&is_video=false&description=平衡树"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=平衡树&body=Check out this article: https://blog.zhang0.cool/845406c897f1/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/845406c897f1/&title=平衡树"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/845406c897f1/&title=平衡树"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/845406c897f1/&title=平衡树"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/845406c897f1/&title=平衡树"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/845406c897f1/&name=平衡树&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/845406c897f1/&t=平衡树"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E5%8F%82%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">相关参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E6%95%B4%E6%96%B9%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">调整方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">4.</span> <span class="toc-text">代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LL%E5%9E%8B%E5%B9%B3%E8%A1%A1"><span class="toc-number">4.1.</span> <span class="toc-text">LL型平衡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RR%E5%9E%8B%E5%B9%B3%E8%A1%A1"><span class="toc-number">4.2.</span> <span class="toc-text">RR型平衡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LR%E5%9E%8B%E5%B9%B3%E8%A1%A1"><span class="toc-number">4.3.</span> <span class="toc-text">LR型平衡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RL%E5%9E%8B%E5%B9%B3%E8%A1%A1"><span class="toc-number">4.4.</span> <span class="toc-text">RL型平衡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B3%E8%A1%A1%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91"><span class="toc-number">4.5.</span> <span class="toc-text">平衡实现逻辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8BAVL%E9%80%BB%E8%BE%91"><span class="toc-number">4.6.</span> <span class="toc-text">建立AVL逻辑</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E6%B5%8B%E8%AF%95"><span class="toc-number">5.</span> <span class="toc-text">功能测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E4%BB%B7%E5%88%86%E6%9E%90"><span class="toc-number">6.</span> <span class="toc-text">代价分析</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        平衡树
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">张林</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-08-19T13:21:00.000Z" itemprop="datePublished">2022-08-19</time>
+        
+        (Updated: <time datetime="2022-11-25T07:06:49.533Z" itemprop="dateModified">2022-11-25</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>为解决二叉搜索树退化成一张链表的情况，改进出了AVL（取名与作者<code>G.M.Adelson-Velsky</code>和<code>E.M.Landis</code>）</p>
+<p>一颗AVL具备的条件：</p>
+<ul>
+<li>必须是一颗BST</li>
+<li>每个节点的左右子树高度至多相差1</li>
+</ul>
+<p>AVL树的查找、插入、删除等操作在平均和最坏的情况下都是O(logN)，得益于其一直在动态的维护平衡性</p>
+<h2 id="相关参数"><a href="#相关参数" class="headerlink" title="相关参数"></a>相关参数</h2><ul>
+<li><p>平衡因子</p>
+<p>左子树高度减去右子树高度的值称为该节点的平衡因子BF(Balance Factor)。若BF的绝对值大于1，则表明需要进行调整</p>
+</li>
+<li><p>最小不平衡子树</p>
+<p>距离插入节点最近的，且平衡因子的绝对值大于1的节点为根的子树</p>
+</li>
+</ul>
+<h2 id="调整方式"><a href="#调整方式" class="headerlink" title="调整方式"></a>调整方式</h2><ul>
+<li><p>LL型</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220723165252254.png" alt="image-20220723165252254"></p>
+</li>
+<li><p>RR型</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220723165416390.png" alt="image-20220723165416390"></p>
+</li>
+<li><p>LR型</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220723165429874.png" alt="image-20220723165429874"></p>
+</li>
+<li><p>RL型</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220723165447301.png" alt="image-20220723165447301"></p>
+</li>
+</ul>
+<p>其中LL和RR型就可以看成将中间的节点”拎起来“</p>
+<p>LR和RL型就先将拐出来的部分旋转为LL和RR型，再进行对应的操作</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="LL型平衡"><a href="#LL型平衡" class="headerlink" title="LL型平衡"></a>LL型平衡</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Node&lt;T&gt; <span class="title function_">llRotate</span><span class="params">(Node&lt;T&gt; avlNode)</span> &#123;</span><br><span class="line">        Node&lt;T&gt; node = avlNode.leftChild;</span><br><span class="line">        avlNode.leftChild = node.rightChild;</span><br><span class="line">        node.rightChild = avlNode;</span><br><span class="line">        <span class="keyword">return</span> node;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="RR型平衡"><a href="#RR型平衡" class="headerlink" title="RR型平衡"></a>RR型平衡</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Node&lt;T&gt; <span class="title function_">rrRotate</span><span class="params">(Node&lt;T&gt; avlNode)</span> &#123;</span><br><span class="line">        Node&lt;T&gt; node = avlNode.rightChild;</span><br><span class="line">        avlNode.rightChild = node.leftChild;</span><br><span class="line">        node.leftChild = avlNode;</span><br><span class="line">        <span class="keyword">return</span> node;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="LR型平衡"><a href="#LR型平衡" class="headerlink" title="LR型平衡"></a>LR型平衡</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Node&lt;T&gt; <span class="title function_">lrRotate</span><span class="params">(Node&lt;T&gt; avlNode)</span> &#123;</span><br><span class="line">        avlNode.leftChild = rrRotate(avlNode.leftChild);</span><br><span class="line">        <span class="keyword">return</span> llRotate(avlNode);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="RL型平衡"><a href="#RL型平衡" class="headerlink" title="RL型平衡"></a>RL型平衡</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Node&lt;T&gt; <span class="title function_">rlRotate</span><span class="params">(Node&lt;T&gt; avlNode)</span> &#123;</span><br><span class="line">        avlNode.rightChild = llRotate(avlNode.rightChild);</span><br><span class="line">        <span class="keyword">return</span> rrRotate(avlNode);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="平衡实现逻辑"><a href="#平衡实现逻辑" class="headerlink" title="平衡实现逻辑"></a>平衡实现逻辑</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Node&lt;T&gt; <span class="title function_">balance</span><span class="params">(Node&lt;T&gt; node)</span> &#123;</span><br><span class="line">    <span class="comment">// 左子树比右子树高度大于1以上</span></span><br><span class="line">    <span class="keyword">if</span> (getAvlTreeHeight(node.leftChild) - getAvlTreeHeight(node.rightChild) &gt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (getAvlTreeHeight(node.leftChild.leftChild) &gt;= getAvlTreeHeight(node.leftChild.rightChild)) &#123;</span><br><span class="line">            <span class="comment">// 执行LL型调整</span></span><br><span class="line">            node = llRotate(node);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 执行LR型调整</span></span><br><span class="line">            node = lrRotate(node);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (getAvlTreeHeight(node.rightChild) - getAvlTreeHeight(node.leftChild) &gt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (getAvlTreeHeight(node.rightChild.rightChild) &gt;= getAvlTreeHeight(node.rightChild.leftChild)) &#123;</span><br><span class="line">            <span class="comment">// 执行RR型调整</span></span><br><span class="line">            node = rrRotate(node);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 执行RL型调整</span></span><br><span class="line">            node = rlRotate(node);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> node;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="建立AVL逻辑"><a href="#建立AVL逻辑" class="headerlink" title="建立AVL逻辑"></a>建立AVL逻辑</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">createTree</span><span class="params">(T data)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (data == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    root = insert(root, data);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Node&lt;T&gt; <span class="title function_">insert</span><span class="params">(Node&lt;T&gt; root, T data)</span> &#123;</span><br><span class="line">    <span class="comment">// 根节点为空，说明树为空，则创建一颗树</span></span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Node</span>&lt;&gt;(data);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (compare(root, data) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            root.leftChild = insert(root.leftChild, data);</span><br><span class="line">            root = balance(root);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (compare(root, data) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            root.rightChild = insert(root.rightChild, data);</span><br><span class="line">            root = balance(root);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="功能测试"><a href="#功能测试" class="headerlink" title="功能测试"></a>功能测试</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Integer[] arrays = <span class="keyword">new</span> <span class="title class_">Integer</span>[]&#123;<span class="number">26</span>, <span class="number">21</span>, <span class="number">30</span>, <span class="number">50</span>, <span class="number">60</span>, <span class="number">66</span>, <span class="number">68</span>, <span class="number">70</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">createAvlTree</span><span class="params">()</span> &#123;</span><br><span class="line">    AvlTree&lt;Integer&gt; avlTree = <span class="keyword">new</span> <span class="title class_">AvlTree</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (Integer data : arrays) &#123;</span><br><span class="line">        avlTree.createTree(data);</span><br><span class="line">    &#125;</span><br><span class="line">    avlTree.printTree();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">前序遍历： 26 21 66 50 30 60 68 70 </span><br><span class="line">中序遍历： 21 26 30 50 60 66 68 70 </span><br><span class="line">后序遍历： 21 30 60 50 70 68 66 26 </span><br></pre></td></tr></table></figure>
+
+<h2 id="代价分析"><a href="#代价分析" class="headerlink" title="代价分析"></a>代价分析</h2><ul>
+<li>查找：效率很好，平均情况和最坏情况都是O(logN)</li>
+<li>插入：每插入一个节点至多需要旋一次旋转。总体时间复杂度为O(logN)</li>
+<li>删除：每一次删除最多需要O(logN)次旋转，复杂度为O(logN)</li>
+</ul>
+<p>AVL树的结构相当的稳定，故查询效率相当的高。但每次插入或删除节点时都会进行动态的维护平衡，带来了不小i的时间成本。所以当查询和删除频率不高时，采用AVL树可以带来极高的查询效率。但当插入和删除频率较高时，AVL的性能并不理想，此时，我们选择采用红黑树</p>
+<p>相关代码可以在 <a target="_blank" rel="noopener" href="https://github.com/Cheung0-bit/tree-practice">https://github.com/Cheung0-bit/tree-practice</a> 中找到</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E5%8F%82%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">相关参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E6%95%B4%E6%96%B9%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">调整方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">4.</span> <span class="toc-text">代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LL%E5%9E%8B%E5%B9%B3%E8%A1%A1"><span class="toc-number">4.1.</span> <span class="toc-text">LL型平衡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RR%E5%9E%8B%E5%B9%B3%E8%A1%A1"><span class="toc-number">4.2.</span> <span class="toc-text">RR型平衡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LR%E5%9E%8B%E5%B9%B3%E8%A1%A1"><span class="toc-number">4.3.</span> <span class="toc-text">LR型平衡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RL%E5%9E%8B%E5%B9%B3%E8%A1%A1"><span class="toc-number">4.4.</span> <span class="toc-text">RL型平衡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B3%E8%A1%A1%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91"><span class="toc-number">4.5.</span> <span class="toc-text">平衡实现逻辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8BAVL%E9%80%BB%E8%BE%91"><span class="toc-number">4.6.</span> <span class="toc-text">建立AVL逻辑</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E6%B5%8B%E8%AF%95"><span class="toc-number">5.</span> <span class="toc-text">功能测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E4%BB%B7%E5%88%86%E6%9E%90"><span class="toc-number">6.</span> <span class="toc-text">代价分析</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/845406c897f1/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/845406c897f1/&text=平衡树"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/845406c897f1/&title=平衡树"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/845406c897f1/&is_video=false&description=平衡树"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=平衡树&body=Check out this article: https://blog.zhang0.cool/845406c897f1/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/845406c897f1/&title=平衡树"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/845406c897f1/&title=平衡树"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/845406c897f1/&title=平衡树"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/845406c897f1/&title=平衡树"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/845406c897f1/&name=平衡树&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/845406c897f1/&t=平衡树"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+      
+        
+          2022
+            <a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">
+              苏ICP备2022044873号
+            </a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <!--
+       -->
+          <li><a href="/">
+              Home
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/about/">
+              About
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/archives/">
+              Articles
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/categories/">
+              Category
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/search/">
+              Search
+            </a></li>
+          <!--
+     -->
+          
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+ 
+  <link
+    rel="preload"
+    href="/lib/font-awesome/css/all.min.css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript
+    ><link
+      rel="stylesheet"
+      href="/lib/font-awesome/css/all.min.css"
+  /></noscript>
+
+
+
+    <!-- jquery -->
+ 
+  
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+
+
+
+<!-- clipboard -->
+
+   
+    
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'Cheung0-bit/fuzzy_ahp';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

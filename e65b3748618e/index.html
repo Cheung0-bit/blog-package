@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="首先，我们查看Docket的源码，可以看到有一个控制返回码的字段属性  以及对应的方法  可见，我们要创建一个新的Docket实例，并在其中修改返回码配置 参考globalResponses方法，我们需要准备好两个参数，HttpMethod和Response的List 查看HttpMethod源码，易得即是一个常用请求方法的枚举类：  查看Response的源码，我们仅需要准备好code、desc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="修改Swagger接口文档网络请求返回状态码">
+<meta property="og:url" content="https://blog.zhang0.cool/e65b3748618e/index.html">
+<meta property="og:site_name" content="小小小张的博客">
+<meta property="og:description" content="首先，我们查看Docket的源码，可以看到有一个控制返回码的字段属性  以及对应的方法  可见，我们要创建一个新的Docket实例，并在其中修改返回码配置 参考globalResponses方法，我们需要准备好两个参数，HttpMethod和Response的List 查看HttpMethod源码，易得即是一个常用请求方法的枚举类：  查看Response的源码，我们仅需要准备好code、desc">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/390be8f2d818aad2646e22154887a0dc.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/597567d5e61bf1907728596ba33f1d58.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/2b48fdfa9baf9fcef064b8fac18333f2.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/3e91b242ac4e94026de7867206b9bc23.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/1903fd6ccc4690637941d3cfabbc4244.png">
+<meta property="article:published_time" content="2022-02-02T12:45:52.000Z">
+<meta property="article:modified_time" content="2022-11-25T06:46:47.624Z">
+<meta property="article:author" content="张林">
+<meta property="article:tag" content="swagger">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/390be8f2d818aad2646e22154887a0dc.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>修改Swagger接口文档网络请求返回状态码</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="小小小张的博客" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Articles</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/3652aaf5d3b9/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/9949ada0ba31/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/e65b3748618e/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/e65b3748618e/&text=修改Swagger接口文档网络请求返回状态码"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/e65b3748618e/&title=修改Swagger接口文档网络请求返回状态码"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/e65b3748618e/&is_video=false&description=修改Swagger接口文档网络请求返回状态码"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=修改Swagger接口文档网络请求返回状态码&body=Check out this article: https://blog.zhang0.cool/e65b3748618e/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/e65b3748618e/&title=修改Swagger接口文档网络请求返回状态码"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/e65b3748618e/&title=修改Swagger接口文档网络请求返回状态码"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/e65b3748618e/&title=修改Swagger接口文档网络请求返回状态码"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/e65b3748618e/&title=修改Swagger接口文档网络请求返回状态码"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/e65b3748618e/&name=修改Swagger接口文档网络请求返回状态码&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/e65b3748618e/&t=修改Swagger接口文档网络请求返回状态码"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        修改Swagger接口文档网络请求返回状态码
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">张林</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-02-02T12:45:52.000Z" itemprop="datePublished">2022-02-02</time>
+        
+        (Updated: <time datetime="2022-11-25T06:46:47.624Z" itemprop="dateModified">2022-11-25</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%BC%80%E5%8F%91%E5%AE%9E%E8%B7%B5/">开发实践</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/swagger/" rel="tag">swagger</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>首先，我们查看<code>Docket</code>的源码，可以看到有一个控制返回码的字段属性</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/390be8f2d818aad2646e22154887a0dc.png" alt="image-20220202161613609"></p>
+<p>以及对应的方法</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/597567d5e61bf1907728596ba33f1d58.png" alt="image-20220202161726224"></p>
+<p>可见，我们要创建一个新的<code>Docket</code>实例，并在其中修改返回码配置</p>
+<p>参考<code>globalResponses</code>方法，我们需要准备好两个参数，<code>HttpMethod</code>和<code>Response</code>的<code>List</code></p>
+<p>查看<code>HttpMethod</code>源码，易得即是一个常用请求方法的枚举类：</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/2b48fdfa9baf9fcef064b8fac18333f2.png" alt="image-20220202162130948"></p>
+<p>查看<code>Response</code>的源码，我们仅需要准备好<code>code</code>、<code>description</code>即可</p>
+<p>因此，我在<code>model</code>包中定义一个<code>ResultCode</code>的枚举类，并作简单的封装</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/3e91b242ac4e94026de7867206b9bc23.png" alt="image-20220202151049609"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> tech.maiquer.metrichall.model;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">ResultCode</span> &#123;</span><br><span class="line"></span><br><span class="line">    SUCCESS(<span class="number">200</span>, <span class="string">&quot;成功&quot;</span>),</span><br><span class="line">    PARAM_IS_INVALID(<span class="number">1001</span>, <span class="string">&quot;参数无效&quot;</span>),</span><br><span class="line">    PARAM_IS_BLANK(<span class="number">1002</span>, <span class="string">&quot;参数为空&quot;</span>),</span><br><span class="line">    USER_NOT_LOGGED_IN(<span class="number">2001</span>, <span class="string">&quot;用户未登录&quot;</span>),</span><br><span class="line">    USER_LOGIN_ERROR(<span class="number">2002</span>, <span class="string">&quot;用户不存在或密码错误&quot;</span>),</span><br><span class="line">    USER_NOT_EXIST(<span class="number">2003</span>, <span class="string">&quot;用户不存在&quot;</span>),</span><br><span class="line">    USER_HAS_EXISTED(<span class="number">2004</span>, <span class="string">&quot;用户已存在&quot;</span>),</span><br><span class="line">    INSERT_FAIL(<span class="number">3001</span>, <span class="string">&quot;添加失败&quot;</span>),</span><br><span class="line">    DELETE_FAIL(<span class="number">3002</span>, <span class="string">&quot;删除失败&quot;</span>),</span><br><span class="line">    UPDATE_FAIL(<span class="number">3003</span>, <span class="string">&quot;更新失败&quot;</span>),</span><br><span class="line">    QUERY_FAIL(<span class="number">3004</span>, <span class="string">&quot;查询为空&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer code;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String message;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Integer <span class="title function_">getCode</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getMessage</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> message;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ResultCode(Integer code, String message) &#123;</span><br><span class="line">        <span class="built_in">this</span>.code = code;</span><br><span class="line">        <span class="built_in">this</span>.message = message;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>SwaggerConfig</code>中，通过流操作，封装好自定义的返回状态码到<code>Response</code>的<code>List</code>列表中，并将其封装到<code>Docket</code>实例并返回</p>
+<p><strong>封装<code>Response</code>并组装</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> Docket <span class="title function_">docket</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">        List&lt;Response&gt; responseList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        Arrays.stream(ResultCode.values()).forEach(resultCode -&gt; &#123;</span><br><span class="line">            responseList.add(</span><br><span class="line">                    <span class="keyword">new</span> <span class="title class_">ResponseBuilder</span>().code(resultCode.getCode().toString()).description(resultCode.getMessage()).build()</span><br><span class="line">            );</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Docket</span>(DocumentationType.OAS_30)</span><br><span class="line">                .globalResponses(GET, responseList)</span><br><span class="line">                .globalResponses(POST, responseList)</span><br><span class="line">                .globalResponses(PUT, responseList)</span><br><span class="line">                .globalResponses(DELETE, responseList);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>查看效果：</strong></p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/1903fd6ccc4690637941d3cfabbc4244.png" alt="image-20220202162735435"></p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/e65b3748618e/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/e65b3748618e/&text=修改Swagger接口文档网络请求返回状态码"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/e65b3748618e/&title=修改Swagger接口文档网络请求返回状态码"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/e65b3748618e/&is_video=false&description=修改Swagger接口文档网络请求返回状态码"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=修改Swagger接口文档网络请求返回状态码&body=Check out this article: https://blog.zhang0.cool/e65b3748618e/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/e65b3748618e/&title=修改Swagger接口文档网络请求返回状态码"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/e65b3748618e/&title=修改Swagger接口文档网络请求返回状态码"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/e65b3748618e/&title=修改Swagger接口文档网络请求返回状态码"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/e65b3748618e/&title=修改Swagger接口文档网络请求返回状态码"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/e65b3748618e/&name=修改Swagger接口文档网络请求返回状态码&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/e65b3748618e/&t=修改Swagger接口文档网络请求返回状态码"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+      
+        
+          2022
+            <a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">
+              苏ICP备2022044873号
+            </a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <!--
+       -->
+          <li><a href="/">
+              Home
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/about/">
+              About
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/archives/">
+              Articles
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/categories/">
+              Category
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/search/">
+              Search
+            </a></li>
+          <!--
+     -->
+          
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+ 
+  <link
+    rel="preload"
+    href="/lib/font-awesome/css/all.min.css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript
+    ><link
+      rel="stylesheet"
+      href="/lib/font-awesome/css/all.min.css"
+  /></noscript>
+
+
+
+    <!-- jquery -->
+ 
+  
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+
+
+
+<!-- clipboard -->
+
+   
+    
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'Cheung0-bit/fuzzy_ahp';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

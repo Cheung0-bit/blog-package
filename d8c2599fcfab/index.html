@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="运输层协议概述进程之间的通信 运输层向它上面的应用层提供通信服务，它属于面向通信部分的最高层，同时也是用户功能中的最低层。 两个主机进行通信实际上就是两个主机中的应用进程互相通信。  应用进程之间的通信又称为端到端的通信。   两个主要协议 用户数据报UDP（User Datagram Protocol） 传输控制协议TCP（Transmission Control Protocol）  端口 软">
+<meta property="og:type" content="article">
+<meta property="og:title" content="传输层">
+<meta property="og:url" content="https://blog.zhang0.cool/d8c2599fcfab/index.html">
+<meta property="og:site_name" content="小小小张的博客">
+<meta property="og:description" content="运输层协议概述进程之间的通信 运输层向它上面的应用层提供通信服务，它属于面向通信部分的最高层，同时也是用户功能中的最低层。 两个主机进行通信实际上就是两个主机中的应用进程互相通信。  应用进程之间的通信又称为端到端的通信。   两个主要协议 用户数据报UDP（User Datagram Protocol） 传输控制协议TCP（Transmission Control Protocol）  端口 软">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625103432026.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625104615978.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625120133843.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625121003361.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625123244558.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625144640860.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145317503.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145533080.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145545159.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145553012.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145600559.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145609467.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145617619.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145625882.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145632776.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145641796.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145648368.png">
+<meta property="article:published_time" content="2022-06-25T13:02:46.000Z">
+<meta property="article:modified_time" content="2022-11-25T06:51:56.999Z">
+<meta property="article:author" content="张林">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625103432026.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>传输层</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="小小小张的博客" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Articles</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/d2bd664fbfc3/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/e421777b34f1/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/d8c2599fcfab/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/d8c2599fcfab/&text=传输层"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/d8c2599fcfab/&title=传输层"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/d8c2599fcfab/&is_video=false&description=传输层"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=传输层&body=Check out this article: https://blog.zhang0.cool/d8c2599fcfab/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/d8c2599fcfab/&title=传输层"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/d8c2599fcfab/&title=传输层"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/d8c2599fcfab/&title=传输层"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/d8c2599fcfab/&title=传输层"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/d8c2599fcfab/&name=传输层&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/d8c2599fcfab/&t=传输层"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%90%E8%BE%93%E5%B1%82"><span class="toc-number">1.</span> <span class="toc-text">运输层</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">协议概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E4%B9%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1"><span class="toc-number">1.1.1.</span> <span class="toc-text">进程之间的通信</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A4%E4%B8%AA%E4%B8%BB%E8%A6%81%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.1.2.</span> <span class="toc-text">两个主要协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3"><span class="toc-number">1.1.3.</span> <span class="toc-text">端口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E5%8D%8F%E8%AE%AE%E6%8A%A5UDP"><span class="toc-number">1.2.</span> <span class="toc-text">用户数据协议报UDP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#UDP%E6%A6%82%E8%BF%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text">UDP概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UDP%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.2.2.</span> <span class="toc-text">UDP首部格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8EUDP%E7%9A%84%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.2.3.</span> <span class="toc-text">基于UDP的协议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%A0%E8%BE%93%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AETCP"><span class="toc-number">1.3.</span> <span class="toc-text">传输控制协议TCP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP%E4%B8%BB%E8%A6%81%E6%A6%82%E5%BF%B5"><span class="toc-number">1.3.1.</span> <span class="toc-text">TCP主要概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.3.2.</span> <span class="toc-text">TCP首部格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93"><span class="toc-number">1.3.3.</span> <span class="toc-text">TCP可靠传输</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6"><span class="toc-number">1.3.4.</span> <span class="toc-text">TCP连接管理机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP%E7%9A%84%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA%E7%A4%BA%E6%84%8F%E5%9B%BE"><span class="toc-number">1.3.5.</span> <span class="toc-text">TCP的有限状态机示意图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98"><span class="toc-number">1.4.</span> <span class="toc-text">例题</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        传输层
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">张林</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-06-25T13:02:46.000Z" itemprop="datePublished">2022-06-25</time>
+        
+        (Updated: <time datetime="2022-11-25T06:51:56.999Z" itemprop="dateModified">2022-11-25</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="运输层"><a href="#运输层" class="headerlink" title="运输层"></a>运输层</h1><h2 id="协议概述"><a href="#协议概述" class="headerlink" title="协议概述"></a>协议概述</h2><h3 id="进程之间的通信"><a href="#进程之间的通信" class="headerlink" title="进程之间的通信"></a>进程之间的通信</h3><ul>
+<li>运输层向它上面的应用层提供通信服务，它属于面向通信部分的最高层，同时也是用户功能中的最低层。</li>
+<li>两个主机进行通信实际上就是两个主机中的应用进程互相通信。 </li>
+<li>应用进程之间的通信又称为<strong>端到端的通信</strong>。 </li>
+</ul>
+<h3 id="两个主要协议"><a href="#两个主要协议" class="headerlink" title="两个主要协议"></a>两个主要协议</h3><ul>
+<li>用户数据报UDP（User Datagram Protocol）</li>
+<li>传输控制协议TCP（Transmission Control Protocol）</li>
+</ul>
+<h3 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h3><ul>
+<li>软件端口和硬件端口<ul>
+<li>在协议层间的抽象的协议端口是软件端口</li>
+<li>路由器或交换机上的端口是硬件端口</li>
+</ul>
+</li>
+<li>三类端口<ul>
+<li>熟知端口 0-1023</li>
+<li>登记端口号 1024-49151</li>
+<li>客户端口号或短暂端口号 49152-65535</li>
+</ul>
+</li>
+</ul>
+<h2 id="用户数据协议报UDP"><a href="#用户数据协议报UDP" class="headerlink" title="用户数据协议报UDP"></a>用户数据协议报UDP</h2><h3 id="UDP概述"><a href="#UDP概述" class="headerlink" title="UDP概述"></a>UDP概述</h3><blockquote>
+<p>用户数据报协议 UDP（User Datagram Protocol）是无连接的，尽最大可能交付，没有拥塞控制，面向报文（对于应用程序传下来的报文不合并也不拆分，只是添加 UDP 首部），支持一对一、一对多、多对一和多对多的交互通信</p>
+</blockquote>
+<ul>
+<li>UDP为应用层提供 <strong>不可靠、无连接、基于数据报的服务</strong><ul>
+<li><strong>不可靠</strong>：不保证数据从发送端正确地传送到目的端，也无须为应用层数据保存副本，出现问题时（丢包，错序达到等） <code>UDP协议</code> 只是简单地通知应用程序发送失败。因此，使用 <code>UDP协议</code> 的应用程序通常需要自己处理数据确认、超时重传等逻辑</li>
+<li><strong>无连接</strong>： 不需要建立连接也可以发送数据。通信双方每次发送数据都需要指定接收端的地址</li>
+<li><strong>基于数据报的服务</strong>：每个UDP数据包都有一个长度，接收端必须以该长度为最小单位将其所有内容一次性读出，否则数据将被截断</li>
+</ul>
+</li>
+</ul>
+<h3 id="UDP首部格式"><a href="#UDP首部格式" class="headerlink" title="UDP首部格式"></a>UDP首部格式</h3><p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625103432026.png" alt="image-20220625103432026"></p>
+<ul>
+<li>16位源端端口/目的端口</li>
+<li>16位数据包长度：标志UDP首部与发送数据的长度之和，大小为2^16，即64K</li>
+<li>16位校验和： 用于校验接受的数据与发送的数据是否一致，不一致则丢弃。<ul>
+<li>校验方法：CRC</li>
+</ul>
+</li>
+</ul>
+<h3 id="基于UDP的协议"><a href="#基于UDP的协议" class="headerlink" title="基于UDP的协议"></a>基于UDP的协议</h3><ul>
+<li>NFS: 网络文件系统</li>
+<li>TFTP: 简单文件传输协议、</li>
+<li>DHCP：动态主机配置协议</li>
+<li>BOOTP：启动协议（用于无盘设备启动）</li>
+<li>DNS：域名解析协议</li>
+</ul>
+<h2 id="传输控制协议TCP"><a href="#传输控制协议TCP" class="headerlink" title="传输控制协议TCP"></a>传输控制协议TCP</h2><h3 id="TCP主要概念"><a href="#TCP主要概念" class="headerlink" title="TCP主要概念"></a>TCP主要概念</h3><ul>
+<li><p>TCP协议为应用层提供<strong>可靠的、面向连接、基于流的服务</strong></p>
+<ul>
+<li><strong>可靠</strong>： 通过超时重传、数据确认等方式来确保数据报被正确地发送至目的端</li>
+<li><strong>面向连接</strong>： 双方都必须先分配必要的内核资源以建立全双工的连接，才能开始数据的读写</li>
+<li><strong>基于流</strong>：基于流的数据没有边界限制</li>
+</ul>
+</li>
+<li><p>TCP的连接</p>
+<ul>
+<li>TCP连接的端点叫做套接字（socket）或插口<ul>
+<li>Socket = IP: Port</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="TCP首部格式"><a href="#TCP首部格式" class="headerlink" title="TCP首部格式"></a>TCP首部格式</h3><p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625104615978.png" alt="image-20220625104615978"></p>
+<ul>
+<li><p>16位源端口/目的端口：表示源端口/目的端口的端口号，源端口有时可以不设置</p>
+</li>
+<li><p>32位序号： 序号是指发送数据的位置。每发送一次数据，就累加一次该数据字节数的大小。序号不会从 0 或 1 开始，而是在建立连接时由计算机生成的随机数作为其初始值（<code>ISN</code>，初始序号值），通过 <code>SYN</code>包 传给接收端主机。后续报文中序号值将被设置为 <code>ISN</code>+报文携带数据的第一个字节在整个字节流中的偏移 。如：后续 某个TCP报文段 传送的数据是字节流中的 第 1025~2048 字节 ，那么该报文段的序号值为 <code>ISN</code>+1025</p>
+</li>
+<li><p>32位确认序号： 对发送端发来的TCP报文段的响应，其值是 <strong>收到的TCP报文段的序号+1</strong> 。而发送端接收到这个确认序号以后可以认为在确认序号以前的数据都已经被正常接收。TCP通过序号和确认序号来实现包序管理，确保TCP数据是有序交付的</p>
+</li>
+<li><p>4位数据偏移：标识该TCP头部有多少个32bit。所以TCP头部最长是60字节</p>
+</li>
+<li><p>6位保留位：保留今后使用</p>
+</li>
+<li><p>6位标志位</p>
+<ul>
+<li>URG(Urgent Flag)：该位为 1 时，表示包中有需要紧急处理的数据</li>
+<li>ACK(Acknowledge): 该位为1时，确认应答的字段变为有效。携带ACK标志的称为确认报文段</li>
+<li>PSH(Push Flag)： 该位为1时，表示接收端应该立刻从 TCP接收缓冲区中读走数据，传输给上层的应用。为0时，则不需要立即读取而是先进行缓存</li>
+<li>RST(Reset Flag)： 该位为1时，要求接收方重新建立连接。携带RST标志的称为<strong>复位报文段</strong></li>
+<li>SYN(Synchronize Flag)：SYN为1表示希望建立连接，并在其序列号的字段进行序列号初始值的设定。携带SYN标志的称为<strong>同步报文段</strong> </li>
+<li>FIN(Finish Flag)：该位为 1 时，表示通知对方本端今后不会再有数据发送，希望断开连接。当通信结束希望断开连接时，通信双方的主机之间就可以相互交换FIN位置为 1 的TCP段。每个主机又对对方的FIN包进行确认应答以后就可以断开连接。不过，主机收到FIN设置为 1 的TCP端以后不必马上回复一个FIN包，而是可以等到缓冲区中所有数据都已成功发送而被自动删除之后再发。携带FIN标志的称为<strong>结束报文段</strong> </li>
+</ul>
+</li>
+<li><p>16位窗口大小：是TCP流量控制的一个手段。这里说的窗口，指的是接收通告窗口。它告诉对方 <strong>本端的TCP接收缓冲区</strong> 还能容纳多少字节的数据，这样对方就可以控制发送数据的速度。<strong>用于实现滑动窗口机制，来进行流量控制</strong></p>
+</li>
+<li><p>16位校验和：由发送端填充，用于检验接收的数据（TCP头部+数据部分）与发送的数据是否一致，<strong>不一致则丢弃</strong> </p>
+<ul>
+<li>校验方法：CRC</li>
+</ul>
+</li>
+<li><p>16位紧急指针：是一个正的偏移量。它和序号字段的值相加表示最后一个紧急数据（带外数据）的下一个字节的序号</p>
+</li>
+</ul>
+<h3 id="TCP可靠传输"><a href="#TCP可靠传输" class="headerlink" title="TCP可靠传输"></a>TCP可靠传输</h3><ul>
+<li><p>基于8种机制</p>
+<ul>
+<li><p>确认应答</p>
+<ul>
+<li>确认报文（ACK报文）是保证数据可靠传输的核心机制</li>
+</ul>
+</li>
+<li><p>延时应答</p>
+<ul>
+<li>基于确认应答机制，但接收端收到发送端发来的数据后并<strong>不立即返回ACK应答</strong> <ul>
+<li>立即返回ACK应答的话，这时候的接收缓冲区中的数据还没能够处理，缓存区的剩余大小就是窗口大小</li>
+<li>但实际上应用程序可能很快就会读走接收缓冲区中的内容，因此我们 <strong>延迟一会</strong> ，等待缓存区中数据被处理，那么剩余的缓存区就会大些</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>捎带应答</p>
+<ul>
+<li>在延时应答的基础上，接受方和发送方都是<strong>一发一收</strong>，所以，我们在发送数据的时候，将ACK以搭顺风车的方式发送给对方</li>
+</ul>
+</li>
+<li><p>超时重传</p>
+<ul>
+<li>实际网络中会有丢包的可能，<strong>TCP模块为每个TCP报文段都维护一个重传定时器</strong> ，该定时器在TCP报文段第一次发送时启动。如果<strong>超时时间内</strong>未收到接收方的<strong>确认报文段</strong> ，TCP模块将<strong>重传丢失的TCP报文段</strong> 并<strong>重置定时器</strong></li>
+</ul>
+</li>
+<li><p>滑动窗口</p>
+<ul>
+<li>已在数据链路层做过介绍</li>
+</ul>
+</li>
+<li><p>流量控制</p>
+<ul>
+<li>出现原因：接收端处理数据的速度是有限的，如果发送端发的太快，导致接收端的缓冲区满， 这个时候如果发送端继续发送，就会造成丢包，继而引起丢包重传等等一系列连锁反应</li>
+<li>解决方案<ul>
+<li>TCP连接阶段，双方协商窗口尺寸，同时接收方预留数据缓存区</li>
+<li>发送方根据协商的结果，发送符合窗口尺寸的数据字节流，并等待对方的确认</li>
+<li>接收端将<strong>接收缓冲区空闲大小</strong>放入 TCP 首部中的<strong>窗口大小字段</strong>，通过ACK报文通知发送端。窗口大小字段越大，说明网络的吞吐量越高</li>
+<li>发送方根据确认信息，改变窗口的尺寸，增加或者减少发送未得到确认的字节流中的字节数</li>
+<li>如果接收端缓冲区满了，就会将窗口置为0，这时发送方不再发送数据，但是需要定期发送一个窗口探测数据段，询问接收端当前<strong>接收缓冲区的空闲大小</strong></li>
+<li>如果出现发送拥塞，发送窗口缩小为原来的一半，同时将超时重传的时间间隔扩大一倍</li>
+<li>🚩而在传输过程中，发送窗口（SWND）的大小并不仅仅取决于接收窗口（RWND），还取决于下文将提到的拥塞窗口（CWND）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>拥塞控制</p>
+<ul>
+<li><p>出现原因：提高网络利用率、降低丢包率，并保证网络资源对每条数据流的公平性</p>
+</li>
+<li><p>组成部分</p>
+<ul>
+<li>慢开始（slow start）</li>
+<li>拥塞避免 （congestion avoidance）</li>
+<li>快速重传（fast retransmit）</li>
+<li>快速恢复（fast recovery）</li>
+</ul>
+</li>
+<li><p>解决方案</p>
+<ul>
+<li><p>基于滑动窗口协议，引入<strong>拥塞窗口</strong></p>
+<ul>
+<li>发送窗口(SWND)是接收窗口(RWND)和拥塞窗户(CWND)中的较小值</li>
+<li>发送开始的时候，定义拥塞窗口初始值为 IW(Initial Window) ，大小为 1个MSS（最大报文长度）</li>
+</ul>
+</li>
+<li><p>慢开始</p>
+<ul>
+<li><p>TCP模块一开始并不清楚网络的实际情况，因为需要用一种试探的方式平滑地增加CWND的大小。但慢启动实际上并不慢，<strong>如果不加限制，慢启动必然使得CWND指数级增长，并最终导致网络拥塞</strong></p>
+</li>
+<li><p>为了避免网络拥塞，拥塞控制定义了<strong>慢启动门限</strong>(slow start threshold size)。当CWND大小超过该值时，TCP拥塞控制将进入拥塞避免阶段</p>
+<ul>
+<li>CWND &lt; SSTHRESH 慢开始算法 指数增大</li>
+<li>CWND &gt; SSTHRESH 拥塞避免算法 加法增加</li>
+<li>CWND = SSTHRESH 两者即可<br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625120133843.png" alt="image-20220625120133843"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>拥塞避免</p>
+<ul>
+<li>SSTHRESH = CWND / 2</li>
+<li>CWND = MSS</li>
+</ul>
+</li>
+<li><p>快速重传</p>
+<ul>
+<li>只要发送方收到三个重复确认（加上一个正常确认，总共发送了4个ACK报文），就立即重传确认序号指向的数据</li>
+</ul>
+</li>
+<li><p>快速恢复</p>
+<ul>
+<li>当出现了快重传的情况时，就说明当前网络状况存在问题，但是又由于我们能够连续三次收到确认应答，就说明了当前的问题并不是很严重，没有必要重新进行慢开始</li>
+<li>SSTHRESH = CWND / 2</li>
+<li>CWND = SSTHRESH</li>
+<li>实行拥塞避免算法（跳过了慢开始）<br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625121003361.png" alt="image-20220625121003361"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="TCP连接管理机制"><a href="#TCP连接管理机制" class="headerlink" title="TCP连接管理机制"></a>TCP连接管理机制</h3><ul>
+<li><p>三次握手</p>
+<ul>
+<li><p>简单来说，Three-Way Handshake值得就是建立一个TCP连接时，需要客户端与服务端总共发送3个包，以确认双方的接受能力和发送能力是否正常，为后面的可靠性传输做准备。实质上就是连接服务器指定端口，建立TCP连接，并同步连接双方的序列号和确认号，交换TCP窗口大小信息</p>
+</li>
+<li><p>刚开始时，客户端处于关闭状态，服务端处于监听状态</p>
+</li>
+<li><p>🙋‍♂️第一次握手🙋‍♀️：给客户端发送一个SYN报文，并指明客户端的初始化序列号ISN。此时客户端处于<code>SYN_SENT</code>状态。首部的同步位SYN=1,初始序号SEQ=X,SYN=1的报文段不携带数据，但要消耗掉一个序号</p>
+</li>
+<li><p>🙋‍♂️第二次握手🙋‍♀️：服务器收到客户端的 SYN 报文之后，会以自己的 SYN 报文作为应答，并且也是指定了自己的初始化序列号 ISN(s)。同时会把客户端的 ISN + 1 作为ACK 的值，表示自己已经收到了客户端的 SYN，此时服务器处于 <code>SYN_RCVD</code> 的状态</p>
+</li>
+<li><p>🙋‍♂️第三次握手🙋‍♀️：客户端收到 SYN 报文之后，会发送一个 ACK 报文，当然，也是一样把服务器的 ISN + 1 作为 ACK 的值，表示已经收到了服务端的 SYN 报文，此时客户端处于 <code>ESTABLISHED</code> 状态。服务器收到 ACK 报文之后，也处于 <code>ESTABLISHED</code> 状态，此时，双方已建立起了连接</p>
+<img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625123244558.png" alt="image-20220625123244558" style="zoom:67%;" /></li>
+<li><p>为什么是三次，两次不可以吗</p>
+<ul>
+<li>三次握手的意义<ul>
+<li>第一次 确认 Client有发送能力</li>
+<li>第二次 确认 Server有接受能力 和 发送能力</li>
+<li>第三次 确认 Client有接受能力</li>
+</ul>
+</li>
+<li>两次首先不能确保Client和Server都具备了发送接受能力，其次举个例子<ul>
+<li>如客户端发出连接请求，但因连接请求报文丢失而未收到确认，于是客户端再重传一次连接请求。后来收到了确认，建立了连接。数据传输完毕后，就释放了连接，客户端共发出了两个连接请求报文段，其中第一个丢失，第二个到达了服务端，但是第一个丢失的报文段只是在某些网络结点长时间滞留了，延误到连接释放以后的某个时间才到达服务端，此时服务端误认为客户端又发出一次新的连接请求，于是就向客户端发出确认报文段，同意建立连接，不采用三次握手，只要服务端发出确认，就建立新的连接了，此时客户端忽略服务端发来的确认，也不发送数据，则服务端一致等待客户端发送数据，浪费资源</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>半连接队列</p>
+<ul>
+<li>Server第一次收到SYN后，处于SYN_RCVD状态。此时双方还没有建立完全连接，服务器会把这种状态下请求连接放在一个队列里，我们将其称为半连接队列</li>
+</ul>
+</li>
+<li><p>ISN不是固定的，是动态生成的，避免黑客攻击</p>
+</li>
+<li><p>三次握手过程携带数据吗</p>
+<ul>
+<li>第一次和第二次不会携带数据，避免攻击者在SYN报文中塞入大量数据，使服务器崩溃</li>
+<li>第三次可携带数据。此时客户端已处于ESTABLISED阶段</li>
+</ul>
+</li>
+<li><p>SYN攻击</p>
+<ul>
+<li><p>Client在短时间内伪造大量不存在的IP地址，向Server不断发送SYN数据包。Server收到SYN数据包，做ACK确认，并等待Client确认，由于源地址是伪造的，并不存在，因此Server需要不断重复发送ACK。同时，伪造的SYN数据包长时间占用半连接队列，导致队列满被丢弃，引起网络拥塞甚至瘫痪</p>
+</li>
+<li><p>属于典型的DoS/DDoS攻击</p>
+</li>
+<li><p>解决方法</p>
+<ul>
+<li>可通过命令来检测</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -n -p TCP | grep SYN_RECV</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>缩短超时时间</li>
+<li>增加最大半连接数</li>
+<li>使用SYN Cookies技术</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>四次挥手</p>
+<ul>
+<li>用于终止一个TCP连接</li>
+<li>刚开始时，双方均处于ESTABLISHED状态</li>
+<li>🙋‍♂️第一次挥手🙋‍♀️：客户端发送一个 FIN 报文，报文中会指定一个序列号。此时客户端处于 <code>FIN_WAIT1</code> 状态。<br>即发出<strong>连接释放报文段</strong>（FIN=1，序号seq=u），并停止再发送数据，主动关闭TCP连接，进入FIN_WAIT1（终止等待1）状态，等待服务端的确认</li>
+<li>🙋‍♂️第二次挥手🙋‍♀️：服务端收到 FIN 之后，会发送 ACK 报文，且把客户端的序列号值 +1 作为 ACK 报文的序列号值，表明已经收到客户端的报文了，此时服务端处于 <code>CLOSE_WAIT</code> 状态</li>
+<li>🙋‍♂️第三次挥手🙋‍♀️：如果服务端也想断开连接了，和客户端的第一次挥手一样，发给 FIN 报文，且指定一个序列号。此时服务端处于 <code>LAST_ACK</code> 的状态</li>
+<li>🙋‍♂️第四次挥手🙋‍♀️：客户端收到 FIN 之后，一样发送一个 ACK 报文作为应答，且把服务端的序列号值 +1 作为自己 ACK 报文的序列号值，此时客户端处于 <code>TIME_WAIT</code> 状态。需要过一阵子以确保服务端收到自己的 ACK 报文之后才会进入 <code>CLOSED</code> 状态，服务端收到 ACK 报文之后，就处于关闭连接了，处于 <code>CLOSED</code> 状态</li>
+</ul>
+<img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625144640860.png" alt="image-20220625144640860" style="zoom:67%;" />
+
+<ul>
+<li>为什么是四次<ul>
+<li>当服务端收到客户端的SYN连接请求报文后，可以直接发送SYN+ACK报文。其中<strong>ACK报文是用来应答的，SYN报文是用来同步的</strong>。但是关闭连接时，当服务端收到FIN报文时，很可能并不会立即关闭SOCKET，所以只能先回复一个ACK报文，告诉客户端，“你发的FIN报文我收到了”。<strong>只有等到我服务端所有的报文都发送完了，我才能发送FIN报文</strong>，因此不能一起发送。故需要四次挥手</li>
+</ul>
+</li>
+<li>2MSL等待状态<ul>
+<li>TIME_WAIT状态也成为2MSL等待状态。每个具体TCP实现必须选择一个报文段最大生存时间MSL（Maximum Segment Lifetime），它是任何报文段被丢弃前在网络内的最长时间。这个时间是有限的，因为TCP报文段以IP数据报在网络内传输，而IP数据报则有限制其生存时间的TTL字段</li>
+</ul>
+</li>
+<li>等待2MSL的意义<ul>
+<li>保证客户端发送的最后一个ACK报文段能够达到服务端</li>
+<li>防止已失效的连接请求报文段出现在本连接中<ul>
+<li>客户端在发送完最后一个ACK报文段后，再经过2MSL，就可以使本连接持续的时间内所产生的所有报文段都从网络中消失，使下一个新的连接中不会出现这种旧的连接请求报文段</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="TCP的有限状态机示意图"><a href="#TCP的有限状态机示意图" class="headerlink" title="TCP的有限状态机示意图"></a>TCP的有限状态机示意图</h3><p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145317503.png" alt="image-20220625145317503"></p>
+<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145533080.png" alt="image-20220625145533080"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145545159.png" alt="image-20220625145545159"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145553012.png" alt="image-20220625145553012"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145600559.png" alt="image-20220625145600559"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145609467.png" alt="image-20220625145609467"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145617619.png" alt="image-20220625145617619"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145625882.png" alt="image-20220625145625882"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145632776.png" alt="image-20220625145632776"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145641796.png" alt="image-20220625145641796"><br><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220625145648368.png" alt="image-20220625145648368"></p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%90%E8%BE%93%E5%B1%82"><span class="toc-number">1.</span> <span class="toc-text">运输层</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">协议概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E4%B9%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1"><span class="toc-number">1.1.1.</span> <span class="toc-text">进程之间的通信</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A4%E4%B8%AA%E4%B8%BB%E8%A6%81%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.1.2.</span> <span class="toc-text">两个主要协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3"><span class="toc-number">1.1.3.</span> <span class="toc-text">端口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E5%8D%8F%E8%AE%AE%E6%8A%A5UDP"><span class="toc-number">1.2.</span> <span class="toc-text">用户数据协议报UDP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#UDP%E6%A6%82%E8%BF%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text">UDP概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UDP%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.2.2.</span> <span class="toc-text">UDP首部格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8EUDP%E7%9A%84%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.2.3.</span> <span class="toc-text">基于UDP的协议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%A0%E8%BE%93%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AETCP"><span class="toc-number">1.3.</span> <span class="toc-text">传输控制协议TCP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP%E4%B8%BB%E8%A6%81%E6%A6%82%E5%BF%B5"><span class="toc-number">1.3.1.</span> <span class="toc-text">TCP主要概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.3.2.</span> <span class="toc-text">TCP首部格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93"><span class="toc-number">1.3.3.</span> <span class="toc-text">TCP可靠传输</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6"><span class="toc-number">1.3.4.</span> <span class="toc-text">TCP连接管理机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP%E7%9A%84%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA%E7%A4%BA%E6%84%8F%E5%9B%BE"><span class="toc-number">1.3.5.</span> <span class="toc-text">TCP的有限状态机示意图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98"><span class="toc-number">1.4.</span> <span class="toc-text">例题</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/d8c2599fcfab/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/d8c2599fcfab/&text=传输层"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/d8c2599fcfab/&title=传输层"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/d8c2599fcfab/&is_video=false&description=传输层"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=传输层&body=Check out this article: https://blog.zhang0.cool/d8c2599fcfab/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/d8c2599fcfab/&title=传输层"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/d8c2599fcfab/&title=传输层"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/d8c2599fcfab/&title=传输层"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/d8c2599fcfab/&title=传输层"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/d8c2599fcfab/&name=传输层&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/d8c2599fcfab/&t=传输层"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+      
+        
+          2022
+            <a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">
+              苏ICP备2022044873号
+            </a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <!--
+       -->
+          <li><a href="/">
+              Home
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/about/">
+              About
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/archives/">
+              Articles
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/categories/">
+              Category
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/search/">
+              Search
+            </a></li>
+          <!--
+     -->
+          
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+ 
+  <link
+    rel="preload"
+    href="/lib/font-awesome/css/all.min.css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript
+    ><link
+      rel="stylesheet"
+      href="/lib/font-awesome/css/all.min.css"
+  /></noscript>
+
+
+
+    <!-- jquery -->
+ 
+  
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+
+
+
+<!-- clipboard -->
+
+   
+    
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'Cheung0-bit/fuzzy_ahp';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="微信平台首先，微信有三大平台：微信公众平台（提供公众号、小程序等服务，主要面向编辑人员）、微信开放平台（网页、移动、小程序等第三方服务的管理平台以及微信开发文档，主要面向开发者）、微信商户平台（入驻成为微信商家，接入微信支付服务）。此外，还有一个微信服务平台，供服务商使用。 官方文档有如下描述：  微信开放平台-第三方平台（简称第三方平台），由微信团队面向所有通过开发者资质认证的第三方开发者提供提">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信与阿里云第三方服务的一些概念流程梳理">
+<meta property="og:url" content="https://blog.zhang0.cool/c36f3d1c0237/index.html">
+<meta property="og:site_name" content="小小小张的博客">
+<meta property="og:description" content="微信平台首先，微信有三大平台：微信公众平台（提供公众号、小程序等服务，主要面向编辑人员）、微信开放平台（网页、移动、小程序等第三方服务的管理平台以及微信开发文档，主要面向开发者）、微信商户平台（入驻成为微信商家，接入微信支付服务）。此外，还有一个微信服务平台，供服务商使用。 官方文档有如下描述：  微信开放平台-第三方平台（简称第三方平台），由微信团队面向所有通过开发者资质认证的第三方开发者提供提">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/471e55e1b6de25619cff4e0637281ad5.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/b1faa5b40963c1b70c1f5591374a1380.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/343c19077c373e7ccc6661a9b66481e9.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/11230a3ff1a8176136d26d3c9002e0d1.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/310b817f463ff13abfa20c4527d81faa.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/56e6986ae9197688eb2ef50e16867dc1.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/e563cefba8cc32031d3b426baa58b70b.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/290eac7d6d8019cc25c2a5ced77ac9a0.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/96890f1b7639c5bd36a1484e4648658f.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/ea1109bd27fa28aebb32184ddb982acc.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/bbc7947fccb6db8b5897f4f05c718e40.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/151ab827942421c3e0e2b319e6af8cf8.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/07e5c5c8c2435d04470044283a4d8559.png">
+<meta property="article:published_time" content="2022-02-23T13:11:28.000Z">
+<meta property="article:modified_time" content="2022-11-25T07:03:20.546Z">
+<meta property="article:author" content="张林">
+<meta property="article:tag" content="微信SDK">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/471e55e1b6de25619cff4e0637281ad5.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>微信与阿里云第三方服务的一些概念流程梳理</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="小小小张的博客" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Articles</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/37b81c3e02e2/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/d0dd3ba40f1f/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/c36f3d1c0237/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/c36f3d1c0237/&text=微信与阿里云第三方服务的一些概念流程梳理"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/c36f3d1c0237/&title=微信与阿里云第三方服务的一些概念流程梳理"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/c36f3d1c0237/&is_video=false&description=微信与阿里云第三方服务的一些概念流程梳理"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=微信与阿里云第三方服务的一些概念流程梳理&body=Check out this article: https://blog.zhang0.cool/c36f3d1c0237/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/c36f3d1c0237/&title=微信与阿里云第三方服务的一些概念流程梳理"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/c36f3d1c0237/&title=微信与阿里云第三方服务的一些概念流程梳理"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/c36f3d1c0237/&title=微信与阿里云第三方服务的一些概念流程梳理"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/c36f3d1c0237/&title=微信与阿里云第三方服务的一些概念流程梳理"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/c36f3d1c0237/&name=微信与阿里云第三方服务的一些概念流程梳理&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/c36f3d1c0237/&t=微信与阿里云第三方服务的一些概念流程梳理"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AE%E4%BF%A1%E5%B9%B3%E5%8F%B0"><span class="toc-number">1.</span> <span class="toc-text">微信平台</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AE%E4%BF%A1%E7%99%BB%E9%99%86"><span class="toc-number">2.</span> <span class="toc-text">微信登陆</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%93%E5%B1%95%EF%BC%9AOAuth2-0%E8%8E%B7%E5%8F%96access-token%E6%9C%89%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F%EF%BC%9A"><span class="toc-number">2.1.</span> <span class="toc-text">拓展：OAuth2.0获取access_token有四种方式：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98"><span class="toc-number">3.</span> <span class="toc-text">微信支付</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#API-v3"><span class="toc-number">3.1.</span> <span class="toc-text">API v3</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%B8%B8%E8%A7%81%E7%9A%84key"><span class="toc-number">3.2.</span> <span class="toc-text">一些常见的key</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%94%AF%E4%BB%98%E4%BA%A7%E5%93%81"><span class="toc-number">3.3.</span> <span class="toc-text">支付产品</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%BF%E9%87%8C%E4%BA%91%E5%B9%B3%E5%8F%B0"><span class="toc-number">4.</span> <span class="toc-text">阿里云平台</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        微信与阿里云第三方服务的一些概念流程梳理
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">张林</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-02-23T13:11:28.000Z" itemprop="datePublished">2022-02-23</time>
+        
+        (Updated: <time datetime="2022-11-25T07:03:20.546Z" itemprop="dateModified">2022-11-25</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%BC%80%E5%8F%91%E5%AE%9E%E8%B7%B5/">开发实践</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E5%BE%AE%E4%BF%A1SDK/" rel="tag">微信SDK</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h3 id="微信平台"><a href="#微信平台" class="headerlink" title="微信平台"></a>微信平台</h3><p>首先，微信有三大平台：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/">微信公众平台</a>（提供公众号、小程序等服务，主要面向编辑人员）、<a target="_blank" rel="noopener" href="https://open.weixin.qq.com/">微信开放平台</a>（网页、移动、小程序等第三方服务的管理平台以及微信开发文档，主要面向开发者）、<a target="_blank" rel="noopener" href="https://pay.weixin.qq.com/">微信商户平台</a>（入驻成为微信商家，接入微信支付服务）。此外，还有一个<a target="_blank" rel="noopener" href="https://fuwu.weixin.qq.com/">微信服务平台</a>，供服务商使用。</p>
+<p>官方文档有如下描述：</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/471e55e1b6de25619cff4e0637281ad5.png" alt="image-20220223223935898"></p>
+<p>微信开放平台-第三方平台（简称第三方平台），由微信团队面向所有通过<a target="_blank" rel="noopener" href="https://kf.qq.com/faq/170824URbmau170824r2uY7j.html">开发者资质认证</a>的第三方开发者提供提供的官方平台。也就是说，第一步要有一个<strong>开发者资质的认证</strong>，认证申请最好是以公司的身份，需要<strong>缴纳300元费用</strong></p>
+<p>在得到公众号或小程序管理员授权后，基于该平台，第三方服务商可以可以通过调用官方接口能力，为商家提供公众号代运营、小程序代注册、代开发等服务以及提供公众号和小程序相关的行业方案、活动营销、插件能力等全方位服务。也就是说，第二步需要<strong>在微信公众平台拥有账号，并开通了小程序或公众号等服务</strong>，所谓要烧饭先淘米，在开通服务前先得准备好要被开通服务的东西。</p>
+<p>下面，认识几个基本概念：</p>
+<ul>
+<li>几个ID</li>
+</ul>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/b1faa5b40963c1b70c1f5591374a1380.png" alt="image-20220223143445006"></p>
+<p>在这里进一步解释一下：<code>AppID</code>就是服务应用的身份证号，每一个服务应用（小程序，公众号，移动端，WEB端）的<code>AppID</code>都是独一无二的。同理，<code>openid</code>是用户在每一个服务应用里面的身份证号，换句话说，一个微信用户在不同的服务应用下的<code>openid</code>也是独一无二的，由此，<code>openid</code>并不是一个全局变量，这意味着不是说用户注册了微信号，成为了微信公司的合法用户，就在所有的微信公司的服务应用下同时生成了一个<code>id</code>，而是用户在每一个服务应用中将自己的身份信息授权了，才会生成一个和服务平台挂钩的<code>openid</code>。为方便一家公司旗下有许多的服务应用统一分别管理应用，一个开放平台下绑定的所有服务应用之间，同一个用户就有一个<code>unionid</code>，即微信用户在该开放平台旗下所有产品的身份号。举个例子：用户甲在该平台下小程序A的<code>openid</code>为X，在该平台下小程序B的<code>openid</code>为Y，而该用户的<code>unionid</code>均为Z。</p>
+<ul>
+<li><p>商家和服务商的开放平台账号</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/343c19077c373e7ccc6661a9b66481e9.png" alt="image-20220223143612660"></p>
+</li>
+</ul>
+<p>这里理解一个概念：“直连模式”和“服务商模式”</p>
+<p><strong>直连模式：</strong>商户自行开发系统对接微信支付进行交易，钱直接结算到商户的结算账户上，此类商户称为<strong>“直连商户”</strong></p>
+<p><strong>服务商模式：</strong>有些商户不具备开发能力，它就选择已经入住微信支付的“服务商”来支撑其业务。此类商户为<strong>“间连商户”</strong>。</p>
+<p>由此，入驻成为服务商，可为不具备开发能力的商家进行技术研发</p>
+<ul>
+<li>绑定和授权</li>
+</ul>
+<p>“绑定”指的是将商家将其公众号或者小程序帐号绑定到商家的开放平台下，“授权”是指商家将其公众号或者小程序扫码授权给服务商的第三方平台帐号。这里，我理解为商家将自己的公众平台上的应用“绑定”到商家自己的开放平台，服务应用可与帐号下的移动应用、网站应用、公众号及其他小程序之间通过<code>unionID</code>机制统一用户账号。</p>
+<p>“授权”指的是商家没有开发能力，就授权给第三方服务商，让他们来承包开发工作。</p>
+<ul>
+<li>几个Token</li>
+</ul>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/11230a3ff1a8176136d26d3c9002e0d1.png" alt="image-20220223160920687"></p>
+<p>如果贵公司是自己开发，会用到<code>access_token</code>，若依赖外包平台开发，则需要<code>component_access_token</code>和<code>authorizer_access_token</code>来拿到商家的权限，代替商家打通第三方接口</p>
+<h3 id="微信登陆"><a href="#微信登陆" class="headerlink" title="微信登陆"></a>微信登陆</h3><p>微信<code>OAuth2.0</code>授权登录让微信用户使用微信身份安全登录第三方应用或网站，在微信用户授权登录已接入微信<code>OAuth2.0</code>的第三方应用后，第三方可以获取到用户的接口调用凭证（<code>access_token</code>），通过<code>access_token</code>可以进行微信开放平台授权关系接口调用，从而可实现获取微信用户基本开放信息和帮助用户实现基础开放功能等。 微信<code>OAuth2.0</code>授权登录目前支持<code>authorization_code</code>模式，适用于拥有<code>server</code>端的应用授权。</p>
+<p>其中<code>authorization_code</code>模式指的是<strong>使用方应用先申请一个授权码，然后再用该码获取令牌</strong></p>
+<h4 id="拓展：OAuth2-0获取access-token有四种方式："><a href="#拓展：OAuth2-0获取access-token有四种方式：" class="headerlink" title="拓展：OAuth2.0获取access_token有四种方式："></a>拓展：<code>OAuth2.0</code>获取<code>access_token</code>有四种方式：</h4><ul>
+<li><p>隐式授权模式（Implicit Grant）</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/310b817f463ff13abfa20c4527d81faa.png" alt="image-20220223174208640"></p>
+</li>
+</ul>
+<p>用户会重定向到认证服务器，输入账户密码授权成功返回应用页面用返回的Token访问资源服务器。适用于没有后台管理只能通过第三方认证的应用</p>
+<ul>
+<li>授权码授权模式（Authorization code Grant）</li>
+</ul>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/56e6986ae9197688eb2ef50e16867dc1.png" alt="image-20220223174855060"></p>
+<p>市面上最主流的验证方式。用户访问应用后会重定向认证服务器授权，返回code带上client_id给应用服务器，应用服务器拿code，client_id查询到的client_secret到认证服务器换取access_token和refresh_token以访问资源服务器。<strong>应用服务器拿不到用户的账户密码，且有限制的访问第三方平台的资源，安全性高</strong></p>
+<ul>
+<li>密码模式（Resource Owner Password Credentials Grant）</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/e563cefba8cc32031d3b426baa58b70b.png" alt="image-20220223175408231"></p>
+<p>用户访问应用页面输入第三方平台需要的账户密码信息，应用服务器拿着信息去请求认证服务器，授权通过后返回Token，应用服务器凭借Token访问静态资源。<strong>这种局限性极高，例如应用平台和第三方平台是亲兄弟，例如微信和QQ</strong></p>
+<ul>
+<li>客户端凭证模式（Client Credentials Grant）</li>
+</ul>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/290eac7d6d8019cc25c2a5ced77ac9a0.png" alt="image-20220223175741808"></p>
+<p>用户通过应用端自定义的验证方式授权获得Token，即可无阻碍的访问静态资源服务器。<strong>这种方式安全性极低，一般提供给完全信任的服务器端服务，整个过程没有用户参与</strong></p>
+<h3 id="微信支付"><a href="#微信支付" class="headerlink" title="微信支付"></a>微信支付</h3><p>为了支付的安全性，首先要通过复杂的手续，进行<strong>资料审核</strong>和<strong>协议签署</strong></p>
+<h4 id="API-v3"><a href="#API-v3" class="headerlink" title="API v3"></a>API v3</h4><p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/96890f1b7639c5bd36a1484e4648658f.png" alt="image-20220223224147738"></p>
+<p>总结一下，RESTFUL接口风格，采用JSON前后端数据交互，基于非对称的SHA256-RSA的数字签名算法，使用AES-256-GCM对回调关键信息加密保护，提高了安全性。此外，仅需携带证书序列号，简化了操作</p>
+<h4 id="一些常见的key"><a href="#一些常见的key" class="headerlink" title="一些常见的key"></a>一些常见的<code>key</code></h4><ul>
+<li>直连模式：</li>
+</ul>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/ea1109bd27fa28aebb32184ddb982acc.png" alt="image-20220223181352766"></p>
+<ul>
+<li>服务商模式：</li>
+</ul>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/bbc7947fccb6db8b5897f4f05c718e40.png" alt="image-20220223181441669"></p>
+<p>多出来一些附属的<code>key</code>，供服务开发商调用权限，进行外包开发</p>
+<h4 id="支付产品"><a href="#支付产品" class="headerlink" title="支付产品"></a>支付产品</h4><ul>
+<li>付款码支付: 线下场景,商家用设备扫描用户二维码收款</li>
+<li>Native原生支付：即常说的扫码支付，常用于PC端网站，手机扫码支付</li>
+<li>JSAPI网页支付：即日常所说的公众号支付，可在微信公众号、朋友圈、聊天会话中点击页面链接，或者用微信“扫一扫”扫描页面地址二维码在微信中打开商户HTML5页面，在页面内下单完成支付</li>
+<li>APP支付：APP支付是指商户已有的APP，通过对接微信支付API及SDK，实现从商户APP发起交易后跳转到微信APP，用户完成支付后跳回商户APP的场景</li>
+<li>小程序支付：小程序支付是指在商户既有的小程序内通过对接微信支付API，实现用户在小程序内完成交易的场景</li>
+</ul>
+<h3 id="阿里云平台"><a href="#阿里云平台" class="headerlink" title="阿里云平台"></a>阿里云平台</h3><p>开通<code>SMS</code>短信服务，首先附上官方的流程图：</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/151ab827942421c3e0e2b319e6af8cf8.png" alt="p367960"></p>
+<p>第一步就是在阿里云拥有身份：注册账号，实名认证…</p>
+<p>实名认证最好通过企业认证的形式，否则在短信服务上会受到极大的歧视，有图为证：</p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/07e5c5c8c2435d04470044283a4d8559.png" alt="image-20220223162317127"></p>
+<p>认识几个名词：</p>
+<ul>
+<li>短信签名：短信签名是根据用户身份创建的符合自身属性的签名，一般建议设置为账号主体所在机构的全称或简称。例如：麦趣测评</li>
+<li>短信模板：短信模板，即具体发送的短信内容，由变量和模板内容构成。您可以通过变量实现短信内容的定制化。<ul>
+<li>短信通知（0.045元/条） 例如：尊敬的麦趣用户，您已经成功开通会员服务！</li>
+<li>验证码（0.045元/条）例如：您的验证码为：123456，该验证码5分钟内有效，请勿泄露于他人</li>
+<li>推广短信（0.055元/条） 例如：麦趣测评福利来啦！….</li>
+</ul>
+</li>
+</ul>
+<p>控制方法：</p>
+<ul>
+<li>控制台使用 ：短信服务控制台支持创建短信内容，发送短信，统计并展示业务数据如发送量、发送记录、费用以及日志分析，设置消息回执接收方式、联系人等</li>
+<li><code>API</code>/<code>SDK</code>使用：[API概览文档](<a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/102715.htm?spm=a2c4g.11186623.0.0.17234679jTORcC#concept-t4w-pcs-ggb">API概览 (aliyun.com)</a>)使用阿里云<code>OpenAPI</code>开发者门户或阿里云<code>SDK</code>完成常见操作，例如添加短信签名、添加短信模板、发送短信服务和查询短信发送详情等，将指定信息发送至国内或境外手机号码</li>
+</ul>
+<p>说明：我们在申请签名和模板审核通过后，可在控制台进行测试，也可通过阿里云提供的<code>API</code>/<code>SDK</code>进行测试，获得返回状态码等。控制台的优点在于可以更好的查看可视化的全方位的数据，如日志，发送量，发送记录等等，而<code>API</code>/<code>SDK</code>能更好让后端人员进行个性化的开发使用</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AE%E4%BF%A1%E5%B9%B3%E5%8F%B0"><span class="toc-number">1.</span> <span class="toc-text">微信平台</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AE%E4%BF%A1%E7%99%BB%E9%99%86"><span class="toc-number">2.</span> <span class="toc-text">微信登陆</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%93%E5%B1%95%EF%BC%9AOAuth2-0%E8%8E%B7%E5%8F%96access-token%E6%9C%89%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F%EF%BC%9A"><span class="toc-number">2.1.</span> <span class="toc-text">拓展：OAuth2.0获取access_token有四种方式：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98"><span class="toc-number">3.</span> <span class="toc-text">微信支付</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#API-v3"><span class="toc-number">3.1.</span> <span class="toc-text">API v3</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%B8%B8%E8%A7%81%E7%9A%84key"><span class="toc-number">3.2.</span> <span class="toc-text">一些常见的key</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%94%AF%E4%BB%98%E4%BA%A7%E5%93%81"><span class="toc-number">3.3.</span> <span class="toc-text">支付产品</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%BF%E9%87%8C%E4%BA%91%E5%B9%B3%E5%8F%B0"><span class="toc-number">4.</span> <span class="toc-text">阿里云平台</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/c36f3d1c0237/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/c36f3d1c0237/&text=微信与阿里云第三方服务的一些概念流程梳理"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/c36f3d1c0237/&title=微信与阿里云第三方服务的一些概念流程梳理"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/c36f3d1c0237/&is_video=false&description=微信与阿里云第三方服务的一些概念流程梳理"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=微信与阿里云第三方服务的一些概念流程梳理&body=Check out this article: https://blog.zhang0.cool/c36f3d1c0237/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/c36f3d1c0237/&title=微信与阿里云第三方服务的一些概念流程梳理"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/c36f3d1c0237/&title=微信与阿里云第三方服务的一些概念流程梳理"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/c36f3d1c0237/&title=微信与阿里云第三方服务的一些概念流程梳理"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/c36f3d1c0237/&title=微信与阿里云第三方服务的一些概念流程梳理"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/c36f3d1c0237/&name=微信与阿里云第三方服务的一些概念流程梳理&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/c36f3d1c0237/&t=微信与阿里云第三方服务的一些概念流程梳理"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+      
+        
+          2022
+            <a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">
+              苏ICP备2022044873号
+            </a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <!--
+       -->
+          <li><a href="/">
+              Home
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/about/">
+              About
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/archives/">
+              Articles
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/categories/">
+              Category
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/search/">
+              Search
+            </a></li>
+          <!--
+     -->
+          
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+ 
+  <link
+    rel="preload"
+    href="/lib/font-awesome/css/all.min.css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript
+    ><link
+      rel="stylesheet"
+      href="/lib/font-awesome/css/all.min.css"
+  /></noscript>
+
+
+
+    <!-- jquery -->
+ 
+  
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+
+
+
+<!-- clipboard -->
+
+   
+    
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'Cheung0-bit/fuzzy_ahp';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

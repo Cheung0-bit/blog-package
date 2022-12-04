@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="计算机网络基本概念计算机网络的概念和特点 概念：计算机网络是一些互相连接的、自治的计算机的集合，是将不同地理位置上的具有独立功能的多个计算机系统用通信线路相互连接起来，在协议的控制之下，以实现资源共享和数据通信为目的的系统 特点 连通性Connectivity 共享 Sharing    互联网定义 互联网，特指 Internet，起源于美国，是由数量极大的各种计算机网络互连起来而形成的一个互连网">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络概述">
+<meta property="og:url" content="https://blog.zhang0.cool/f7caeb946ad2/index.html">
+<meta property="og:site_name" content="小小小张的博客">
+<meta property="og:description" content="计算机网络基本概念计算机网络的概念和特点 概念：计算机网络是一些互相连接的、自治的计算机的集合，是将不同地理位置上的具有独立功能的多个计算机系统用通信线路相互连接起来，在协议的控制之下，以实现资源共享和数据通信为目的的系统 特点 连通性Connectivity 共享 Sharing    互联网定义 互联网，特指 Internet，起源于美国，是由数量极大的各种计算机网络互连起来而形成的一个互连网">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623140836434.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623140954002.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623141024079.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623141052985.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623142944305.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143032126.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143104892.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143239409.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143310150.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143408822.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143432001.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143508232.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143531969.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143621860.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143640654.png">
+<meta property="og:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143658858.png">
+<meta property="article:published_time" content="2022-06-25T12:59:18.000Z">
+<meta property="article:modified_time" content="2022-11-25T06:50:18.750Z">
+<meta property="article:author" content="张林">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623140836434.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>计算机网络概述</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="小小小张的博客" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Articles</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/7d98e0ab697e/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/7a8ad14d8fa9/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/f7caeb946ad2/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/f7caeb946ad2/&text=计算机网络概述"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/f7caeb946ad2/&title=计算机网络概述"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/f7caeb946ad2/&is_video=false&description=计算机网络概述"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=计算机网络概述&body=Check out this article: https://blog.zhang0.cool/f7caeb946ad2/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/f7caeb946ad2/&title=计算机网络概述"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/f7caeb946ad2/&title=计算机网络概述"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/f7caeb946ad2/&title=计算机网络概述"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/f7caeb946ad2/&title=计算机网络概述"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/f7caeb946ad2/&name=计算机网络概述&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/f7caeb946ad2/&t=计算机网络概述"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">计算机网络基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E6%A6%82%E5%BF%B5%E5%92%8C%E7%89%B9%E7%82%B9"><span class="toc-number">1.1.</span> <span class="toc-text">计算机网络的概念和特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%92%E8%81%94%E7%BD%91%E5%AE%9A%E4%B9%89"><span class="toc-number">1.2.</span> <span class="toc-text">互联网定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E6%80%A7%E8%83%BD%EF%BC%88%E7%BD%91%E7%BB%9C%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">计算机网络的性能（网络性能指标）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%EF%BC%88%E5%8D%8F%E8%AE%AE%E7%9A%84%E4%B8%89%E4%B8%AA%E8%A6%81%E7%B4%A0%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">网络体系结构（协议的三个要素）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B1%82%E7%9A%84%E5%A5%BD%E5%A4%84"><span class="toc-number">1.4.1.</span> <span class="toc-text">分层的好处</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E8%A6%81%E7%B4%A0"><span class="toc-number">1.4.2.</span> <span class="toc-text">三要素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.4.3.</span> <span class="toc-text">参考模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98"><span class="toc-number">1.5.</span> <span class="toc-text">例题</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        计算机网络概述
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">张林</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-06-25T12:59:18.000Z" itemprop="datePublished">2022-06-25</time>
+        
+        (Updated: <time datetime="2022-11-25T06:50:18.750Z" itemprop="dateModified">2022-11-25</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="计算机网络基本概念"><a href="#计算机网络基本概念" class="headerlink" title="计算机网络基本概念"></a>计算机网络基本概念</h1><h2 id="计算机网络的概念和特点"><a href="#计算机网络的概念和特点" class="headerlink" title="计算机网络的概念和特点"></a>计算机网络的概念和特点</h2><ul>
+<li>概念：计算机网络是一些互相连接的、自治的计算机的集合，是将不同地理位置上的具有独立功能的多个计算机系统用通信线路相互连接起来，在协议的控制之下，以实现资源共享和数据通信为目的的系统</li>
+<li>特点<ul>
+<li>连通性Connectivity</li>
+<li>共享 Sharing</li>
+</ul>
+</li>
+</ul>
+<h2 id="互联网定义"><a href="#互联网定义" class="headerlink" title="互联网定义"></a>互联网定义</h2><ul>
+<li><strong>互联网，特指</strong> <strong>Internet</strong>，起源于美国，是由数量极大的<strong>各种计算机网络</strong>互连起来而形成的一个互连网络</li>
+<li><strong>采用</strong> <strong>TCP/IP</strong> <strong>协议族</strong>，是一个覆盖全球、实现全球范围内数据通信和资源共享的计算机网络</li>
+</ul>
+<h2 id="计算机网络的性能（网络性能指标）"><a href="#计算机网络的性能（网络性能指标）" class="headerlink" title="计算机网络的性能（网络性能指标）"></a>计算机网络的性能（网络性能指标）</h2><ul>
+<li><p>带宽 bandwidth </p>
+<ul>
+<li>原指信号具有的频带宽度，单位是赫</li>
+<li>现指数字信道所能传送的“最高数据率”的同义语，单位是“比特每秒”或“b/s(bit/s)”</li>
+<li>单位换算</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">千比每秒</th>
+<th align="center">kb/s</th>
+<th align="center">10^3 b/s</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>兆比每秒</strong></td>
+<td align="center"><strong>Mb/s</strong></td>
+<td align="center"><strong>10^6 b/s</strong></td>
+</tr>
+<tr>
+<td align="center"><strong>吉比每秒</strong></td>
+<td align="center"><strong>Gb/s</strong></td>
+<td align="center"><strong>10^9 b/s</strong></td>
+</tr>
+<tr>
+<td align="center"><strong>太比每秒</strong></td>
+<td align="center"><strong>Tb/s</strong></td>
+<td align="center"><strong>10^12 b/s</strong></td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>时延 delay</p>
+<ul>
+<li><p>指数据（一个报文或者分组，甚至比特）从网络（或链路）的一端点传送到另一端你所需的时间。有时也称为延迟或者迟延</p>
+</li>
+<li><p>网络中时延由以下组成</p>
+<ul>
+<li>发送时延（传输时延）</li>
+</ul>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623140836434.png" alt="image-20220623140836434"></p>
+<ul>
+<li>传播时延</li>
+</ul>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623140954002.png" alt="image-20220623140954002"></p>
+<ul>
+<li>处理时延</li>
+</ul>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623141024079.png" alt="image-20220623141024079"></p>
+<ul>
+<li>排队时延</li>
+</ul>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623141052985.png" alt="image-20220623141052985"></p>
+</li>
+<li><p>总时延 = 发送时延 + 传播时延 + 处理时延 + 排队时延</p>
+</li>
+<li><p>对于高速网络链路，我们提高的仅仅是数据的<code>发送速率</code>，而不是比特在链路上的<code>传播速率</code></p>
+</li>
+<li><p>提高链路带宽能够减小数据的发送时延</p>
+</li>
+<li><p>往返时延RTT（Round-Trip Time）表示从发送端发送数据开始，到发送端收到来自接收端的确认（接收端收到数据后立即发送确认），总共经历的时延</p>
+</li>
+</ul>
+</li>
+<li><p>吞吐量 Throughput</p>
+<ul>
+<li>表示在单位时间内通过某个网络（或信道、接口）的数据量</li>
+<li>吞吐量更经常地用于对现实世界中的网络的一种测量，以便知道实际上到底有多少数据量能够通过网络</li>
+<li>吞吐量受网络的带宽的限制</li>
+</ul>
+</li>
+<li><p>利用率</p>
+<ul>
+<li>信道利用率<ul>
+<li>指某信道有百分之几的时间是被利用的（有数据通过）</li>
+<li>完全空闲的信道的利用率是零</li>
+<li>信道利用率并非越高越好。当某信道的利用率增大时，该信道引起的时延也就迅速增加</li>
+</ul>
+</li>
+<li>网络利用率<ul>
+<li>是全网络的信道利用率的加权平均值</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="网络体系结构（协议的三个要素）"><a href="#网络体系结构（协议的三个要素）" class="headerlink" title="网络体系结构（协议的三个要素）"></a>网络体系结构（协议的三个要素）</h2><p><strong>网络体系的实现基于“分而治之”的伟大思想</strong></p>
+<h3 id="分层的好处"><a href="#分层的好处" class="headerlink" title="分层的好处"></a>分层的好处</h3><ul>
+<li>独立性：每一层都实现了一个相对独立的功能，提供一种相对独立的服务。某一层无须知道下一层的具体实现，只需要指导如何使用下层服务即可</li>
+<li>灵活性：任意一层内部实现发生变化，只要接口不变，对其他层没有影响。每一层都可以独立发展</li>
+<li>可分割：各层可以自主选择最好的技术实现</li>
+<li>易于实现：整个系统分成若干小的子系统，实现和维护的难度大大降低</li>
+<li>易于标准化：每一层都有了明确的规定</li>
+<li></li>
+</ul>
+<h3 id="三要素"><a href="#三要素" class="headerlink" title="三要素"></a>三要素</h3><ul>
+<li><strong>语法</strong> 数据与控制信息（消息）的结构或格式 </li>
+<li><strong>语义</strong> 需要发出何种控制信息，完成何种动作以及做出何种响应</li>
+<li><strong>同步</strong> 事件实现顺序的详细说明</li>
+</ul>
+<h3 id="参考模型"><a href="#参考模型" class="headerlink" title="参考模型"></a>参考模型</h3><ul>
+<li>OSI</li>
+<li>TCP/IP</li>
+</ul>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623142944305.png" alt="image-20220623142944305"></p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143032126.png" alt="image-20220623143032126"></p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143104892.png" alt="image-20220623143104892"></p>
+<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143239409.png" alt="image-20220623143239409"></p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143310150.png" alt="image-20220623143310150"></p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143408822.png" alt="image-20220623143408822"></p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143432001.png" alt="image-20220623143432001"></p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143508232.png" alt="image-20220623143508232"></p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143531969.png" alt="image-20220623143531969"></p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143621860.png" alt="image-20220623143621860"></p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143640654.png" alt="image-20220623143640654"></p>
+<p><img src="https://0-bit.oss-cn-beijing.aliyuncs.com/image-20220623143658858.png" alt="image-20220623143658858"></p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">计算机网络基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E6%A6%82%E5%BF%B5%E5%92%8C%E7%89%B9%E7%82%B9"><span class="toc-number">1.1.</span> <span class="toc-text">计算机网络的概念和特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%92%E8%81%94%E7%BD%91%E5%AE%9A%E4%B9%89"><span class="toc-number">1.2.</span> <span class="toc-text">互联网定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E6%80%A7%E8%83%BD%EF%BC%88%E7%BD%91%E7%BB%9C%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">计算机网络的性能（网络性能指标）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%EF%BC%88%E5%8D%8F%E8%AE%AE%E7%9A%84%E4%B8%89%E4%B8%AA%E8%A6%81%E7%B4%A0%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">网络体系结构（协议的三个要素）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B1%82%E7%9A%84%E5%A5%BD%E5%A4%84"><span class="toc-number">1.4.1.</span> <span class="toc-text">分层的好处</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E8%A6%81%E7%B4%A0"><span class="toc-number">1.4.2.</span> <span class="toc-text">三要素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.4.3.</span> <span class="toc-text">参考模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98"><span class="toc-number">1.5.</span> <span class="toc-text">例题</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.zhang0.cool/f7caeb946ad2/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.zhang0.cool/f7caeb946ad2/&text=计算机网络概述"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.zhang0.cool/f7caeb946ad2/&title=计算机网络概述"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.zhang0.cool/f7caeb946ad2/&is_video=false&description=计算机网络概述"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=计算机网络概述&body=Check out this article: https://blog.zhang0.cool/f7caeb946ad2/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.zhang0.cool/f7caeb946ad2/&title=计算机网络概述"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.zhang0.cool/f7caeb946ad2/&title=计算机网络概述"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.zhang0.cool/f7caeb946ad2/&title=计算机网络概述"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.zhang0.cool/f7caeb946ad2/&title=计算机网络概述"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.zhang0.cool/f7caeb946ad2/&name=计算机网络概述&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.zhang0.cool/f7caeb946ad2/&t=计算机网络概述"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+      
+        
+          2022
+            <a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">
+              苏ICP备2022044873号
+            </a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <!--
+       -->
+          <li><a href="/">
+              Home
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/about/">
+              About
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/archives/">
+              Articles
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/categories/">
+              Category
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/search/">
+              Search
+            </a></li>
+          <!--
+     -->
+          
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+ 
+  <link
+    rel="preload"
+    href="/lib/font-awesome/css/all.min.css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript
+    ><link
+      rel="stylesheet"
+      href="/lib/font-awesome/css/all.min.css"
+  /></noscript>
+
+
+
+    <!-- jquery -->
+ 
+  
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+
+
+
+<!-- clipboard -->
+
+   
+    
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'Cheung0-bit/fuzzy_ahp';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
